@@ -18,6 +18,8 @@ DOTFILES_BUILD_DIR="$HOME/build/dotfiles/"
 
 echo "Syncing .config files whether you like it or not... TODO: conditional syncs"
 
+# meaningless change to test gh auth
+
 # tmux, wezterm
 cp .tmux.conf ~
 cp .wezterm.lua ~
