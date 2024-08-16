@@ -1,0 +1,9 @@
+max-history=5
+sort=-time
+
+background-color=#0e1533
+border-size=1
+border-color=#050b24
+border-radius=4
+
+default-timeout=5000

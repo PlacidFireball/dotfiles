@@ -1,0 +1,71 @@
+;; ** Variables ***********************************************************************
+
+;; Profile vars
+(defvar IMAGE "images/profile.jpg")
+(defvar NAME "YOUR NAME")
+(defpoll UNAME :interval "5m" `whoami`)
+
+;; System vars
+(defpoll HOST :interval "5s" `hostname`)
+(defpoll CPU_USAGE :interval "1s" `scripts/sys_info --cpu`)
+(defpoll MEM_USAGE :interval "1s" `scripts/sys_info --mem`)
+(defpoll BLIGHT :interval "1s" `scripts/sys_info --blight`)
+(defpoll BATTERY :interval "5s" `scripts/sys_info --bat`)
+
+;; Time vars
+(defpoll HOUR :interval "5s" `date +\"%I\"`)
+(defpoll MIN :interval "5s" `date +\"%M\"`)
+(defpoll MER :interval "5s" `date +\"%p\"`)
+(defpoll DAY :interval "5s" `date +\"%A\"`)
+
+;; Uptime vars
+(defpoll UPHOUR :interval "5s" `uptime -p | awk '{print $2 \" \" $3}' | sed 's/,//g'`)
+(defpoll UPMIN :interval "5s" `uptime -p | awk '{print $4 \" \" $5}'`)
+
+;; Music vars -- TODO: update the script to work with spotify
+
+;; (defpoll SONG :interval "1s" `scripts/music_info --song`)
+;; (defpoll ARTIST :interval "1s" `scripts/music_info --artist`)
+;; (defpoll STATUS :interval "1s" `scripts/music_info --status`)
+;; (defpoll CURRENT :interval "1s" `scripts/music_info --time`)
+;; (defpoll COVER :interval "1s" `scripts/music_info --cover`)
+;; (defpoll CTIME :interval "1s" `scripts/music_info --ctime`)
+;; (defpoll TTIME :interval "1s" `scripts/music_info --ttime`)
+
+;; Weather vars -- TODO: get open weather key and hook it up
+(defpoll ICON :interval "15m" `scripts/weather_info --icon`)
+(defpoll STAT :interval "15m" `scripts/weather_info --stat`)
+(defpoll TEMP :interval "15m" `scripts/weather_info --temp`)
+(defpoll HEX :interval "15m" `scripts/weather_info --hex`)
+(defpoll QUOTE :interval "15m" `scripts/weather_info --quote`)
+(defpoll QUOTE2 :interval "15m" `scripts/weather_info --quote2`)
+
+;; Apps vars
+(defpoll MAILS :interval "5m" `scripts/mails`)
+
+;; Files vars
+(defpoll FREE :interval "5s" `df -h / | awk '{print $4}' | tail -n 1 | sed 's/G/GB/'`)
+
+
+(defvar time-visible false)
+(defpoll time 
+  :interval "1s"
+  :initial "init"
+  :run-while time-visible `date +%H:%M:%S`
+)
+
+(defwindow example
+  :monitor 1
+  :geometry (geometry :x "0px"
+                     :y "20px"
+                     :width "100%"
+                     :height "30px"
+                     :anchor "top center")
+  :stacking "fg"
+  :exclusive true
+  :wm-ignore false
+
+  (greeter :text "Say hello!"
+	   :name "Jared")
+)
+
