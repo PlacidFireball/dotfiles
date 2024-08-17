@@ -16,33 +16,69 @@ function is_bin_in_path {
 
 DOTFILES_BUILD_DIR="$HOME/build/dotfiles/"
 
-echo "Syncing .config files whether you like it or not... TODO: conditional syncs"
+autoload colors; colors
 
-# meaningless change to test gh auth
+function warn_log {
+  echo "$fg[yellow]$1$reset_color"
+}
+
+function error_log {
+  echo "$fg[red]$1$reset_color"
+}
+
+function happy_log {
+  echo "$fg[green]$1$reset_color"
+}
+
+function info_log {
+  echo "$fg[blue]$1$reset_color"
+}
+
+while [[ "$#" -gt 0 ]] do 
+case $1 in
+  --no-neovim) NO_NEOVIM="Y";;
+  --no-hypr) NO_HYPR="Y";;
+  --no-term) NO_TERM="Y";;
+  *) error_log "Unknown argument passed: $1"
+  exit 1;;
+esac
+shift
+done
+
+info_log "Syncing .config files!"
 
 # tmux, wezterm
-cp .tmux.conf ~
-cp .wezterm.lua ~
+if [[ ! "$NO_TERM" == "Y" ]]; then
+  cp .tmux.conf ~
+  cp .wezterm.lua ~
+else
+  warn_log "Skipping terminal setup (tmux, wezterm)"
+fi
 
 # .config'd stuff
-rm -r ~/.config/nvim
-cp -r "$DOTFILES_BUILD_DIR/nvim" ~/.config/
+if [[ ! "$NO_NEOVIM" == "Y" ]]; then
+  rm -r ~/.config/nvim
+  cp -r "$DOTFILES_BUILD_DIR/nvim" ~/.config/
+else
+  warn_log "Skipping neovim config setup"
+fi
 
-rm -r ~/.config/hypr
-cp -r "$DOTFILES_BUILD_DIR/hypr" ~/.config/
+if [[ ! "$NO_HYPR" == "Y" ]]; then
+  rm -r ~/.config/hypr
+  cp -r "$DOTFILES_BUILD_DIR/hypr" ~/.config/
 
-rm -r ~/.config/eww
-cp -r "$DOTFILES_BUILD_DIR/eww" ~/.config/
+  rm -r ~/.config/eww
+  cp -r "$DOTFILES_BUILD_DIR/eww" ~/.config/
 
-is_bin_in_path eww && eww reload
+  is_bin_in_path eww && eww reload > /dev/null
 
-rm -r ~/.config/wofi
-cp -r "$DOTFILES_BUILD_DIR/wofi" ~/.config/
+  rm -r ~/.config/wofi
+  cp -r "$DOTFILES_BUILD_DIR/wofi" ~/.config/
 
-rm -r ~/.config/mako/
-cp -r "$DOTFILES_BUILD_DIR/mako" ~/.config/
+  rm -r ~/.config/mako/
+  cp -r "$DOTFILES_BUILD_DIR/mako" ~/.config/
+else
+  warn_log "Skipping hyprland config setup"
+fi
 
-# rm -r ~/.config/gBar
-# cp -r gBar ~/.config/
-
-echo "Finished the sync - rejoice and be glad!"
+happy_log "Finished install!"
