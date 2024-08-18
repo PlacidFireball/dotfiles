@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+eww_status_output=`eww state | xargs`
+
+if [[ ! -z "$eww_status_output" ]] then;
+	eww close-all
+else
+	eww open topbar
+fi

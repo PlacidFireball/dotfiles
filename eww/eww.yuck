@@ -35,19 +35,28 @@
 ;; Files vars
 (defpoll FREE :interval "5s" `df -h / | awk '{print $4}' | tail -n 1 | sed 's/G/GB/'`)
 
-(defpoll TIME :interval "1s" `date +"%a %B, %d %Y - %H:%M:%S"`)
+(defpoll TIME :interval "1s" `date +"%a %B %d, %Y - %H:%M:%S"`)
 
 (deflisten music
   :initial ""
   "playerctl metadata --follow --format '🎵 {{ artist }} - {{ title }} {{ duration(position) }}/{{ duration(mpris:length) }}'"
 )
+
+(defpoll music-status :interval "1s" `playerctl status`)
 (defwidget music []
   (box
     :class "music"
     :orientation "horizontal"
-    :halign "end"
+    :halign "center"
 
     music
+    (button :class "music_button" :onclick "playerctl previous" "⏮")
+    (button
+      :class "music_button"
+      :onclick {music-status == "Playing" ? "playerctl pause" : "playerctl play"}
+      {music-status == "Playing" ? "⏸" : "⏵"}
+    )
+    (button :class "music_button" :onclick "playerctl next" "⏭")
   )
 )
 
@@ -95,10 +104,31 @@
   )
 )
 
+(defwidget left_side []
+  (box
+    :class "container"
+    :orientation "h"
+    :halign "start"
+    :space-evenly false
+
+    (workspaces)
+  )
+)
+
+(defwidget middle []
+  (box
+    :class "container"
+    :orientation: "h"
+    :halign "center"
+    :space-evenly false
+
+    (music)
+  )
+)
 
 (defwidget right_side []
   (box
-    :class "right_side"
+    :class "container"
     :orientation "horizontal"
     :halign "end"
     :space-evenly false
@@ -112,8 +142,8 @@
   (centerbox
     :class "main_bar"
     :orientation "horizontal"
-    (workspaces)
-    (music)
+    (left_side)
+    (middle)
     (right_side)
   )
 )
@@ -123,7 +153,7 @@
   :geometry (geometry 
     :x       "0px"
     :y       "20px"
-    :width   "95%"
+    :width   "98%"
     :height  "30px"
     :anchor  "top center"
   )
@@ -133,4 +163,3 @@
 
   (bar)
 )
-
