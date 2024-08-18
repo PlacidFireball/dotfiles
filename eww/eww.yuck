@@ -13,24 +13,13 @@
 (defpoll BATTERY :interval "5s" `scripts/sys_info --bat`)
 
 ;; Time vars
-(defpoll HOUR :interval "5s" `date +\"%I\"`)
-(defpoll MIN :interval "5s" `date +\"%M\"`)
-(defpoll MER :interval "5s" `date +\"%p\"`)
-(defpoll DAY :interval "5s" `date +\"%A\"`)
+(defpoll DAY :interval "5s" `date +%d`)
+(defpoll MONTH :interval "5s" `date +%m`)
+(defpoll YEAR :interval "5s" `date +%Y`)
 
 ;; Uptime vars
 (defpoll UPHOUR :interval "5s" `uptime -p | awk '{print $2 \" \" $3}' | sed 's/,//g'`)
 (defpoll UPMIN :interval "5s" `uptime -p | awk '{print $4 \" \" $5}'`)
-
-;; Music vars -- TODO: update the script to work with spotify
-
-;; (defpoll SONG :interval "1s" `scripts/music_info --song`)
-;; (defpoll ARTIST :interval "1s" `scripts/music_info --artist`)
-;; (defpoll STATUS :interval "1s" `scripts/music_info --status`)
-;; (defpoll CURRENT :interval "1s" `scripts/music_info --time`)
-;; (defpoll COVER :interval "1s" `scripts/music_info --cover`)
-;; (defpoll CTIME :interval "1s" `scripts/music_info --ctime`)
-;; (defpoll TTIME :interval "1s" `scripts/music_info --ttime`)
 
 ;; Weather vars -- TODO: get open weather key and hook it up
 (defpoll ICON :interval "15m" `scripts/weather_info --icon`)
@@ -41,31 +30,107 @@
 (defpoll QUOTE2 :interval "15m" `scripts/weather_info --quote2`)
 
 ;; Apps vars
-(defpoll MAILS :interval "5m" `scripts/mails`)
+;; (defpoll MAILS :interval "5m" `scripts/mails`)
 
 ;; Files vars
 (defpoll FREE :interval "5s" `df -h / | awk '{print $4}' | tail -n 1 | sed 's/G/GB/'`)
 
+(defpoll TIME :interval "1s" `date +"%a %B, %d %Y - %H:%M:%S"`)
 
-(defvar time-visible false)
-(defpoll time 
-  :interval "1s"
-  :initial "init"
-  :run-while time-visible `date +%H:%M:%S`
+(deflisten music
+  :initial ""
+  "playerctl metadata --follow --format '🎵 {{ artist }} - {{ title }} {{ duration(position) }}/{{ duration(mpris:length) }}'"
+)
+(defwidget music []
+  (box
+    :class "music"
+    :orientation "horizontal"
+    :halign "end"
+
+    music
+  )
 )
 
-(defwindow example
+(defwidget workspaces []
+  (box :class "workspaces"
+       :orientation "h"
+       :space-evenly true
+       :halign "start"
+       :spacing 10
+    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 1" 1)
+    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 2" 2)
+    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 3" 3)
+    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 4" 4)
+    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 5" 5)
+    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 6" 6)
+    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 7" 7)
+    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 8" 8)
+    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 9" 9)
+  )
+)
+
+(defwidget metric [label value onchange]
+  (box
+    :orientation "h"
+    :class "metric"
+    :space-evenly false
+
+    (box :class "label" label)
+    (scale
+      :min 0
+      :max 100
+      :active {onchange != ""}
+      :value value
+      :onchange onchange
+    )
+  )
+)
+
+(defpoll volume :interval "1s" `pamixer --get-volume`)
+(defwidget volume []
+  (metric
+    :label "🔊"
+    :value volume
+    :onchange "pamixer --set-volume {}; ~/.config/hypr/scripts/volume --updated"
+  )
+)
+
+
+(defwidget right_side []
+  (box
+    :class "right_side"
+    :orientation "horizontal"
+    :halign "end"
+    :space-evenly false
+
+    (volume)
+    TIME
+  )
+)
+
+(defwidget bar []
+  (centerbox
+    :class "main_bar"
+    :orientation "horizontal"
+    (workspaces)
+    (music)
+    (right_side)
+  )
+)
+
+(defwindow topbar
   :monitor 1
-  :geometry (geometry :x "0px"
-                     :y "20px"
-                     :width "100%"
-                     :height "30px"
-                     :anchor "top center")
+  :geometry (geometry 
+    :x       "0px"
+    :y       "20px"
+    :width   "95%"
+    :height  "30px"
+    :anchor  "top center"
+  )
   :stacking "fg"
   :exclusive true
   :wm-ignore false
 
-  (greeter :text "Say hello!"
-	   :name "Jared")
+  (bar)
 )
 

@@ -1,0 +1,45 @@
+* {
+	all: unset;
+	font-family: "JetBrainsMonoNL Nerd Font";
+}
+
+.main_bar {
+	background-color: transparent;
+	border-radius: 10px;
+	padding: 10px;
+}
+
+.metric {
+	all: unset;
+	color: #294463;
+}
+
+.metric scale trough {
+	all: unset;
+	background-color: #0d0f16;
+	border-radius: 50px;
+	min-height: 3px;
+	min-width: 125px;
+	margin-left: 10px;
+	margin-right: 20px;
+}
+
+.metric scale trough highlight {
+	all: unset;
+	background-color: #ad2f34;
+	color: #000000;
+	border-radius: 10px;
+}
+
+.workspace_button {
+	all: unset;
+	padding: 2px;
+	background-color: #213246;
+	border-radius: 2px;
+	border: 1px solid #557d9d;
+}
+
+.workspace_button:hover {
+	color: #294463;
+	background-color: #294463;
+}
