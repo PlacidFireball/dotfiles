@@ -70,6 +70,12 @@ if [[ ! "$NO_HYPR" == "Y" ]]; then
   rm -r ~/.config/eww
   cp -r "$DOTFILES_BUILD_DIR/eww" ~/.config/
 
+  # spin up the daemon if it hasn't already started
+  if [[ ! `pidof eww` ]]; then
+          ${EWW} daemon
+          sleep 1
+  fi
+
   is_bin_in_path eww && eww reload > /dev/null
 
   rm -r ~/.config/wofi

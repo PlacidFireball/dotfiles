@@ -1,16 +1,9 @@
 ;; ** Variables ***********************************************************************
 
 ;; Profile vars
-(defvar IMAGE "images/profile.jpg")
-(defvar NAME "YOUR NAME")
+(defvar IMAGE "/tmp/.profile.png")
+(defvar NAME "placidfireball")
 (defpoll UNAME :interval "5m" `whoami`)
-
-;; System vars
-(defpoll HOST :interval "5s" `hostname`)
-(defpoll CPU_USAGE :interval "1s" `scripts/sys_info --cpu`)
-(defpoll MEM_USAGE :interval "1s" `scripts/sys_info --mem`)
-(defpoll BLIGHT :interval "1s" `scripts/sys_info --blight`)
-(defpoll BATTERY :interval "5s" `scripts/sys_info --bat`)
 
 ;; Time vars
 (defpoll DAY :interval "5s" `date +%d`)
@@ -35,11 +28,29 @@
 ;; Files vars
 (defpoll FREE :interval "5s" `df -h / | awk '{print $4}' | tail -n 1 | sed 's/G/GB/'`)
 
-(defpoll TIME :interval "1s" `date +"%a %B %d, %Y - %H:%M:%S"`)
+(defpoll TIME :interval "1s" `date +"%D %H:%M:%S"`)
 
-(deflisten music
+(deflisten artist
   :initial ""
-  "playerctl metadata --follow --format '🎵 {{ artist }} - {{ title }} {{ duration(position) }}/{{ duration(mpris:length) }}'"
+  "playerctl metadata --follow --format '{{ artist }}'"
+)
+
+(deflisten song
+  :initial ""
+  "playerctl metadata --follow --format '{{ title }}'"
+)
+
+(deflisten track-timing-info
+  :initial ""
+  "playerctl metadata --follow --format '{{ duration(position) }}/{{ duration(mpris:length) }}'"
+)
+
+(defwidget limited-label [text maxlen]
+  (label 
+    :text text 
+    :limit-width: maxlen
+    :truncate true
+  )
 )
 
 (defpoll music-status :interval "1s" `playerctl status`)
@@ -49,14 +60,18 @@
     :orientation "horizontal"
     :halign "center"
 
-    music
-    (button :class "music_button" :onclick "playerctl previous" "⏮")
-    (button
-      :class "music_button"
-      :onclick {music-status == "Playing" ? "playerctl pause" : "playerctl play"}
-      {music-status == "Playing" ? "⏸" : "⏵"}
-    )
-    (button :class "music_button" :onclick "playerctl next" "⏭")
+    "🎶 ${artist} - ${song} ${track-timing-info}"
+  )
+)
+
+(defwidget music-controls []
+  (box
+    :orientation "h"
+    :halign "start"
+
+    (button :class 'music_button' :onclick 'playerctl previous' '⏮') 
+    (button :class 'music_button' :onclick {music-status == 'Playing' ? 'playerctl pause' : 'playerctl play'} {music-status == 'Playing' ? '⏸' : '⏵'}) 
+    (button :class 'music_button' :onclick 'playerctl next' '⏭')
   )
 )
 
@@ -97,10 +112,27 @@
 
 (defpoll volume :interval "1s" `pamixer --get-volume`)
 (defwidget volume []
+
   (metric
     :label "🔊"
     :value volume
     :onchange "pamixer --set-volume {}; ~/.config/hypr/scripts/volume --updated"
+  )
+)
+
+(defwidget ram-usage []
+  (metric 
+    :label "RAM"
+    :value {EWW_RAM.used_mem_perc}
+    :onchange ""
+  )
+)
+
+(defwidget cpu-usage []
+  (metric
+    :label "CPU"
+    :value {EWW_CPU.avg}
+    :onchange ""
   )
 )
 
@@ -123,18 +155,32 @@
     :space-evenly false
 
     (music)
+    (music-controls)
   )
 )
 
 (defwidget right_side []
   (box
-    :class "container"
     :orientation "horizontal"
     :halign "end"
     :space-evenly false
 
-    (volume)
-    TIME
+    (box
+      :class "container"
+      :orientation "horizontal"
+      :space-evenly false
+
+      (cpu-usage)
+      (ram-usage)
+      (volume)
+      TIME
+    )
+    "    "
+    (box
+      :class "container_hub"
+      :orientation "h"
+      (button :onclick "" "≡")
+    )
   )
 )
 
@@ -142,6 +188,7 @@
   (centerbox
     :class "main_bar"
     :orientation "horizontal"
+
     (left_side)
     (middle)
     (right_side)

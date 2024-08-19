@@ -1,9 +1,15 @@
 #!/bin/zsh
 
+EWW=`which eww`
 eww_status_output=`eww state | xargs`
 
+if [[ ! `pidof eww` ]]; then
+	${EWW} daemon
+	sleep 1
+fi
+
 if [[ ! -z "$eww_status_output" ]] then;
-	eww close-all
+	${EWW} close-all
 else
-	eww open topbar
+	${EWW} open topbar
 fi

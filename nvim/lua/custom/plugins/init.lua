@@ -4,6 +4,7 @@
 -- See the kickstart.nvim README for more information
 
 return {
+  { 'elkowar/yuck.vim' },
   {
     'akinsho/bufferline.nvim',
     version = '*',
