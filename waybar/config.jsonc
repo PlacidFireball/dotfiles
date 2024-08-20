@@ -2,17 +2,34 @@
     "layer": "top",
     "modules-left": ["hyprland/workspaces", "hyprland/window"],
     "modules-center": ["clock"],
-    "modules-right": [],
+    "modules-right": ["network", "cpu", "memory"],
     "clock": {
         "interval": 1,
         "format": "{:%A %B %d, %Y %H:%M:%S}"
     },
- //    "clock": {
-	// "interval": 60,
-	// "tooltip": true,
-	// "format": "{:%H.%M}",
-	// "tooltip-format": "{:%Y-%m-%d}",
- //    },
+    "network": {
+        "interval": 1,
+        "format": "{ifname} ↑ {bandwidthUpBytes} ↓ {bandwidthDownBytes}"
+    },
+    "cpu": {
+        "interval": 10,
+        "format": " {usage}%",
+        "onclick": "htop"
+    },
+ //    "bluetooth": {
+	// "format": " {status}",
+	// "format-connected": " {device_alias}",
+	// "format-connected-battery": " {device_alias} {device_battery_percentage}%",
+	// // "format-device-preference": [ "device1", "device2" ], // preference list deciding the displayed device
+	// "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+	// "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+	// "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+	// "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%"
+ //    }
+    "memory": {
+        "interval": 10,
+        "format": "  {used:0.1f}GiB / {total:0.1f}GiB"
+    },
     "hyprland/workspaces": {
         "format": "{id}",
     }
