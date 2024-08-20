@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+trap "killall waybar" EXIT
+
+while true; do
+  echo "launching waybar"
+  waybar &
+  inotifywait -e create,modify "$HOME/.config/waybar/config.jsonc" "$HOME/.config/waybar/styles.css"
+  echo "config files changed - killing and relaunching..."
+  killall waybar
+done

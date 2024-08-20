@@ -38,6 +38,7 @@ while [[ "$#" -gt 0 ]] do
 case $1 in
   --no-neovim) NO_NEOVIM="Y";;
   --no-hypr) NO_HYPR="Y";;
+  --no-waybar) NO_WAYBAR="Y";;
   --no-term) NO_TERM="Y";;
   *) error_log "Unknown argument passed: $1"
   exit 1;;
@@ -69,6 +70,12 @@ if [[ ! "$NO_HYPR" == "Y" ]]; then
 
   rm -r ~/.config/eww
   cp -r "$DOTFILES_BUILD_DIR/eww" ~/.config/
+
+
+  if [[ ! "$NO_WAYBAR" == "Y" ]]; then
+    rm -r ~/.confg/waybar
+    cp -r "$DOTFILES_BUILD_DIR/waybar" ~/.config/
+  fi
 
   # spin up the daemon if it hasn't already started
   if [[ ! `pidof eww` ]]; then
