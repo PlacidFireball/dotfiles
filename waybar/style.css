@@ -55,9 +55,13 @@ button:hover {
 }
 
 #workspaces button {
-    padding: 0 5px;
-    background-color: transparent;
-    color: #ffffff;
+    border-radius: 20px;
+    background: rgb(112, 164, 187);
+    background: linear-gradient(60deg, rgba(112, 164, 187, 1) 0%, rgba(41, 68, 99, 1) 50%);
+    margin-right: 10px;
+    padding-right: 15px;
+    padding-left: 15px;
+
 }
 
 #workspaces button:hover {
