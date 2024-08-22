@@ -48,6 +48,11 @@ done
 
 info_log "Syncing .config files!"
 
+rm -r "$HOME/.scripts"
+cp -r "$DOTFILES_BUILD_DIR/.scripts" "$HOME"
+
+info_log "Synced .scripts folder to $HOME"
+
 # tmux, wezterm
 if [[ ! "$NO_TERM" == "Y" ]]; then
   cp .tmux.conf ~
@@ -71,19 +76,10 @@ if [[ ! "$NO_HYPR" == "Y" ]]; then
   rm -r ~/.config/eww
   cp -r "$DOTFILES_BUILD_DIR/eww" ~/.config/
 
-
   if [[ ! "$NO_WAYBAR" == "Y" ]]; then
-    rm -r ~/.confg/waybar
+    rm -r ~/.config/waybar
     cp -r "$DOTFILES_BUILD_DIR/waybar" ~/.config/
   fi
-
-  # spin up the daemon if it hasn't already started
-  if [[ ! `pidof eww` ]]; then
-          ${EWW} daemon
-          sleep 1
-  fi
-
-  is_bin_in_path eww && eww reload > /dev/null
 
   rm -r ~/.config/wofi
   cp -r "$DOTFILES_BUILD_DIR/wofi" ~/.config/

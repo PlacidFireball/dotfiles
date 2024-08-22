@@ -1,0 +1,123 @@
+#!/usr/bin/env python3
+
+import argparse
+from argparse import Namespace
+import logging
+
+import os
+import sys
+import subprocess
+
+# constants
+WIREGUARD_DIR = '/etc/wireguard/'
+# </ constants
+
+# logging setup
+logger = logging.getLogger('vpn.py')
+logger.setLevel(logging.DEBUG)
+handler = logging.StreamHandler(sys.stdout)
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+# </ logging setup
+
+
+def get_config_list() -> list[str]:
+    from os import listdir
+    from os.path import isfile, join
+
+    config_files: list[str] = [f for f in listdir(WIREGUARD_DIR) if isfile(join(WIREGUARD_DIR, f))]
+
+    config_files = [f.replace('.conf', '') for f in config_files]
+
+    return config_files
+
+
+def handle_list_command(args: Namespace) -> None:
+    match args.obj:
+        case 'configs':
+            logger.info(f'Listing configs')
+
+            config_files: list[str] = get_config_list()
+
+            if args.dump:
+                logger.warning('dumping configs is unimplemented')
+            else:
+                logger.info('configs:')
+                for config_file in config_files:
+                    logger.info(f'- {config_file}')
+        case _:
+            logger.error(f'Unsupported object for listing: {args.obj}')
+
+
+def handle_activate_connection_command(args: Namespace) -> None:
+    config_files = get_config_list()
+
+    connection_id = args.connection_id
+
+    if connection_id not in config_files:
+        logger.error(f'No such config: {connection_id} -- not doing anything')
+        logger.info(f'You may choose from one of the following: {config_files}')
+        return
+
+    completed_process = subprocess.run(['wg-quick', 'up', f'{WIREGUARD_DIR}{connection_id}.conf'])
+
+    if completed_process.returncode != 0:
+        logger.error(f'Failure activating connection - exit status: {completed_process.returncode} -- stdout: {completed_process.stdout}')
+    else:
+        logger.info(f'Successfully activated connection -- be sure to check https://ip.me to make sure everything worked. connection-id: {connection_id}')
+
+
+def handle_close_connection(args: Namespace) -> None:
+    config_files = get_config_list()
+
+    connection_id = args.connection_id
+
+    if connection_id not in config_files:
+        logger.error(f'No such config: {connection_id} -- not doing anything')
+        logger.info(f'You may choose from one of the following: {config_files}')
+        return
+
+    completed_process = subprocess.run(['wg-quick', 'down', f'{WIREGUARD_DIR}{connection_id}.conf'])
+
+    if completed_process.returncode != 0:
+        logger.error(f'Failure closing connection - exit status: {completed_process.returncode} -- stdout: {completed_process.stdout}')
+    else:
+        logger.info(f'Successfully closed connection -- be sure to check https://ip.me to make sure everything worked. connection-id: {connection_id}')
+
+
+def main(args: Namespace) -> None:
+    match args.command:
+        case 'list':
+            handle_list_command(args)
+        case 'activate-connection':
+            handle_activate_connection_command(args)
+        case 'close-connection':
+            handle_close_connection(args)
+        case _:
+            logger.error(f'Invalid command: {args.command}')
+            exit(1)
+
+
+if __name__ == '__main__':
+    if os.geteuid() != 0:
+        ret = subprocess.check_call(['sudo', sys.executable] + sys.argv)
+        exit(ret)
+
+    parser = argparse.ArgumentParser('vpn')
+
+    sub_parsers = parser.add_subparsers(dest = 'command', required=True)
+    list_sub_parser = sub_parsers.add_parser('list', help='List configs etc.')
+    list_sub_parser.add_argument('obj', help='The thing you want to list', type=str, choices=['configs'])
+    list_sub_parser.add_argument('--dump', '-d', action='store_true')
+
+    activate_sub_parser = sub_parsers.add_parser('activate-connection', help='Activate a VPN connection through wireguard')
+    activate_sub_parser.add_argument('connection_id', type=str, help='The connection to enable')
+
+    close_sub_parser = sub_parsers.add_parser('close-connection', help='Close a connection down')
+    close_sub_parser.add_argument('connection_id', type=str, help='The econnection to close')
+
+    args = parser.parse_args()
+
+    main(args)
