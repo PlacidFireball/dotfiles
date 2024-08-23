@@ -1,11 +1,15 @@
 {
     "layer": "top",
     "modules-left": ["hyprland/workspaces", "hyprland/window"],
-    "modules-center": ["clock"],
+    "modules-center": ["clock", "tray"],
     "modules-right": ["network", "cpu", "memory"],
     "clock": {
         "interval": 1,
         "format": "{:%A %B %d, %Y %H:%M:%S}"
+    },
+    "tray": {
+        "icon-size": 21,
+        "spacing": 10,
     },
     "network": {
         "interval": 1,

@@ -55,8 +55,10 @@ info_log "Synced .scripts folder to $HOME"
 
 # tmux, wezterm
 if [[ ! "$NO_TERM" == "Y" ]]; then
-  cp .tmux.conf ~
-  cp .wezterm.lua ~
+  rm "$HOME/.tmux.conf"
+  cp "$DOTFILES_BUILD_DIR/.tmux.conf" "$HOME/.tmux.conf" || error_log "failure to copy new .tmux.conf"
+  rm "$HOME/.wezterm.lua" || error_log "failure to clean old .wezterm.lua"
+  cp "$DOTFILES_BUILD_DIR/.wezterm.lua" "$HOME/.wezterm.lua"
 else
   warn_log "Skipping terminal setup (tmux, wezterm)"
 fi
