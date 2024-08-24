@@ -3,9 +3,16 @@
     font-family: "JetBrainsMonoNL Nerd Font";
     color: #ffffff;
     font-size: 13px;
-    min-height: 32px;
     border-radius: 20px;
-    border: none;
+}
+
+
+#window {
+    border-radius: 20px;
+    background: rgb(112, 164, 187);
+    background: linear-gradient(60deg, rgba(112, 164, 187, 1) 0%, rgba(41, 68, 99, 1) 50%);
+    padding-right: 15px;
+    padding-left: 15px;
 }
 
 window#waybar {
@@ -16,24 +23,6 @@ window#waybar {
 
 window#waybar.hidden {
     opacity: 0.2;
-}
-
-/*
-window#waybar.empty {
-    background-color: transparent;
-}
-window#waybar.solo {
-    background-color: #FFFFFF;
-}
-*/
-
-window#waybar.termite {
-    background-color: #3F3F3F;
-}
-
-window#waybar.chromium {
-    background-color: #000000;
-    border: none;
 }
 
 button {
@@ -109,12 +98,19 @@ button:hover {
     padding-right: 15px;
 }
 
+#wireplumber {
+    color: #ffffff;
+    background: rgb(173, 47, 52);
+    background: linear-gradient(135deg, rgba(173, 47, 52, 1) 0%, rgba(85, 125, 157, 1) 100%);
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: 15px;
+}
+
 #disk,
 #temperature,
 #backlight,
-#network,
 #pulseaudio,
-#wireplumber,
 #custom-media,
 #tray {
     color: #ffffff;
@@ -142,7 +138,6 @@ button:hover {
     color: #ffffff;
 }
 
-#window,
 #workspaces {
     margin: 0 4px;
 }
@@ -224,6 +219,8 @@ label:focus {
 #network {
     background: rgb(173, 47, 52);
     background: linear-gradient(135deg, rgba(173, 47, 52, 1) 0%, rgba(33, 50, 70, 1) 100%);
+    margin-left: 15px;
+    min-width: 275px;
 }
 
 #network.disconnected {
@@ -238,15 +235,6 @@ label:focus {
 #pulseaudio.muted {
     background-color: #90b1b1;
     color: #2a5c45;
-}
-
-#wireplumber {
-    background-color: #fff0f5;
-    color: #000000;
-}
-
-#wireplumber.muted {
-    background-color: #f53c3c;
 }
 
 #custom-media {
