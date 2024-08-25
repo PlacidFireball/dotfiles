@@ -9,8 +9,8 @@
 
 #window {
     border-radius: 20px;
-    background: rgb(112, 164, 187);
-    background: linear-gradient(60deg, rgba(112, 164, 187, 1) 0%, rgba(41, 68, 99, 1) 50%);
+    background: rgb(0,0,0);
+    background: linear-gradient(315deg, rgba(0,0,0,1) 0%, rgba(173,47,52,1) 100%);
     padding-right: 15px;
     padding-left: 15px;
 }
@@ -46,8 +46,8 @@ button:hover {
 
 #workspaces button {
     border-radius: 20px;
-    background: rgb(112, 164, 187);
-    background: linear-gradient(60deg, rgba(112, 164, 187, 1) 0%, rgba(41, 68, 99, 1) 50%);
+    background: rgb(0,0,0);
+    background: linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(173,47,52,1) 100%);
     margin-right: 10px;
     padding-right: 15px;
     padding-left: 15px;
@@ -74,17 +74,26 @@ button:hover {
 
 #clock {
     color: #ffffff;
-    background-color: #213246;
-    border-radius: 20px;
+    background: rgb(0,0,0);
+    background: linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(173,47,52,1) 100%);
     padding-left: 15px;
     padding-right: 15px;
+}
+
+#bluetooth {
+    border-radius: 20px;
+    background: rgb(0,0,0);
+    background: linear-gradient(315deg, rgba(0,0,0,1) 0%, rgba(173,47,52,1) 100%); 
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-left: 15px;
 }
 
 #battery,
 #cpu {
     border-radius: 20px;
-    background: rgb(33, 50, 70);
-    background: linear-gradient(45deg, rgba(33, 50, 70, 1) 0%, rgba(173, 47, 52, 1) 100%);
+    background: rgb(0,0,0);
+    background: linear-gradient(315deg, rgba(0,0,0,1) 0%, rgba(173,47,52,1) 100%);
     margin-left: 10px;
     padding-left: 15px;
     margin-right: 10px;
@@ -92,16 +101,16 @@ button:hover {
 }
 
 #memory {
-    background: rgb(173, 47, 52);
-    background: linear-gradient(135deg, rgba(173, 47, 52, 1) 0%, rgba(85, 125, 157, 1) 100%);
+    background: rgb(0,0,0);
+    background: linear-gradient(315deg, rgba(0,0,0,1) 0%, rgba(173,47,52,1) 100%);
     padding-left: 15px;
     padding-right: 15px;
 }
 
 #wireplumber {
     color: #ffffff;
-    background: rgb(173, 47, 52);
-    background: linear-gradient(135deg, rgba(173, 47, 52, 1) 0%, rgba(85, 125, 157, 1) 100%);
+    background: rgb(0,0,0);
+    background: linear-gradient(315deg, rgba(0,0,0,1) 0%, rgba(173,47,52,1) 100%);
     padding-left: 15px;
     padding-right: 15px;
     margin-left: 15px;
@@ -114,8 +123,8 @@ button:hover {
 #custom-media,
 #tray {
     color: #ffffff;
-    background: rgb(173, 47, 52);
-    background: linear-gradient(135deg, rgba(173, 47, 52, 1) 0%, rgba(85, 125, 157, 1) 100%);
+    background: rgb(0,0,0);
+    background: linear-gradient(315deg, rgba(0,0,0,1) 0%, rgba(173,47,52,1) 100%);
     padding-left: 15px;
     padding-right: 15px;
 }
@@ -136,10 +145,6 @@ button:hover {
 #mpd {
     padding: 0 10px;
     color: #ffffff;
-}
-
-#workspaces {
-    margin: 0 4px;
 }
 
 /* If workspaces is the leftmost module, omit left margin */
@@ -217,8 +222,8 @@ label:focus {
 }
 
 #network {
-    background: rgb(173, 47, 52);
-    background: linear-gradient(135deg, rgba(173, 47, 52, 1) 0%, rgba(33, 50, 70, 1) 100%);
+    background: rgb(0,0,0);
+    background: linear-gradient(315deg, rgba(0,0,0,1) 0%, rgba(173,47,52,1) 100%);
     margin-left: 15px;
     min-width: 275px;
 }
