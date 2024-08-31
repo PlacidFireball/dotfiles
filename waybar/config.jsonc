@@ -1,8 +1,8 @@
 {
     "layer": "top",
-    "modules-left": ["hyprland/workspaces", "hyprland/window"],
-    "modules-center": ["clock", "bluetooth"],
-    "modules-right": ["tray", "wireplumber", "network", "cpu", "memory"],
+    "modules-left": ["hyprland/workspaces", "hyprland/window", "image#album-art", "custom/music"],
+    "modules-center": ["clock"],
+    "modules-right": ["tray", "wireplumber", "network"], // bluetooth, cpu, memory configured but not included
     "height": 28,
     "margin-top": 10,
     "margin-bottom": 5,
@@ -45,6 +45,19 @@
         "interval": 10,
         "format": "  {used:0.1f}GiB / {total:0.1f}GiB"
     },
+    "custom/music": {
+        "interval": 1,
+        "exec": "/home/placidfireball/.config/waybar/scripts/music_info.sh --line",
+        "hide-empty-text": true,
+        "on-click": "/home/placidfireball/.config/waybar/scripts/music_info.sh --toggle",
+        "on-click-right": "/home/placidfireball/.config/waybar/scripts/music_info.sh --next",
+        "max-length": 50,
+    },
+    "image#album-art": {
+        "exec": "/home/placidfireball/.config/waybar/scripts/music_info.sh --art",
+        "size": 28,
+        "interval": 10, // not doing this so often so I don't get marked as a ddoser by spotify :)
+    },
     "hyprland/workspaces": {
         "format": "{id}",
     },
@@ -52,6 +65,8 @@
         "format": "{}",
         "rewrite": {
             "(.*) — Mozilla Firefox": "Firefox",
+            "Ryujinx (.*)": "Ryujinx",
+            "(.*) Zen Browser": "Zen",
         },
         "separate-outputs": true
     }
