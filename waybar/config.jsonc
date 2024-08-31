@@ -2,7 +2,7 @@
     "layer": "top",
     "modules-left": ["hyprland/workspaces", "hyprland/window", "image#album-art", "custom/music"],
     "modules-center": ["clock"],
-    "modules-right": ["tray", "wireplumber", "network"], // bluetooth, cpu, memory configured but not included
+    "modules-right": ["tray", "wireplumber", "network", "battery"], // bluetooth, cpu, memory configured but not included
     "height": 28,
     "margin-top": 10,
     "margin-bottom": 5,
@@ -11,6 +11,16 @@
     "clock": {
         "interval": 1,
         "format": "{:%A %B %d, %Y %H:%M:%S}"
+    },
+    "battery": {
+        "interval": 60,
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-icons": ["", "", "", "", ""],
+        "max-length": 25
     },
     "tray": {
         // "icon-size": 21,
