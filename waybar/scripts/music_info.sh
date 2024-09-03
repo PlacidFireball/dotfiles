@@ -2,7 +2,7 @@
 
 ## Get status
 get_status() {
-	player_status=$(playerctl status)
+	player_status=$(playerctl -p spotify status)
 
 	if [[ $player_status == "Playing" ]]; then
 		echo "▶"
@@ -13,7 +13,7 @@ get_status() {
 
 ## Get song
 get_song() {
-	song=$(playerctl metadata title)
+	song=$(playerctl -p spotify metadata title)
 	if [[ $song != "No players found" ]]; then
 		echo "$song"
 	fi
@@ -21,14 +21,14 @@ get_song() {
 
 ## Get artist
 get_artist() {
-	artist=$(playerctl metadata artist)
+	artist=$(playerctl -p spotify metadata artist)
 	if [[ $artist != "No players found" ]]; then
 		echo "$artist"
 	fi
 }
 
 get_song_art() {
-	art_url=$(playerctl metadata mpris:artUrl)
+	art_url=$(playerctl -p spotify metadata mpris:artUrl)
 
 	if [[ -z $art_url ]]; then
 		exit
@@ -48,9 +48,9 @@ elif [[ "$1" == "--status" ]]; then
 elif [[ "$1" == "--art" ]]; then
 	get_song_art
 elif [[ $1 == "--line" ]]; then
-	playerctl status &> /dev/null && echo $(get_status) $(get_artist) - $(get_song)
+	playerctl -p spotify status &> /dev/null && echo $(get_status) $(get_artist) - $(get_song)
 elif [[ "$1" == "--toggle" ]]; then
-	playerctl play-pause
+	playerctl -p spotify play-pause
 elif [[ "$1" == "--next" ]]; then
 	playerctl next
 elif [[ "$1" == "--prev" ]]; then
