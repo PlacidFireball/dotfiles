@@ -61,7 +61,7 @@
         "hide-empty-text": true,
         "on-click": "/home/placidfireball/.config/waybar/scripts/music_info.sh --toggle",
         "on-click-right": "/home/placidfireball/.config/waybar/scripts/music_info.sh --next",
-        "max-length": 50,
+        "max-length": 30,
     },
     "image#album-art": {
         "exec": "/home/placidfireball/.config/waybar/scripts/music_info.sh --art",
