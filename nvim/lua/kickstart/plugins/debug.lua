@@ -42,6 +42,8 @@ return {
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
         'delve',
+        'codelldb',
+        'cpptools',
       },
     }
 
@@ -69,11 +71,11 @@ return {
       local widgets = require 'dap.ui.widgets'
       widgets.centered_float(widgets.scopes)
     end)
-    
+
     vim.keymap.set('n', '<F10>', dap.terminate, { desc = 'Terminate the currently running process' })
 
-    vim.keymap.set('n', '<leader>de', function ()
-      require("dapui").eval()
+    vim.keymap.set('n', '<leader>de', function()
+      require('dapui').eval()
     end)
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
@@ -107,49 +109,65 @@ return {
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
     -- Debug settings if you're using nvim-dap
 
+    dap.configurations.rust = {
+      {
+        -- NOTE: this requires an explcit `cargo build` to be done before the debugger can attach.
+        name = 'Run white-lang-rust-v2',
+        type = 'codelldb',
+        request = 'launch',
+        program = function()
+          return vim.fn.getcwd() .. '/target/debug/white-lang-rust-v2'
+        end,
+        stopOnEntry = false,
+      },
+    }
+
     dap.configurations.scala = {
       {
         type = 'scala',
         request = 'launch',
         name = 'Run RingMasterApplication',
-        cwd = "/Users/jared.weiss/Dev/quiq/ring-master/",
+        cwd = '/Users/jared.weiss/Dev/quiq/ring-master/',
         metals = {
           runType = 'run',
-          args = { "-tc", "-p", "51269" },
-          jvmOptions = { "-Duser.dir=/Users/jared.weiss/Dev/quiq/ring-master/" },
+          args = { '-tc', '-p', '51269' },
+          jvmOptions = { '-Duser.dir=/Users/jared.weiss/Dev/quiq/ring-master/' },
           -- mainClass = "com.centricent.service.RingMasterApplication"
         },
-      },{
+      },
+      {
         type = 'scala',
         request = 'launch',
         name = 'Run RingBearerApplication',
-        cwd = "/Users/jared.weiss/Dev/quiq/ring-bearer/",
+        cwd = '/Users/jared.weiss/Dev/quiq/ring-bearer/',
         metals = {
           runType = 'run',
-          args = { "-tc", "-p", "51268" },
-          jvmOptions = { "-Duser.dir=/Users/jared.weiss/Dev/quiq/ring-bearer/" },
+          args = { '-tc', '-p', '51268' },
+          jvmOptions = { '-Duser.dir=/Users/jared.weiss/Dev/quiq/ring-bearer/' },
           -- mainClass = "com.centricent.service.RingMasterApplication"
         },
-      },{
+      },
+      {
         type = 'scala',
         request = 'launch',
         name = 'Run MessageImpostorApplication',
-        cwd = "/Users/jared.weiss/Dev/quiq/message-impostor/",
+        cwd = '/Users/jared.weiss/Dev/quiq/message-impostor/',
         metals = {
           runType = 'run',
-          args = { "-tc", "-p", "51266" },
-          jvmOptions = { "-Duser.dir=/Users/jared.weiss/Dev/quiq/message-impostor/" },
+          args = { '-tc', '-p', '51266' },
+          jvmOptions = { '-Duser.dir=/Users/jared.weiss/Dev/quiq/message-impostor/' },
           -- mainClass = "com.centricent.service.RingMasterApplication"
         },
-      },{
+      },
+      {
         type = 'scala',
         request = 'launch',
         name = 'Run MessageManager',
-        cwd = "/Users/jared.weiss/Dev/quiq/message-manager/",
+        cwd = '/Users/jared.weiss/Dev/quiq/message-manager/',
         metals = {
           runType = 'run',
-          args = { "-tc", "-p", "51265" },
-          jvmOptions = { "-Duser.dir=/Users/jared.weiss/Dev/quiq/message-manager/" },
+          args = { '-tc', '-p', '51265' },
+          jvmOptions = { '-Duser.dir=/Users/jared.weiss/Dev/quiq/message-manager/' },
           -- mainClass = "com.centricent.service.RingMasterApplication"
         },
       },
@@ -157,11 +175,11 @@ return {
         type = 'scala',
         request = 'launch',
         name = 'Run BenderApplication',
-        cwd = "/Users/jared.weiss/Dev/quiq/bender/",
+        cwd = '/Users/jared.weiss/Dev/quiq/bender/',
         metals = {
           runType = 'run',
-          args = { "-tc", "-p", "51268" },
-          jvmOptions = { "-Duser.dir=/Users/jared.weiss/Dev/quiq/bender/" },
+          args = { '-tc', '-p', '51268' },
+          jvmOptions = { '-Duser.dir=/Users/jared.weiss/Dev/quiq/bender/' },
           -- mainClass = "com.centricent.service.RingMasterApplication"
         },
       },
@@ -169,11 +187,11 @@ return {
         type = 'scala',
         request = 'launch',
         name = 'Run ConversationManagerApplication',
-        cwd = "/Users/jared.weiss/Dev/quiq/conversation-manager/",
+        cwd = '/Users/jared.weiss/Dev/quiq/conversation-manager/',
         metals = {
           runType = 'run',
-          args = { "-tc", "-p", "51267" },
-          jvmOptions = { "-Duser.dir=/Users/jared.weiss/Dev/quiq/conversation-manager/" },
+          args = { '-tc', '-p', '51267' },
+          jvmOptions = { '-Duser.dir=/Users/jared.weiss/Dev/quiq/conversation-manager/' },
           -- mainClass = "com.centricent.service.RingMasterApplication"
         },
       },
@@ -182,11 +200,11 @@ return {
         type = 'scala',
         request = 'launch',
         name = 'Run EventManagerApplication',
-        cwd = "/Users/jared.weiss/Dev/quiq/event-manager/",
+        cwd = '/Users/jared.weiss/Dev/quiq/event-manager/',
         metals = {
           runType = 'run',
-          args = { "-tc", "-p", "51264" },
-          jvmOptions = { "-Duser.dir=/Users/jared.weiss/Dev/quiq/event-manager/" },
+          args = { '-tc', '-p', '51264' },
+          jvmOptions = { '-Duser.dir=/Users/jared.weiss/Dev/quiq/event-manager/' },
           -- mainClass = "com.centricent.service.RingMasterApplication"
         },
       },
@@ -194,11 +212,11 @@ return {
         type = 'scala',
         request = 'launch',
         name = 'Run LlmArbiterApplication',
-        cwd = "/Users/jared.weiss/Dev/quiq/llm-arbiter/",
+        cwd = '/Users/jared.weiss/Dev/quiq/llm-arbiter/',
         metals = {
           runType = 'run',
-          args = { "-tc", "-p", "51263" },
-          jvmOptions = { "-Duser.dir=/Users/jared.weiss/Dev/quiq/llm-arbiter/" },
+          args = { '-tc', '-p', '51263' },
+          jvmOptions = { '-Duser.dir=/Users/jared.weiss/Dev/quiq/llm-arbiter/' },
           -- mainClass = "com.centricent.service.RingMasterApplication"
         },
       },
