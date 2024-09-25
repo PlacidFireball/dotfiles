@@ -1,89 +1,13 @@
-;; Profile vars
-(defvar IMAGE "/tmp/.profile.png")
-(defvar NAME "placidfireball")
-(defpoll UNAME :interval "5m" `whoami`)
-
-;; Time vars
-(defpoll DAY :interval "5s" `date +%d`)
-(defpoll MONTH :interval "5s" `date +%m`)
-(defpoll YEAR :interval "5s" `date +%Y`)
-
-;; Uptime vars
-(defpoll UPHOUR :interval "5s" `uptime -p | awk '{print $2 \" \" $3}' | sed 's/,//g'`)
-(defpoll UPMIN :interval "5s" `uptime -p | awk '{print $4 \" \" $5}'`)
-
-;; Weather vars -- TODO: get open weather key and hook it up
-(defpoll ICON :interval "15m" `scripts/weather_info --icon`)
-(defpoll STAT :interval "15m" `scripts/weather_info --stat`)
-(defpoll TEMP :interval "15m" `scripts/weather_info --temp`)
-(defpoll HEX :interval "15m" `scripts/weather_info --hex`)
-(defpoll QUOTE :interval "15m" `scripts/weather_info --quote`)
-(defpoll QUOTE2 :interval "15m" `scripts/weather_info --quote2`)
-
-;; Apps vars
-;; (defpoll MAILS :interval "5m" `scripts/mails`)
-
 ;; Files vars
 (defpoll FREE :interval "5s" `df -h / | awk '{print $4}' | tail -n 1 | sed 's/G/GB/'`)
 
 (defpoll TIME :interval "1s" `date +"%D %H:%M:%S"`)
 
 ;; -- begin music setup --
-(deflisten artist
-  :initial ""
-  "playerctl metadata --follow --format '{{ artist }}'"
-)
+(defpoll MUSIC_STATUS :interval "1s" `playerctl status`)
+(defpoll MUSIC_LINE :interval "1s" `/home/placidfireball/.config/eww/scripts/music_info --line`)
 
-(deflisten song
-  :initial ""
-  "playerctl metadata --follow --format '{{ title }}'"
-)
-
-(deflisten track-timing-info
-  :initial ""
-  "playerctl metadata --follow --format '{{ duration(position) }}/{{ duration(mpris:length) }}'"
-)
-(defpoll music-status :interval "1s" `playerctl status`)
-(defwidget music []
-  (box
-    :class "music"
-    :orientation "horizontal"
-    :halign "center"
-
-    "🎶 ${artist} - ${song} ${track-timing-info}"
-  )
-)
-
-(defwidget music-controls []
-  (box
-    :orientation "h"
-    :halign "start"
-
-    (button :class 'music_button' :onclick 'playerctl previous' '⏮') 
-    (button :class 'music_button' :onclick {music-status == 'Playing' ? 'playerctl pause' : 'playerctl play'} {music-status == 'Playing' ? '⏸' : '⏵'}) 
-    (button :class 'music_button' :onclick 'playerctl next' '⏭')
-  )
-)
-;; -- end music setup --
-
-(defwidget workspaces []
-  (box :class "workspaces"
-       :orientation "h"
-       :space-evenly true
-       :halign "start"
-       :spacing 10
-    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 1" 1)
-    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 2" 2)
-    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 3" 3)
-    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 4" 4)
-    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 5" 5)
-    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 6" 6)
-    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 7" 7)
-    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 8" 8)
-    (button :class "workspace_button" :onclick "hyprctl dispatch workspace 9" 9)
-  )
-)
-
+;; -- slider wrapper --
 (defwidget metric [label value onchange]
   (box
     :orientation "h"
@@ -101,6 +25,37 @@
   )
 )
 
+(defwidget music []
+  (box
+    :class "music"
+    :orientation "horizontal"
+    :halign "center"
+
+    {substring("${MUSIC_LINE}", 0, 50)}
+  )
+)
+
+(defwidget music-controls []
+  (box
+    :orientation "h"
+    :halign "start"
+
+    (button :class 'music_button' :onclick 'playerctl previous' '⏮') 
+    (button :class 'music_button' :onclick {MUSIC_STATUS == 'Playing' ? 'playerctl pause' : 'playerctl play'} {MUSIC_STATUS == 'Playing' ? '⏸' : '⏵'})
+    (button :class 'music_button' :onclick 'playerctl next' '⏭')
+  )
+)
+;; -- end music setup --
+
+;; -- workspaces --
+(deflisten WORKSPACE_YUCK "/home/placidfireball/.config/eww/scripts/workspaces.py -e")
+
+(defwidget workspaces []
+  (literal :content WORKSPACE_YUCK)
+)
+;; -- end workspaces --
+
+;; -- sliders --
 (defpoll volume :interval "1s" `pamixer --get-volume`)
 (defwidget volume []
   (box
@@ -116,7 +71,7 @@
 
 (defwidget ram-usage []
   (metric 
-    :label "RAM"
+    :label " "
     :value {EWW_RAM.used_mem_perc}
     :onchange ""
   )
@@ -124,11 +79,12 @@
 
 (defwidget cpu-usage []
   (metric
-    :label "CPU"
+    :label " "
     :value {EWW_CPU.avg}
     :onchange ""
   )
 )
+;; -- end sliders --
 
 (defwidget left_side []
   (box
@@ -149,6 +105,7 @@
     :space-evenly false
 
     (music)
+    "  "
     (music-controls)
   )
 )
@@ -171,7 +128,7 @@
     )
     "    "
     (box
-      :class "container_hub"
+      :class "container"
       :orientation "h"
       (button :onclick "" "≡")
     )
@@ -190,12 +147,12 @@
 )
 
 (defwindow topbar
-  :monitor 1
-  :geometry (geometry 
+  :monitor 0
+  :geometry (geometry
     :x       "0px"
-    :y       "20px"
-    :width   "98%"
-    :height  "30px"
+    :y       "10px"
+    :width   "2520px"
+    :height  "20px"
     :anchor  "top center"
   )
   :stacking "fg"

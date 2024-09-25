@@ -1,7 +1,7 @@
 #!/bin/zsh
 
-EWW=`which eww`
-eww_status_output=`eww state | xargs`
+EWW=/home/placidfireball/build/eww/target/release/eww
+eww_status_output=`/home/placidfireball/build/eww/target/release/eww state | xargs`
 
 if [[ ! `pidof eww` ]]; then
 	${EWW} daemon
@@ -12,4 +12,5 @@ if [[ ! -z "$eww_status_output" ]] then;
 	${EWW} close-all
 else
 	${EWW} open topbar
+	${EWW} reload
 fi

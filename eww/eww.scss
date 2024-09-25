@@ -5,9 +5,9 @@
 
 .container {
 	all: unset;
-	background-color: #213246;
-	border-radius: 50px;
-	border: 1px solid #294463;
+	background-color: #000000;
+	border-radius: 15px;
+	border: 2px solid #ff0000;
 	padding-left: 15px;
 	padding-right: 15px;
 	min-height: 35px;
@@ -21,12 +21,12 @@
 	padding-left: 15px;
 	padding-right: 15px;
 	margin-left: 20px;
-	min-height: 35px;
+	min-height: 20px;
 }
 
 .main_bar {
+	all: unset;
 	background-color: transparent;
-	padding: 10px;
 }
 
 .metric {
@@ -45,14 +45,14 @@
 
 .music {
 	all: unset;
-	padding-right: 10px;
+	margin-right: 10px;
 }
 
 .metric scale trough highlight {
 	all: unset;
-	background-color: #ad2f34;
+	background-color: #ff0000;
 	color: #000000;
-	border-radius: 10px;
+	border-radius: 5px;
 }
 
 .workspaces {
@@ -64,26 +64,38 @@
 	all: unset;
 	padding-right: 5px;
 	padding-left: 5px;
-	background-color: #0d0f16;
+	background-color: #000000;
 	border-radius: 5px;
-	border: 1px solid #557d9d;
+	border: 2px solid #ff0000;
 	min-height: 10px;
+
+	margin-top: 5px;
+}
+
+.active_workspace_button {
+	all: unset;
+	padding-right: 5px;
+	padding-left: 5px;
+	min-height: 10px;
+	background-color: #611717;
+	border-radius: 5px;
+	border: 2px solid #ff0000;
+	margin-top: 5px;
 }
 
 .music_button {
 	all: unset;
 	padding-right: 10px;
 	padding-left: 10px;
-	background-color: #0d0f16;
+	background-color: #000000;
 	border-radius: 15px;
-	border: 1px solid #557d9d;
 	min-width: 15px;
 }
 
 .music_button:hover {
-	background-color: #294463;
+	background-color: #ff0000;
 }
 
 .workspace_button:hover {
-	background-color: #294463;
+	background-color: #ff0000;
 }
