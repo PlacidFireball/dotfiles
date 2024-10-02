@@ -2,8 +2,8 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
 config.font = wezterm.font("JetBrains Mono")
-config.font_size = 14.0
-config.color_scheme = "GruvboxDarkHard"
+config.font_size = 13.0
+config.color_scheme = "Tokyo Night Moon"
 
 config.enable_tab_bar = false
 config.window_background_opacity = 0.7

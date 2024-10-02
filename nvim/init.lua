@@ -846,46 +846,46 @@ require('lazy').setup({
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
-  -- {
-  --   'folke/tokyonight.nvim',
-  --   lazy = false,
-  --   priority = 1000,
-  --   config = function(_, _)
-  --     require('tokyonight').setup {
-  --       style = 'moon',
-  --       transparent = true,
-  --       styles = {
-  --         comments = { italic = true },
-  --         sidebars = 'transparent',
-  --         floats = 'transparent',
-  --       },
-  --       sidebars = { 'help', 'lazy', 'neotree' },
-  --       lualine_bold = true,
-  --     }
-  --
-  --     require('lualine').setup {
-  --       theme = 'tokyonight',
-  --     }
-  --
-  --     vim.cmd.colorscheme 'tokyonight-moon'
-  --
-  --     vim.cmd.highlight 'clear CursorLine' -- clears the highlighting of the current line
-  --   end,
-  -- },
   {
-    'ellisonleao/gruvbox.nvim',
+    'folke/tokyonight.nvim',
+    lazy = false,
     priority = 1000,
     config = function(_, _)
-      require('gruvbox').setup {
-        contrast = 'soft',
-        transparent_mode = true,
+      require('tokyonight').setup {
+        style = 'moon',
+        transparent = true,
+        styles = {
+          comments = { italic = true },
+          sidebars = 'transparent',
+          floats = 'transparent',
+        },
+        sidebars = { 'help', 'lazy', 'neotree' },
+        lualine_bold = true,
       }
 
-      vim.o.background = 'dark'
-      vim.cmd.colorscheme 'gruvbox'
-      vim.cmd.highlight 'clear CursorLine'
+      require('lualine').setup {
+        theme = 'tokyonight',
+      }
+
+      vim.cmd.colorscheme 'tokyonight-moon'
+
+      vim.cmd.highlight 'clear CursorLine' -- clears the highlighting of the current line
     end,
   },
+  -- {
+  --   'ellisonleao/gruvbox.nvim',
+  --   priority = 1000,
+  --   config = function(_, _)
+  --     require('gruvbox').setup {
+  --       contrast = 'soft',
+  --       transparent_mode = true,
+  --     }
+  --
+  --     vim.o.background = 'dark'
+  --     vim.cmd.colorscheme 'gruvbox'
+  --     vim.cmd.highlight 'clear CursorLine'
+  --   end,
+  -- },
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
