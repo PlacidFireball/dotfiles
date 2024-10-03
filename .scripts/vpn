@@ -7,6 +7,7 @@ import logging
 import os
 import sys
 import subprocess
+from typing import Optional
 
 # constants
 WIREGUARD_DIR = '/etc/wireguard/'
@@ -54,19 +55,41 @@ def handle_list_command(args: Namespace) -> None:
 def handle_activate_connection_command(args: Namespace) -> None:
     config_files = get_config_list()
 
-    connection_id = args.connection_id
+    selected_connection_id: Optional[str] = None
 
-    if connection_id not in config_files:
-        logger.error(f'No such config: {connection_id} -- not doing anything')
-        logger.info(f'You may choose from one of the following: {config_files}')
-        return
+    if args.interactive:
+        print('Available configs:')
+        for idx, selectable_config in enumerate(config_files):
+            print(f'{idx}) {selectable_config}')
 
-    completed_process = subprocess.run(['wg-quick', 'up', f'{WIREGUARD_DIR}{connection_id}.conf'])
+        while True:
+            try:
+                selected_connection_id = config_files[int(input("select a config > "))]
+                break
+            except ValueError:
+                print('Please enter a valid index.')
+            except IndexError:
+                print('Please choose one of the values in the list.')
+
+    else:
+        connection_id = args.connection_id
+
+        if connection_id not in config_files:
+            logger.error(f'No such config: {connection_id} -- not doing anything')
+            logger.info(f'You may choose from one of the following: {config_files}')
+            return
+
+        selected_connection_id = connection_id
+
+    if not selected_connection_id:
+        raise ValueError('selected_connection_id is empty! logic bug!')
+
+    completed_process = subprocess.run(['wg-quick', 'up', f'{WIREGUARD_DIR}{selected_connection_id}.conf'])
 
     if completed_process.returncode != 0:
         logger.error(f'Failure activating connection - exit status: {completed_process.returncode} -- stdout: {completed_process.stdout}')
     else:
-        logger.info(f'Successfully activated connection -- be sure to check https://ip.me to make sure everything worked. connection-id: {connection_id}')
+        logger.info(f'Successfully activated connection -- be sure to check https://ip.me to make sure everything worked. connection-id: {selected_connection_id}')
 
 
 def handle_close_connection(args: Namespace) -> None:
@@ -113,7 +136,10 @@ if __name__ == '__main__':
     list_sub_parser.add_argument('--dump', '-d', action='store_true')
 
     activate_sub_parser = sub_parsers.add_parser('activate-connection', help='Activate a VPN connection through wireguard')
-    activate_sub_parser.add_argument('connection_id', type=str, help='The connection to enable')
+    connection_id_required = '-i' not in sys.argv and '--interactive' not in sys.argv
+    interactive_required = '-c' not in sys.argv and '--connection-id' not in sys.argv
+    activate_sub_parser.add_argument('-c','--connection-id', type=str, help='The connection to enable', required=connection_id_required)
+    activate_sub_parser.add_argument('-i', '--interactive', action='store_true', help='Activate a connection interactively', required=interactive_required)
 
     close_sub_parser = sub_parsers.add_parser('close-connection', help='Close a connection down')
     close_sub_parser.add_argument('connection_id', type=str, help='The econnection to close')
