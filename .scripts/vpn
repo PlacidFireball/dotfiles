@@ -92,31 +92,28 @@ def handle_activate_connection_command(args: Namespace) -> None:
         logger.info(f'Successfully activated connection -- be sure to check https://ip.me to make sure everything worked. connection-id: {selected_connection_id}')
 
 
-def handle_close_connection(args: Namespace) -> None:
+def handle_close_connection(_: Namespace) -> None:
     config_files = get_config_list()
 
-    connection_id = args.connection_id
+    for connection_id in config_files:
+        try:
+            completed_process = subprocess.run(['wg-quick', 'down', f'{WIREGUARD_DIR}{connection_id}.conf'])
 
-    if connection_id not in config_files:
-        logger.error(f'No such config: {connection_id} -- not doing anything')
-        logger.info(f'You may choose from one of the following: {config_files}')
-        return
-
-    completed_process = subprocess.run(['wg-quick', 'down', f'{WIREGUARD_DIR}{connection_id}.conf'])
-
-    if completed_process.returncode != 0:
-        logger.error(f'Failure closing connection - exit status: {completed_process.returncode} -- stdout: {completed_process.stdout}')
-    else:
-        logger.info(f'Successfully closed connection -- be sure to check https://ip.me to make sure everything worked. connection-id: {connection_id}')
+            if completed_process.returncode != 0:
+                logger.error(f'Failure closing connection - exit status: {completed_process.returncode} -- stdout: {completed_process.stdout}')
+            else:
+                logger.info(f'Successfully closed connection -- be sure to check https://ip.me to make sure everything worked. connection-id: {connection_id}')
+        except:
+            pass
 
 
 def main(args: Namespace) -> None:
     match args.command:
-        case 'list':
+        case 'list' | 'l':
             handle_list_command(args)
-        case 'activate-connection':
+        case 'activate-connection' | 'a':
             handle_activate_connection_command(args)
-        case 'close-connection':
+        case 'quit' | 'q':
             handle_close_connection(args)
         case _:
             logger.error(f'Invalid command: {args.command}')
@@ -125,24 +122,26 @@ def main(args: Namespace) -> None:
 
 if __name__ == '__main__':
     if os.geteuid() != 0:
-        ret = subprocess.check_call(['sudo', sys.executable] + sys.argv)
-        exit(ret)
+        try: 
+            subprocess.check_call(['sudo', sys.executable] + sys.argv)
+            exit(0)
+        except:
+            exit(1)
 
     parser = argparse.ArgumentParser('vpn')
 
     sub_parsers = parser.add_subparsers(dest = 'command', required=True)
-    list_sub_parser = sub_parsers.add_parser('list', help='List configs etc.')
+    list_sub_parser = sub_parsers.add_parser('list', aliases=['l'], help='List configs etc.')
     list_sub_parser.add_argument('obj', help='The thing you want to list', type=str, choices=['configs'])
     list_sub_parser.add_argument('--dump', '-d', action='store_true')
 
-    activate_sub_parser = sub_parsers.add_parser('activate-connection', help='Activate a VPN connection through wireguard')
+    activate_sub_parser = sub_parsers.add_parser('activate-connection', aliases=['a'], help='Activate a VPN connection through wireguard')
     connection_id_required = '-i' not in sys.argv and '--interactive' not in sys.argv
     interactive_required = '-c' not in sys.argv and '--connection-id' not in sys.argv
     activate_sub_parser.add_argument('-c','--connection-id', type=str, help='The connection to enable', required=connection_id_required)
     activate_sub_parser.add_argument('-i', '--interactive', action='store_true', help='Activate a connection interactively', required=interactive_required)
 
-    close_sub_parser = sub_parsers.add_parser('close-connection', help='Close a connection down')
-    close_sub_parser.add_argument('connection_id', type=str, help='The econnection to close')
+    close_sub_parser = sub_parsers.add_parser('quit', aliases=['q'], help='Disconnect all connections')
 
     args = parser.parse_args()
 
