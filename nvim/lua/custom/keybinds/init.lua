@@ -39,6 +39,8 @@ map('n', '<M-k>', '<cmd>BufferLineCycleNext<CR>') -- Alt+k to move to right
 map('n', '<M-J>', '<cmd>BufferLineMovePrev<CR>') -- Alt+Shift+j grab to with you to left
 map('n', '<M-K>', '<cmd>BufferLineMoveNext<CR>') -- Alt+Shift+k grab to with you to right
 
+map('n', '<C-F>', 'za') -- Ctrl+f to toggle fold
+
 -- MacOS iTerm keybinds
 map('n', '∆', '<cmd>BufferLineCyclePrev<CR>') -- Alt+j to move to left
 map('n', '˚', '<cmd>BufferLineCycleNext<CR>') -- Alt+k to move to right
