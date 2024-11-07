@@ -165,6 +165,8 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+vim.opt.foldenable = false
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -250,7 +252,6 @@ vim.keymap.set('n', '<C-T>', '<cmd>Neotree<cr>')
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -847,31 +848,68 @@ require('lazy').setup({
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
   {
-    'folke/tokyonight.nvim',
-    lazy = false,
+    'catppuccin/nvim',
+    name = 'catppuccin',
     priority = 1000,
-    config = function(_, _)
-      require('tokyonight').setup {
-        style = 'moon',
-        transparent = true,
+    config = function()
+      require('catppuccin').setup {
+        flavor = 'mocha',
         styles = {
-          comments = { italic = true },
-          sidebars = 'transparent',
-          floats = 'transparent',
+          comments = { 'italic' },
         },
-        sidebars = { 'help', 'lazy', 'neotree' },
-        lualine_bold = true,
+        integrations = {
+          cmp = true,
+          gitsigns = true,
+          nvimtree = true,
+          treesitter = true,
+          notify = false,
+          mini = {
+            enabled = true,
+            indentscope_color = '',
+          },
+          barbar = true,
+          mason = true,
+          neotree = true,
+          dap = true,
+          dap_ui = true,
+        },
       }
 
       require('lualine').setup {
-        theme = 'tokyonight',
+        options = {
+          theme = 'catppuccin',
+        },
       }
 
-      vim.cmd.colorscheme 'tokyonight-moon'
-
-      vim.cmd.highlight 'clear CursorLine' -- clears the highlighting of the current line
+      vim.cmd.colorscheme 'catppuccin'
     end,
   },
+  -- {
+  --   'folke/tokyonight.nvim',
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function(_, _)
+  --     require('tokyonight').setup {
+  --       style = 'moon',
+  --       transparent = true,
+  --       styles = {
+  --         comments = { italic = true },
+  --         sidebars = 'transparent',
+  --         floats = 'transparent',
+  --       },
+  --       sidebars = { 'help', 'lazy', 'neotree' },
+  --       lualine_bold = true,
+  --     }
+  --
+  --     require('lualine').setup {
+  --       theme = 'tokyonight',
+  --     }
+  --
+  --     vim.cmd.colorscheme 'tokyonight-moon'
+  --
+  --     vim.cmd.highlight 'clear CursorLine' -- clears the highlighting of the current line
+  --   end,
+  -- },
   -- {
   --   'ellisonleao/gruvbox.nvim',
   --   priority = 1000,
