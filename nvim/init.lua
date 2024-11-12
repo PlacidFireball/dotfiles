@@ -873,6 +873,7 @@ require('lazy').setup({
           dap = true,
           dap_ui = true,
         },
+        transparent_background = true,
       }
 
       require('lualine').setup {
