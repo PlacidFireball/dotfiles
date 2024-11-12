@@ -142,9 +142,8 @@ return {
         cwd = '/Users/jared.weiss/Dev/quiq/ring-bearer/',
         metals = {
           runType = 'run',
-          args = { '-tc', '-p', '51268' },
+          args = { '-p', '51268' },
           jvmOptions = { '-Duser.dir=/Users/jared.weiss/Dev/quiq/ring-bearer/' },
-          -- mainClass = "com.centricent.service.RingMasterApplication"
         },
       },
       {
@@ -156,7 +155,6 @@ return {
           runType = 'run',
           args = { '-tc', '-p', '51266' },
           jvmOptions = { '-Duser.dir=/Users/jared.weiss/Dev/quiq/message-impostor/' },
-          -- mainClass = "com.centricent.service.RingMasterApplication"
         },
       },
       {
@@ -168,7 +166,6 @@ return {
           runType = 'run',
           args = { '-tc', '-p', '51265' },
           jvmOptions = { '-Duser.dir=/Users/jared.weiss/Dev/quiq/message-manager/' },
-          -- mainClass = "com.centricent.service.RingMasterApplication"
         },
       },
       {
@@ -180,7 +177,6 @@ return {
           runType = 'run',
           args = { '-tc', '-p', '51268' },
           jvmOptions = { '-Duser.dir=/Users/jared.weiss/Dev/quiq/bender/' },
-          -- mainClass = "com.centricent.service.RingMasterApplication"
         },
       },
       {
@@ -192,7 +188,6 @@ return {
           runType = 'run',
           args = { '-tc', '-p', '51267' },
           jvmOptions = { '-Duser.dir=/Users/jared.weiss/Dev/quiq/conversation-manager/' },
-          -- mainClass = "com.centricent.service.RingMasterApplication"
         },
       },
 
@@ -205,7 +200,6 @@ return {
           runType = 'run',
           args = { '-tc', '-p', '51264' },
           jvmOptions = { '-Duser.dir=/Users/jared.weiss/Dev/quiq/event-manager/' },
-          -- mainClass = "com.centricent.service.RingMasterApplication"
         },
       },
       {
@@ -217,15 +211,6 @@ return {
           runType = 'run',
           args = { '-tc', '-p', '51263' },
           jvmOptions = { '-Duser.dir=/Users/jared.weiss/Dev/quiq/llm-arbiter/' },
-          -- mainClass = "com.centricent.service.RingMasterApplication"
-        },
-      },
-      {
-        type = 'scala',
-        request = 'launch',
-        name = 'Test Target',
-        metals = {
-          runType = 'testTarget',
         },
       },
     }
