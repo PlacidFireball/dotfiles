@@ -208,8 +208,8 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 
 vim.keymap.set('n', '=', [[<cmd>vertical resize +5<cr>]]) -- make the window biger vertically
 vim.keymap.set('n', '-', [[<cmd>vertical resize -5<cr>]]) -- make the window smaller vertically
-vim.keymap.set('n', '+', [[<cmd>horizontal resize +2<cr>]]) -- make the window bigger horizontally by pressing shift and =
-vim.keymap.set('n', '_', [[<cmd>horizontal resize -2<cr>]]) -- make the window smaller horizontally by pressing shift and -
+vim.keymap.set('n', '+', [[<cmd>horizontal resize +5<cr>]]) -- make the window bigger horizontally by pressing shift and =
+vim.keymap.set('n', '_', [[<cmd>horizontal resize -5<cr>]]) -- make the window smaller horizontally by pressing shift and -
 
 vim.keymap.set('n', '<leader>term', '<cmd>split<cr><cmd>terminal<cr>i', { desc = 'Fire up a [term]inal in a new pane' })
 
@@ -886,6 +886,7 @@ require('lazy').setup({
       }
 
       vim.cmd.colorscheme 'catppuccin'
+      vim.cmd.highlight 'clear CursorLine' -- clears the highlighting of the current line
     end,
   },
   -- {

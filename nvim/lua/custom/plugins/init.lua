@@ -57,7 +57,7 @@ return {
       if operating_system == 'Darwin' or operating_system == 'OSX' then
         -- print('Setting gradleScript/javaHome.')
         -- print(operating_system)
-        metals_config.settings.gradleScript = '/opt/gradle/gradle-8.0.2/bin/gradle'
+        metals_config.settings.gradleScript = '/opt/gradle/gradle-8.4/bin/gradle'
         metals_config.settings.javaHome = '/Library/Java/JavaVirtualMachines/liberica-jdk-17.jdk/Contents/Home'
       else
         print 'This is not an apple system. Not setting up gradle/java home'
