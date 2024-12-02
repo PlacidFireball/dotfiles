@@ -213,6 +213,17 @@ return {
           jvmOptions = { '-Duser.dir=/Users/jared.weiss/Dev/quiq/llm-arbiter/' },
         },
       },
+      {
+        type = 'scala',
+        request = 'launch',
+        name = 'Run WhamApplicaiton',
+        cwd = '/Users/jared.weiss/Dev/quiq/wham/',
+        metals = {
+          runType = 'run',
+          args = { '-tc', '-p', '51253' },
+          jvmOptions = { '-Duser.dir=/Users/jared.weiss/Dev/quiq/wham/' },
+        },
+      },
     }
     -- Install golang specific config
     require('dap-go').setup {
