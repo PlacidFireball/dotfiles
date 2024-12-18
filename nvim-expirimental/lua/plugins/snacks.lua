@@ -64,7 +64,10 @@ return {
       },
       indent = { enabled = false },
       input = { enabled = false },
-      notifier = { enabled = true },
+      notifier = {
+        enabled = true,
+        timeout = 10000,
+      },
       quickfile = { enabled = false },
       scroll = { enabled = true },
       statuscolumn = { enabled = false },

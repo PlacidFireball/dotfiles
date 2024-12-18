@@ -1,32 +1,5 @@
 return {
   {
-    "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
-    dependencies = {
-      { "hrsh7th/cmp-nvim-lsp" },
-      { "hrsh7th/cmp-vsnip" },
-      { "hrsh7th/vim-vsnip" }
-    },
-    opts = function()
-      local conf = {
-        sources = {
-          { name = "nvim_lsp" },
-          { name = "vsnip" },
-        },
-        snippet = {
-          expand = function(args)
-            -- Comes from vsnip
-            vim.fn["vsnip#anonymous"](args.body)
-          end,
-        },
-        mapping = require('cmp').mapping.preset.insert({
-          ["<CR>"] = require('cmp').mapping.confirm({ select = true })
-        })
-      }
-      return conf
-    end
-  },
-  {
     "neovim/nvim-lspconfig",
     dependencies = {
       {
