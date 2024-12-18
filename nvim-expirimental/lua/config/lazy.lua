@@ -1,0 +1,51 @@
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out,                            "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- Make sure to setup `mapleader` and `maplocalleader` before
+-- loading lazy.nvim so that mappings are correct.
+-- This is also a good place to setup other settings (vim.opt)
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
+vim.bo.softtabstop = 2
+
+-- Setup lazy.nvim
+require("lazy").setup({
+  spec = {
+    -- import your plugins
+    {
+      "alexghergh/nvim-tmux-navigation",
+      config = function()
+        local nav = require('nvim-tmux-navigation')
+
+        nav.setup {
+          disable_when_zoomed = true,
+        }
+
+        vim.keymap.set('n', "<C-h>", nav.NvimTmuxNavigateLeft)
+        vim.keymap.set('n', "<C-j>", nav.NvimTmuxNavigateDown)
+        vim.keymap.set('n', "<C-k>", nav.NvimTmuxNavigateUp)
+        vim.keymap.set('n', "<C-l>", nav.NvimTmuxNavigateRight)
+        vim.keymap.set('n', "<C-\\>", nav.NvimTmuxNavigateLastActive)
+        vim.keymap.set('n', "<C-Space>", nav.NvimTmuxNavigateNext)
+      end
+    },
+    { import = "plugins" },
+  },
+})
