@@ -15,6 +15,7 @@ return {
       },
       { "williamboman/mason.nvim" },
       { "williamboman/mason-lspconfig.nvim" },
+      { "saghen/blink.cmp" },
     },
     config = function()
       require("mason").setup()
@@ -23,15 +24,18 @@ return {
         automatic_installation = true,
       }
 
-      require('lspconfig').lua_ls.setup {}
+      local lspconfig = require "lspconfig"
+      local capabilities = require "blink.cmp".get_lsp_capabilities()
 
-      require('lspconfig').rust_analyzer.setup {}
+      lspconfig.lua_ls.setup { capabilities = capabilities }
 
-      require("lspconfig").pyright.setup {}
+      lspconfig.rust_analyzer.setup { capabilities = capabilities }
 
-      require("lspconfig").gopls.setup {}
+      lspconfig.pyright.setup { capabilities = capabilities }
 
-      require("lspconfig").ts_ls.setup {}
+      lspconfig.gopls.setup { capabilities = capabilities }
+
+      lspconfig.ts_ls.setup { capabilities = capabilities }
 
       -- scala comes from nvim-metals
 
@@ -43,6 +47,7 @@ return {
           if not client then return end
 
           local map = function(keys, func, desc)
+            ---@diagnostic disable-next-line: missing-fields
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
@@ -121,6 +126,7 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       { "j-hui/fidget.nvim", opts = {} },
+      'saghen/blink.cmp'
     },
     ft = { "scala", "sbt", "java" },
     keys = {},
@@ -156,7 +162,7 @@ return {
       end
 
       metals_config.init_options.statusBarProvider = 'on'
-      metals_config.capabilities = require('cmp_nvim_lsp').default_capabilities()
+      metals_config.capabilities = require('blink.cmp').get_lsp_capabilities()
 
       vim.api.nvim_create_autocmd('FileType', {
         pattern = { 'scala', 'sbt' },

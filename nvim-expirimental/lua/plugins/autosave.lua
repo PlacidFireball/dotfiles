@@ -16,7 +16,7 @@ return {
           end
           return false
         end,
-        debounce_delay = 1000,
+        debounce_delay = 100,
       }
     end,
   },

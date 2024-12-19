@@ -30,6 +30,7 @@ return {
       map('n', '<leader>so', require('telescope.builtin').oldfiles, '[S]earch [O]ldfiles')
       map('n', '<leader>sc', require('telescope.builtin').commands, '[S]earch [C]ommands')
       map('n', '<leader>sr', require('telescope.builtin').resume, '[S]earch [R]esume')
+      -- NOTE: you can filter the type of node to show by doing :var: for example :function: is also good
       map('n', '<leader>st', require('telescope.builtin').treesitter, '[S]earch [T]reesitter')
       map('n', '<leader><leader>', require('telescope.builtin').buffers, '[S]earch Existing Buffers')
 
@@ -50,7 +51,7 @@ return {
         require('telescope.builtin').find_files {
           cwd = vim.fs.joinpath(vim.fn.stdpath('data'), "lazy")
         }
-      end)
+      end, { desc = '[S]earch [P]ackages' })
 
       -- Shortcut for searching .centricient
       vim.keymap.set('n', '<leader>s.c', function()
