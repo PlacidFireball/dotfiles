@@ -2,37 +2,36 @@ local M = {}
 
 local function table_to_set(table)
   local set = {}
-  for _, l in ipairs(table) do
-    set[l] = true
-  end
+  for _, l in ipairs(table) do set[l] = true end
   return set
 end
 
+
 local function dump(o)
-  if type(o) == "table" then
-    local s = "{ "
+  if type(o) == 'table' then
+    local s = '{ '
     for k, v in pairs(o) do
-      if type(k) ~= "number" then
-        k = '"' .. k .. '"'
-      end
-      s = s .. "[" .. k .. "] = " .. dump(v) .. ","
+      if type(k) ~= 'number' then k = '"' .. k .. '"' end
+      s = s .. '[' .. k .. '] = ' .. dump(v) .. ','
     end
-    return s .. "} "
+    return s .. '} '
   else
     return tostring(o)
   end
 end
 
+
 local function get_quiq_directory()
   local s = vim.fn.expand("%:p")
 
-  for m in string.gmatch(s, "/Users/jared.weiss/Dev/quiq/[a-z%-]+/") do
+  for m in string.gmatch(s, '/Users/jared.weiss/Dev/quiq/[a-z%-]+/') do
     return m
   end
 
   Snacks.notifier.notify("Could not resolve a quiq directory for scala dap run configuration", vim.log.levels.WARN)
-  return "/Users/jared.weiss/Dev/quiq/ring-master/"
+  return '/Users/jared.weiss/Dev/quiq/ring-master/'
 end
+
 
 local function get_floating_window(opts)
   -- Default values
@@ -56,7 +55,7 @@ local function get_floating_window(opts)
     width = width,
     height = height,
     style = "minimal",
-    border = "rounded",
+    border = "rounded"
   }
 
   -- Create buffer
@@ -78,6 +77,7 @@ local function get_floating_window(opts)
   return { buf = buf, win = win }
 end
 
+
 local function send_shell_command_to_buf(in_opts)
   local opts = in_opts or {}
 
@@ -85,8 +85,7 @@ local function send_shell_command_to_buf(in_opts)
 
   if not opts.buf or not vim.api.nvim_buf_is_valid(opts.buf) then
     Snacks.notifier.notify(
-      "Need to provide { buf = ... } (and that buffer must be valid) to send_shell_command_to_buf - doing nothing."
-    )
+      "Need to provide { buf = ... } (and that buffer must be valid) to send_shell_command_to_buf - doing nothing.")
     return
   end
 
@@ -95,9 +94,10 @@ local function send_shell_command_to_buf(in_opts)
     return
   end
 
-  local channel_id = vim.api.nvim_buf_get_var(opts.buf, "terminal_job_id")
-  vim.api.nvim_chan_send(channel_id, opts.cmd .. "\n")
+  local channel_id = vim.api.nvim_buf_get_var(opts.buf, 'terminal_job_id')
+  vim.api.nvim_chan_send(channel_id, opts.cmd .. '\n')
 end
+
 
 M.dump = dump
 M.table_to_set = table_to_set
@@ -105,22 +105,9 @@ M.get_quiq_directory = get_quiq_directory
 M.get_floating_window = get_floating_window
 M.send_shell_command_to_buf = send_shell_command_to_buf
 
-local clusters = table_to_set({
-  "dev",
-  "qa",
-  "mqa",
-  "roman",
-  "perf",
-  "stage",
-  "mstage",
-  "demo",
-  "age1",
-  "mva1",
-  "ava1",
-  "ava3",
-  "aor1",
-  "aor3",
-})
+
+local clusters = table_to_set({ "dev", "qa", "mqa", "roman", "perf", "stage", "mstage", "demo", "age1", "mva1", "ava1",
+  "ava3", "aor1", "aor3" })
 
 M.state = { cluster = nil, tenant = nil, floating_terminal = { buf = -1, win = -1 } }
 local function set_cluster(cluster)
@@ -132,6 +119,7 @@ local function set_cluster(cluster)
   M.state.cluster = cluster
 end
 
+
 local function set_tenant(tenant)
   if not tenant then
     Snacks.notifier.notify("Tenant may not be empty/nil", vim.log.levels.WARN)
@@ -140,6 +128,7 @@ local function set_tenant(tenant)
   M.state.tenant = tenant
 end
 
+
 vim.api.nvim_create_user_command("SetCluster", function(args)
   local args_list = args.fargs
   local cluster = args_list[1]
@@ -147,12 +136,14 @@ vim.api.nvim_create_user_command("SetCluster", function(args)
   set_cluster(cluster)
 end, { nargs = 1 })
 
+
 vim.api.nvim_create_user_command("SetTenant", function(args)
   local args_list = args.fargs
   local tenant = args_list[1]
 
   set_tenant(tenant)
 end, { nargs = 1 })
+
 
 vim.api.nvim_create_user_command("ToggleTerminal", function()
   if not vim.api.nvim_win_is_valid(M.state.floating_terminal.win) then
@@ -167,5 +158,9 @@ vim.api.nvim_create_user_command("ToggleTerminal", function()
   end
 end, {})
 vim.keymap.set({ "n", "t" }, "<leader>tt", "<CMD>ToggleTerminal<CR>", { desc = "[T]oggle floating [T]erminal" })
+
+vim.api.nvim_create_user_command("Test", function()
+  send_shell_command_to_buf { buf = M.state.floating_terminal.buf, cmd = 'echo hello' }
+end, {})
 
 return M

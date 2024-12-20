@@ -46,15 +46,12 @@ return {
         ui.eval(nil, { enter = true })
       end, { desc = "[E]valuate under cursor" })
 
-      vim.keymap.set("n", "<leader>r", dap.run)
-
-      vim.keymap.set("n", "<F1>", dap.continue, { desc = 'Debug Start/Continue' })
+      vim.keymap.set("n", "<leader>r", dap.continue, { desc = 'Contiue/Start' })
       vim.keymap.set("n", "<F2>", ui.toggle, { desc = "Debug UI Toggle" })
       vim.keymap.set("n", "<F7>", function() dap.step_into({ askForTargets = true }) end)
       vim.keymap.set("n", "<F8>", dap.step_over, { desc = 'Debug Step Over' })
       vim.keymap.set("n", "<F9>", dap.step_out, { desc = 'Debug Step Out' })
-      vim.keymap.set("n", "<F10>", dap.close, { desc = 'Debug Close' })
-      vim.keymap.set("n", "<F12>", dap.restart, { desc = 'Debug Restart' })
+      vim.keymap.set("n", "<F10>", dap.terminate, { desc = 'Debug Terminate' })
 
       dap.listeners.before.attach.dapui_config = function()
         ui.open()

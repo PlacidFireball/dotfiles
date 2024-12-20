@@ -96,7 +96,8 @@ return {
         end,
         desc = "Lazygit"
       },
-      { "<leader>gb", function() Snacks.git.blame_line() end, desc = "[G]it [B]lame line" },
+      { "<leader>gl", function() Snacks.git.blame_line() end, desc = "[G]it [B]lame line" },
+      { "<leader>gb", function() Snacks.gitbrowse() end,      desc = 'Git Browse' },
       {
         "<leader>ts",
         function()
