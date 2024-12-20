@@ -132,6 +132,7 @@ return {
     keys = {},
     init = function()
       local metals_config = require("metals").bare_config()
+      require("metals").setup_dap()
 
       metals_config.settings = {
         showImplicitArguments = true,

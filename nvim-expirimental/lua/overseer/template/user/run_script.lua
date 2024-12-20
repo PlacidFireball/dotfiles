@@ -3,7 +3,7 @@ return {
   builder = function()
     local file = vim.fn.expand("%:p")
 
-    local local_state = require("modules.state")
+    local local_state = require("modules.utils")
     local tenant = local_state.state.tenant
     local cluster = local_state.state.cluster
 

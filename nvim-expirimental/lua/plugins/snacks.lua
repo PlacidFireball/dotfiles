@@ -35,7 +35,7 @@ return {
         formats = {
           icon = function(item)
             if item.file and item.icon == "file" or item.icon == "directory" then
-              return M.icon(item.file, item.icon)
+              return Snacks.icon(item.file, item.icon)
             end
             return { item.icon, width = 2, hl = "icon" }
           end,
@@ -62,8 +62,15 @@ return {
           { section = "startup" },
         }
       },
+      git = { enabled = true },
+      gitbrowse = {
+        enabled = true,
+      },
       indent = { enabled = false },
       input = { enabled = false },
+      lazygit = {
+        enabled = true,
+      },
       notifier = {
         enabled = true,
         timeout = 10000,
@@ -73,5 +80,34 @@ return {
       statuscolumn = { enabled = false },
       words = { enabled = true },
     },
+    keys = {
+      {
+        "<leader>lg",
+        function()
+          if vim.fn.expand("%:p"):match("Dev/quiq/") then
+            local current_dir = vim.fn.getcwd()
+            local quiq_dir = require("modules.utils").get_quiq_directory()
+            vim.cmd('cd ' .. quiq_dir)
+            Snacks.lazygit()
+            vim.cmd('cd ' .. current_dir)
+          else
+            Snacks.lazygit()
+          end
+        end,
+        desc = "Lazygit"
+      },
+      { "<leader>gb", function() Snacks.git.blame_line() end, desc = "[G]it [B]lame line" },
+      {
+        "<leader>ts",
+        function()
+          if Snacks.scroll.enabled then
+            Snacks.scroll.disable()
+          else
+            Snacks.scroll.enable()
+          end
+        end,
+        desc = "[T]oggle [S]croll"
+      },
+    }
   }
 }

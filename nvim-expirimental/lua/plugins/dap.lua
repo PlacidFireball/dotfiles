@@ -20,9 +20,21 @@ return {
         enabled = true
       }
 
-      -- TODO: scala configurations
-      -- TODO: is it possible to just run the service that I'm in for the current buffer?
+
       dap.configurations.scala = {
+        {
+          type = 'scala',
+          request = 'launch',
+          name = 'Run Scala Project',
+          cwd = require("modules.utils").get_quiq_directory,
+          metals = function()
+            return {
+              runType = 'run',
+              args = { '-tc', '-p', '51261' },
+              jvmOptions = { '-Duser.dir=' .. require("modules.utils").get_quiq_directory() },
+            }
+          end,
+        },
       }
 
       vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "Toggle [B]reakpoint" })
@@ -34,13 +46,15 @@ return {
         ui.eval(nil, { enter = true })
       end, { desc = "[E]valuate under cursor" })
 
-      vim.keymap.set("n", "<leader>run", dap.run)
+      vim.keymap.set("n", "<leader>r", dap.run)
 
-      vim.keymap.set("n", "<F1>", dap.continue)
+      vim.keymap.set("n", "<F1>", dap.continue, { desc = 'Debug Start/Continue' })
+      vim.keymap.set("n", "<F2>", ui.toggle, { desc = "Debug UI Toggle" })
       vim.keymap.set("n", "<F7>", function() dap.step_into({ askForTargets = true }) end)
-      vim.keymap.set("n", "<F8>", dap.step_over)
-      vim.keymap.set("n", "<F9>", dap.step_out)
-      vim.keymap.set("n", "<F12>", dap.restart)
+      vim.keymap.set("n", "<F8>", dap.step_over, { desc = 'Debug Step Over' })
+      vim.keymap.set("n", "<F9>", dap.step_out, { desc = 'Debug Step Out' })
+      vim.keymap.set("n", "<F10>", dap.close, { desc = 'Debug Close' })
+      vim.keymap.set("n", "<F12>", dap.restart, { desc = 'Debug Restart' })
 
       dap.listeners.before.attach.dapui_config = function()
         ui.open()

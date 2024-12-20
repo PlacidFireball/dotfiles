@@ -10,8 +10,9 @@ M.setup = function(opts)
 
   map('n', '<Esc>', '<CMD>nohlsearch<CR>', '')
 
-  vim.keymap.set('n', '<leader>r', ':.lua<CR>')
-  vim.keymap.set('v', '<leader>r', ':.lua<CR>')
+  vim.keymap.set('n', '<leader>x', ':.lua<CR>')
+  vim.keymap.set('v', '<leader>x', ':.lua<CR>')
+  vim.keymap.set('n', '<leader>X', ':source %<CR>', { noremap = true, silent = true })
 
   vim.keymap.set('n', '<M-v>', '<CMD>:vsplit<CR>')
   vim.keymap.set('n', '<M-o>', '<CMD>:split<CR>')
