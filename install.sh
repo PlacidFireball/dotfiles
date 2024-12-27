@@ -59,8 +59,11 @@ if [[ ! "$NO_TERM" == "Y" ]]; then
   cp "$DOTFILES_BUILD_DIR/.tmux.conf" "$HOME/.tmux.conf" || error_log "failure to copy new .tmux.conf"
   rm "$HOME/.wezterm.lua" || error_log "failure to clean old .wezterm.lua"
   cp "$DOTFILES_BUILD_DIR/.wezterm.lua" "$HOME/.wezterm.lua"
+
+  rm -rf "$HOME/.config/ghostty"
+  cp -r "$DOTFILES_BUILD_DIR/ghostty" "$HOME/.config"
 else
-  warn_log "Skipping terminal setup (tmux, wezterm)"
+  warn_log "Skipping terminal setup (tmux, wezterm, ghostty)"
 fi
 
 # .config'd stuff
