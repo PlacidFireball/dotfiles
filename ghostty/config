@@ -25,6 +25,7 @@ quick-terminal-position = center
 shell-integration = zsh
 confirm-close-surface = false
 macos-titlebar-style = tabs
+gtk-titlebar = false
 
 # -- Keybinds --
 keybind = super+c=copy_to_clipboard
