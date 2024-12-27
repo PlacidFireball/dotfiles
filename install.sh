@@ -70,9 +70,6 @@ fi
 if [[ ! "$NO_NEOVIM" == "Y" ]]; then
   rm -r ~/.config/nvim
   cp -r "$DOTFILES_BUILD_DIR/nvim" ~/.config/
-
-  rm -r ~/.config/nvim-expirimental
-  cp -r "$DOTFILES_BUILD_DIR/nvim-expirimental" ~/.config/
 else
   warn_log "Skipping neovim config setup"
 fi
