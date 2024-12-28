@@ -50,7 +50,7 @@ return {
         },
 
         sources = {
-          default = { 'lsp', 'path', 'luasnip', 'buffer' },
+          default = { 'lsp', 'path', 'luasnip' },
           luasnip = {
             name = 'Luasnip',
             module = 'blink.cmp.sources.luasnip',
