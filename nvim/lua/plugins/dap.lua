@@ -7,17 +7,32 @@ return {
       "theHamsta/nvim-dap-virtual-text",
       "nvim-neotest/nvim-nio",
       "williamboman/mason.nvim",
+      "jay-babu/mason-nvim-dap.nvim"
     },
     config = function()
       local dap = require "dap"
       local ui = require "dapui"
 
+      require("mason-nvim-dap").setup {
+        ensure_installed = {
+          "codelldb",
+          "cpptools",
+        }
+      }
+
       ui.setup()
       require "dap-go".setup()
+
 
       ---@diagnostic disable-next-line: missing-fields
       require "nvim-dap-virtual-text".setup {
         enabled = true
+      }
+
+      dap.adapters.lldb = {
+        type = "executable",
+        command = "/usr/bin/codelldb",
+        name = "lldb",
       }
 
 
@@ -35,6 +50,20 @@ return {
             }
           end,
         },
+      }
+
+      dap.configurations.rust = {
+        {
+          name = "Run Rust Project",
+          request = "launch",
+          type = "lldb",
+          program = function()
+            return vim.fn.getcwd() .. "/target/debug/white-lang-rust-v2"
+          end,
+          args = { "simulate", "scratch/foo.w" },
+          cwd = "${workspaceFolder}",
+          stopOnEntry = false,
+        }
       }
 
       vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "Toggle [B]reakpoint" })

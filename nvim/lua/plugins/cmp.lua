@@ -50,17 +50,7 @@ return {
         },
 
         sources = {
-          default = { 'lsp', 'path', 'luasnip' },
-          luasnip = {
-            name = 'Luasnip',
-            module = 'blink.cmp.sources.luasnip',
-            opts = {
-              -- Whether to use show_condition for filtering snippets
-              use_show_condition = true,
-              -- Whether to show autosnippets in the completion list
-              show_autosnippets = true,
-            }
-          }
+          default = { 'lsp', 'path', 'luasnip', 'buffer' },
         },
 
         -- experimental signature help support
