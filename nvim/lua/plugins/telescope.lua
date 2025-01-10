@@ -46,7 +46,15 @@ return {
           cwd = vim.fn.stdpath('config')
         })
         require('telescope.builtin').find_files(opts)
-      end)
+      end, { desc = '[E]dit [N]eovim' })
+
+      vim.keymap.set('n', '<leader>gn', function()
+        local opts = require 'telescope.themes'.get_ivy({
+          cwd = vim.fn.stdpath('config')
+        })
+        require('telescope.builtin').live_grep(opts)
+      end, { desc = '[G]rep [N]eovim' })
+
       vim.keymap.set('n', '<leader>sp', function()
         require('telescope.builtin').find_files {
           cwd = vim.fs.joinpath(vim.fn.stdpath('data'), "lazy")
