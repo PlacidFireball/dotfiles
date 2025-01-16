@@ -20,7 +20,7 @@ return {
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup {
-        ensure_installed = { "lua_ls", "rust_analyzer", "pyright", "gopls", "jsonls" },
+        ensure_installed = { "lua_ls", "rust_analyzer", "pyright", "gopls", "jsonls", "zls" },
         automatic_installation = true,
       }
 
@@ -28,16 +28,12 @@ return {
       local capabilities = require "blink.cmp".get_lsp_capabilities()
 
       lspconfig.lua_ls.setup { capabilities = capabilities }
-
       lspconfig.rust_analyzer.setup { capabilities = capabilities }
-
       lspconfig.pyright.setup { capabilities = capabilities }
-
       lspconfig.gopls.setup { capabilities = capabilities }
-
       lspconfig.ts_ls.setup { capabilities = capabilities }
-
       lspconfig.jsonls.setup { capabilities = capabilities }
+      lspconfig.zls.setup { capabilities = capabilities }
 
       -- scala comes from nvim-metals
 
@@ -77,7 +73,7 @@ return {
             vim.lsp.buf.signature_help()
           end, { silent = true, noremap = true, desc = 'toggle signature' })
 
-          local formatting_enabled_filetypes = { "lua", "json", "rust" }
+          local formatting_enabled_filetypes = { "lua", "json", "rust", "zig" }
 
           local function has_value(table, value)
             for _, val in ipairs(table) do

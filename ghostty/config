@@ -35,7 +35,7 @@ keybind = super+r=reload_config
 keybind = super+shift+t=toggle_quick_terminal
 
 keybind = ctrl+space>w=close_surface
-keybind = ctrl+q=close_surface
+keybind = super+q=close_surface
 
 # -- Tabs --
 keybind = ctrl+space>c=new_tab
