@@ -23,7 +23,6 @@ return {
       ui.setup()
       require "dap-go".setup()
 
-
       ---@diagnostic disable-next-line: missing-fields
       require "nvim-dap-virtual-text".setup {
         enabled = true
@@ -75,7 +74,7 @@ return {
         ui.eval(nil, { enter = true })
       end, { desc = "[E]valuate under cursor" })
 
-      vim.keymap.set("n", "<leader>r", dap.continue, { desc = 'Contiue/Start' })
+      vim.keymap.set("n", "<F1>", dap.continue, { desc = 'Contiue/Start' })
       vim.keymap.set("n", "<F2>", ui.toggle, { desc = "Debug UI Toggle" })
       vim.keymap.set("n", "<F7>", function() dap.step_into({ askForTargets = true }) end)
       vim.keymap.set("n", "<F8>", dap.step_over, { desc = 'Debug Step Over' })

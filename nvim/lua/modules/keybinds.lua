@@ -38,6 +38,12 @@ M.setup = function(opts)
       vim.highlight.on_yank()
     end,
   })
+
+  vim.keymap.set('n', '<leader>ob', function()
+    local quiq_directory = require('modules.utils').get_quiq_directory()
+
+    vim.cmd('e ' .. quiq_directory .. 'build.gradle')
+  end, { desc = '[O]pen [b]uild.gradle' })
 end
 
 return M
