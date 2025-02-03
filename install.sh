@@ -62,6 +62,9 @@ if [[ ! "$NO_TERM" == "Y" ]]; then
 
   rm -rf "$HOME/.config/ghostty"
   cp -r "$DOTFILES_BUILD_DIR/ghostty" "$HOME/.config"
+
+  rm -rf "$HOME/.config/kitty"
+  cp -r "$DOTFILES_BUILD_DIR/kitty" "$HOME/.config"
 else
   warn_log "Skipping terminal setup (tmux, wezterm, ghostty)"
 fi
