@@ -5,7 +5,7 @@ return {
     priority = 2,
     config = function()
       require 'nvim-treesitter.configs'.setup {
-        ensure_installed = { "python", "rust", "c", "scala", "java", "lua", "go", "vim", "vimdoc", "markdown", "markdown_inline" },
+        ensure_installed = { "python", "rust", "c", "scala", "java", "lua", "go", "vim", "vimdoc", "markdown", "markdown_inline", "elixir" },
         sync_install = false,
         auto_install = false,
         ignore_install = {},

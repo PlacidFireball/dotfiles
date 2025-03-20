@@ -20,7 +20,7 @@ return {
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup {
-        ensure_installed = { "lua_ls", "rust_analyzer", "pyright", "gopls", "jsonls", "zls" },
+        ensure_installed = { "lua_ls", "rust_analyzer", "pyright", "gopls", "jsonls", "zls", "lexical", "clangd" },
         automatic_installation = true,
       }
 
@@ -34,6 +34,15 @@ return {
       lspconfig.ts_ls.setup { capabilities = capabilities }
       lspconfig.jsonls.setup { capabilities = capabilities }
       lspconfig.zls.setup { capabilities = capabilities }
+      lspconfig.lexical.setup {
+        cmd = { "/home/placidfireball/build/lexical/_build/dev/package/lexical/bin/start_lexical.sh" },
+        root_dir = function(fname)
+          return lspconfig.util.root_pattern("mix.exs", ".git")(fname) or vim.loop.cwd()
+        end,
+        filetypes = { "elixir", "eelixir", "heex" },
+        capabilities = capabilities,
+      }
+      lspconfig.clangd.setup { capabilities = capabilities }
 
       -- scala comes from nvim-metals
 
