@@ -16,6 +16,8 @@ M.setup = function(opts)
 
   vim.keymap.set('n', '<M-v>', '<CMD>:vsplit<CR>')
   vim.keymap.set('n', '<M-o>', '<CMD>:split<CR>')
+  vim.keymap.set('n', '√', '<CMD>:split<CR>') -- alt+v but macos is retarded
+  vim.keymap.set('n', 'ø', '<CMD>:split<CR>') -- alt+v but macos is retarded
 
   -- Diagnostic keymaps
   map('n', '[d', vim.diagnostic.goto_prev, 'Go to previous [D]iagnostic message')
