@@ -36,27 +36,3 @@ keybind = super+shift+t=toggle_quick_terminal
 
 keybind = ctrl+space>w=close_surface
 keybind = super+q=close_surface
-
-# -- Tabs --
-keybind = ctrl+space>c=new_tab
-keybind = ctrl+space>n=next_tab
-keybind = ctrl+space>p=previous_tab
-keybind = ctrl+space>1=goto_tab:1
-keybind = ctrl+space>2=goto_tab:2
-keybind = ctrl+space>3=goto_tab:3
-keybind = ctrl+space>4=goto_tab:4
-keybind = ctrl+space>5=goto_tab:5
-keybind = ctrl+space>6=goto_tab:6
-keybind = ctrl+space>7=goto_tab:7
-keybind = ctrl+space>8=goto_tab:8
-keybind = ctrl+space>9=goto_tab:9
-keybind = ctrl+space>0=goto_tab:10
-
-# -- Splits --
-keybind = ctrl+space>shift+'=new_split:down
-keybind = ctrl+space>shift+5=new_split:right
-keybind = ctrl+shift+h=goto_split:left
-keybind = ctrl+shift+l=goto_split:right
-keybind = ctrl+shift+j=goto_split:bottom
-keybind = ctrl+shift+k=goto_split:top
-
