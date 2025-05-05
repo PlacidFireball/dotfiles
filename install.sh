@@ -57,8 +57,6 @@ info_log "Synced .scripts folder to $HOME"
 if [[ ! "$NO_TERM" == "Y" ]]; then
   rm "$HOME/.tmux.conf"
   cp "$DOTFILES_BUILD_DIR/.tmux.conf" "$HOME/.tmux.conf" || error_log "failure to copy new .tmux.conf"
-  rm "$HOME/.wezterm.lua" || error_log "failure to clean old .wezterm.lua"
-  cp "$DOTFILES_BUILD_DIR/.wezterm.lua" "$HOME/.wezterm.lua"
 
   rm -rf "$HOME/.config/ghostty"
   cp -r "$DOTFILES_BUILD_DIR/ghostty" "$HOME/.config"
@@ -78,22 +76,7 @@ else
 fi
 
 if [[ ! "$NO_HYPR" == "Y" ]]; then
-  rm -r ~/.config/hypr
-  cp -r "$DOTFILES_BUILD_DIR/hypr" ~/.config/
-
-  rm -r ~/.config/eww
-  cp -r "$DOTFILES_BUILD_DIR/eww" ~/.config/
-
-  if [[ ! "$NO_WAYBAR" == "Y" ]]; then
-    rm -r ~/.config/waybar
-    cp -r "$DOTFILES_BUILD_DIR/waybar" ~/.config/
-  fi
-
-  rm -r ~/.config/wofi
-  cp -r "$DOTFILES_BUILD_DIR/wofi" ~/.config/
-
-  rm -r ~/.config/mako/
-  cp -r "$DOTFILES_BUILD_DIR/mako" ~/.config/
+  warn_log "No hypr config stuf to setup in this repo right now"
 else
   warn_log "Skipping hyprland config setup"
 fi

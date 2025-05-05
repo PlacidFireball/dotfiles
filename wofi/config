@@ -1,9 +1,0 @@
-insensitive=true
-location=center
-matching=fuzzy
-term=wezterm
-filter_rate=50
-hide_scroll=true
-
-key_up=Ctrl-p
-key_down=Ctrl-n
