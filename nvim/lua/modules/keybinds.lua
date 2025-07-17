@@ -46,6 +46,12 @@ M.setup = function(opts)
 
     vim.cmd('e ' .. quiq_directory .. 'build.gradle')
   end, { desc = '[O]pen [b]uild.gradle' })
+
+  vim.keymap.set('n', '<leader>ot', function()
+    vim.cmd('e /Users/jared.weiss/.centricient/test/todo.md')
+  end, { desc = '[O]pen [b]uild.gradle' })
+
+  vim.keymap.set('n', '<leader>O', ':Oil<CR>')
 end
 
 return M

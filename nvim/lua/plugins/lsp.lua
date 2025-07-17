@@ -29,7 +29,17 @@ return {
 
       lspconfig.lua_ls.setup { capabilities = capabilities }
       lspconfig.rust_analyzer.setup { capabilities = capabilities }
-      lspconfig.pyright.setup { capabilities = capabilities }
+      lspconfig.pyright.setup {
+        root_dir = function(fname)
+          return vim.fn.getcwd()
+        end,
+        capabilities = capabilities,
+        settings = {
+          python = {
+            pythonPath = '/Users/jared.weiss/miniconda3/bin/python'
+          }
+        }
+      }
       lspconfig.gopls.setup { capabilities = capabilities }
       lspconfig.ts_ls.setup { capabilities = capabilities }
       lspconfig.jsonls.setup { capabilities = capabilities }

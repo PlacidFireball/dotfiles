@@ -113,9 +113,9 @@ return {
         desc = "[T]oggle [S]croll"
       },
       { "<leader><leader>", function() Snacks.picker.buffers() end,                                                desc = "Buffers" },
-      { "<leader>sg",       function() Snacks.picker.grep() end,                                                   desc = "Grep" },
+      { "<leader>sg",       function() Snacks.picker.grep({ ignored = true }) end,                                 desc = "Grep" },
       { "<leader>g.c",      function() Snacks.picker.grep({ cwd = '/Users/jared.weiss/.centricient' }) end,        desc = "Grep .centricient" },
-      { "<leader>sf",       function() Snacks.picker.files() end,                                                  desc = "Find Files" },
+      { "<leader>sf",       function() Snacks.picker.files({ ignored = true }) end,                                desc = "Find Files" },
       { "<leader>s.c",      function() Snacks.picker.files({ cwd = '/Users/jared.weiss/.centricient' }) end,       desc = "Search .centricient" },
       { "<leader>sp",       function() Snacks.picker.files({ cwd = vim.fn.stdpath('data') }) end,                  desc = "Packages" },
       -- find

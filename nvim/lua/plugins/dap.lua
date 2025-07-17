@@ -42,9 +42,20 @@ return {
           name = 'Run Scala Project',
           cwd = require("modules.utils").get_quiq_directory,
           metals = function()
+            local quiq_directory = require("modules.utils").get_quiq_directory()
+
+            local scala_args = {}
+
+            if quiq_directory:find("ring-bearer", 0, true) then
+              scala_args = { '-t', '-p', '51262' }
+            else
+              scala_args = { '-tc', '-p', '51261' }
+            end
+
+
             return {
               runType = 'run',
-              args = { '-tc', '-p', '51261' },
+              args = scala_args,
               jvmOptions = { '-Duser.dir=' .. require("modules.utils").get_quiq_directory() },
             }
           end,
