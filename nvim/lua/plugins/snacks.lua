@@ -1,3 +1,8 @@
+local default_picker_params = {
+  ignored = true,
+  exclude = { "*.class" }
+}
+
 return {
   {
     "folke/snacks.nvim",
@@ -112,41 +117,39 @@ return {
         end,
         desc = "[T]oggle [S]croll"
       },
-      { "<leader><leader>", function() Snacks.picker.buffers() end,                                                desc = "Buffers" },
-      { "<leader>sg",       function() Snacks.picker.grep({ ignored = true }) end,                                 desc = "Grep" },
-      { "<leader>g.c",      function() Snacks.picker.grep({ cwd = '/Users/jared.weiss/.centricient' }) end,        desc = "Grep .centricient" },
-      { "<leader>sf",       function() Snacks.picker.files({ ignored = true }) end,                                desc = "Find Files" },
-      { "<leader>s.c",      function() Snacks.picker.files({ cwd = '/Users/jared.weiss/.centricient' }) end,       desc = "Search .centricient" },
-      { "<leader>sp",       function() Snacks.picker.files({ cwd = vim.fn.stdpath('data') }) end,                  desc = "Packages" },
+      { "<leader><leader>", function() Snacks.picker.buffers() end,                                          desc = "Buffers" },
+      { "<leader>sg",       function() Snacks.picker.grep(default_picker_params) end,                        desc = "Grep" },
+      { "<leader>g.c",      function() Snacks.picker.grep({ cwd = '/Users/jared.weiss/.centricient' }) end,  desc = "Grep .centricient" },
+      { "<leader>sf",       function() Snacks.picker.files(default_picker_params) end,                       desc = "Find Files" },
+      { "<leader>s.c",      function() Snacks.picker.files({ cwd = '/Users/jared.weiss/.centricient' }) end, desc = "Search .centricient" },
+      { "<leader>sp",       function() Snacks.picker.files({ cwd = vim.fn.stdpath('data') }) end,            desc = "Packages" },
       -- find
-      { "<leader>en",       function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end,                desc = "Edit Neovim" },
-      { "<leader>sG",       function() Snacks.picker.git_files() end,                                              desc = "Find Git Files" },
-      { "<leader>sR",       function() Snacks.picker.recent() end,                                                 desc = "Recent" },
+      { "<leader>en",       function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end,          desc = "Edit Neovim" },
+      { "<leader>sG",       function() Snacks.picker.git_files() end,                                        desc = "Find Git Files" },
+      { "<leader>sR",       function() Snacks.picker.recent() end,                                           desc = "Recent" },
       -- git
-      { "<leader>gL",       function() Snacks.picker.git_log() end,                                                desc = "Git Log" },
-      { "<leader>gs",       function() Snacks.picker.git_status() end,                                             desc = "Git Status" },
+      { "<leader>gL",       function() Snacks.picker.git_log() end,                                          desc = "Git Log" },
+      { "<leader>gs",       function() Snacks.picker.git_status() end,                                       desc = "Git Status" },
       -- Grep
-      { "<leader>/",        function() Snacks.picker.lines() end,                                                  desc = "Buffer Lines" },
-      { "<leader>sb",       function() Snacks.picker.grep_buffers() end,                                           desc = "Grep Open Buffers" },
-      { "<leader>sw",       function() Snacks.picker.grep_word() end,                                              desc = "Visual selection or word", mode = { "n", "x" } },
+      { "<leader>/",        function() Snacks.picker.lines() end,                                            desc = "Buffer Lines" },
+      { "<leader>sb",       function() Snacks.picker.grep_buffers() end,                                     desc = "Grep Open Buffers" },
+      { "<leader>sw",       function() Snacks.picker.grep_word() end,                                        desc = "Visual selection or word", mode = { "n", "x" } },
       -- search
-      { '<leader>s"',       function() Snacks.picker.registers() end,                                              desc = "Registers" },
-      { "<leader>sa",       function() Snacks.picker.autocmds() end,                                               desc = "Autocmds" },
-      { "<leader>sc",       function() Snacks.picker.command_history() end,                                        desc = "Command History" },
-      { "<leader>sC",       function() Snacks.picker.commands() end,                                               desc = "Commands" },
-      { "<leader>sd",       function() Snacks.picker.diagnostics() end,                                            desc = "Diagnostics" },
-      { "<leader>sh",       function() Snacks.picker.help() end,                                                   desc = "Help Pages" },
-      { "<leader>sk",       function() Snacks.picker.keymaps() end,                                                desc = "Keymaps" },
-      { "<leader>sl",       function() Snacks.picker.loclist() end,                                                desc = "Location List" },
-      { "<leader>sr",       function() Snacks.picker.resume() end,                                                 desc = "Resume" },
+      { '<leader>s"',       function() Snacks.picker.registers() end,                                        desc = "Registers" },
+      { "<leader>sa",       function() Snacks.picker.autocmds() end,                                         desc = "Autocmds" },
+      { "<leader>sc",       function() Snacks.picker.command_history() end,                                  desc = "Command History" },
+      { "<leader>sC",       function() Snacks.picker.commands() end,                                         desc = "Commands" },
+      { "<leader>sd",       function() Snacks.picker.diagnostics() end,                                      desc = "Diagnostics" },
+      { "<leader>sh",       function() Snacks.picker.help() end,                                             desc = "Help Pages" },
+      { "<leader>sk",       function() Snacks.picker.keymaps() end,                                          desc = "Keymaps" },
+      { "<leader>sl",       function() Snacks.picker.loclist() end,                                          desc = "Location List" },
+      { "<leader>sr",       function() Snacks.picker.resume() end,                                           desc = "Resume" },
       -- LSP
-      { "gd",               function() Snacks.picker.lsp_definitions() end,                                        desc = "Goto Definition" },
-      { "gr",               function() Snacks.picker.lsp_references() end,                                         nowait = true,                     desc = "References" },
-      { "gI",               function() Snacks.picker.lsp_implementations() end,                                    desc = "Goto Implementation" },
-      { "gT",               function() Snacks.picker.lsp_type_definitions() end,                                   desc = "Goto T[y]pe Definition" },
-      { "<leader>ts",       function() Snacks.picker.lsp_symbols() end,                                            desc = "LSP Symbols" },
-      { "<leader>st",       function() Snacks.picker.todo_comments() end,                                          desc = "Todo" },
-      { "<leader>sT",       function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end, desc = "Todo/Fix/Fixme" },
+      { "gd",               function() Snacks.picker.lsp_definitions() end,                                  desc = "Goto Definition" },
+      { "gr",               function() Snacks.picker.lsp_references() end,                                   nowait = true,                     desc = "References" },
+      { "gI",               function() Snacks.picker.lsp_implementations() end,                              desc = "Goto Implementation" },
+      { "gT",               function() Snacks.picker.lsp_type_definitions() end,                             desc = "Goto T[y]pe Definition" },
+      { "<leader>st",       function() Snacks.picker.lsp_symbols() end,                                      desc = "LSP Symbols" },
     }
   },
 }
