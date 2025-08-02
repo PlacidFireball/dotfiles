@@ -11,7 +11,8 @@ return {
         version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
         -- install jsregexp (optional!).
         build = "make install_jsregexp"
-      }
+      },
+      "Kaiser-Yang/blink-cmp-avante"
     },
     version = 'v0.*',
     -- allows extending the providers array elsewhere in your config
@@ -43,7 +44,14 @@ return {
         },
 
         sources = {
-          default = { 'lsp', 'path', 'snippets', 'buffer' },
+          default = { 'avante', 'lsp', 'path', 'snippets', 'buffer' },
+          providers = {
+            avante = {
+              module = 'blink-cmp-avante',
+              name = 'Avante',
+              opts = {}
+            }
+          }
         },
 
         -- experimental signature help support

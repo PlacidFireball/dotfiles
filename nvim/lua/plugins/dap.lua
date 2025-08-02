@@ -56,7 +56,7 @@ return {
             return {
               runType = 'run',
               args = scala_args,
-              jvmOptions = { '-Duser.dir=' .. require("modules.utils").get_quiq_directory() },
+              jvmOptions = { '-Duser.dir=' .. quiq_directory },
             }
           end,
         },

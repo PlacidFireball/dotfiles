@@ -1,3 +1,4 @@
+---@diagnostic disable: missing-fields
 return {
   {
     "catppuccin/nvim",
@@ -37,6 +38,9 @@ return {
           operators = {},
           -- miscs = {}, -- Uncomment to turn off hard-coded styles
         },
+        float = {
+          transparent = true,
+        },
         color_overrides = {},
         custom_highlights = {},
         default_integrations = true,
@@ -51,6 +55,7 @@ return {
           --  indentscope_color = "",
           -- },
           -- -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+          snacks = true,
         },
       })
 

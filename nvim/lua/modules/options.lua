@@ -29,6 +29,7 @@ M.setup = function()
   vim.opt.foldenable = false
   vim.opt.hlsearch = true
   vim.opt.termguicolors = true
+  vim.opt.laststatus = 3
 end
 
 return M

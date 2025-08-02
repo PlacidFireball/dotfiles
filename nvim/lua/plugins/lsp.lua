@@ -9,7 +9,8 @@ return {
           library = {
             -- See the configuration section for more details
             -- Load luvit types when the `vim.uv` word is found
-            { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+            { path = "${3rd}/luv/library",    words = { "vim%.uv" } },
+            { path = "~/Dev/avante.nvim/lua", words = { "avante" } }
           },
         },
       },
@@ -27,7 +28,24 @@ return {
       local lspconfig = require "lspconfig"
       local capabilities = require "blink.cmp".get_lsp_capabilities()
 
-      lspconfig.lua_ls.setup { capabilities = capabilities }
+      lspconfig.lua_ls.setup {
+        capabilities = capabilities,
+        settings = {
+          Lua = {
+            runtime = {
+              version = "LuaJIT",
+              special = { reload = "require" },
+            },
+            workspace = {
+              library = {
+                vim.fn.expand "$VIMRUNTIME/lua",
+                vim.fn.expand "$VIMRUNTIME/lua/vim/lsp",
+                vim.fn.expand "data" .. "/lazy/lazy.nvim/lua/lazy",
+              }
+            }
+          }
+        }
+      }
       lspconfig.rust_analyzer.setup { capabilities = capabilities }
       lspconfig.pyright.setup {
         root_dir = function(fname)
