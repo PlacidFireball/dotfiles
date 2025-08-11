@@ -1,0 +1,12 @@
+insensitive=true
+location=center
+matching=fuzzy
+term=kitty
+filter_rate=50
+hide_scroll=true
+allow_images=true
+allow_markup=true
+close_on_focus_loss=true
+
+key_up=Ctrl-p
+key_down=Ctrl-n
