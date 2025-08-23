@@ -25,6 +25,8 @@ return {
         automatic_installation = true,
       }
 
+      vim.lsp.inlay_hint.enable(true)
+
       local lspconfig = require "lspconfig"
       local capabilities = require "blink.cmp".get_lsp_capabilities()
 
