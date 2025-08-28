@@ -1,3 +1,4 @@
+---@diagnostic disable: missing-fields
 return {
   {
     "mfussenegger/nvim-dap",
@@ -13,6 +14,43 @@ return {
       local dap = require "dap"
       local ui = require "dapui"
 
+      ui.setup {
+        mappings = {
+          -- Use a table to apply multiple mappings
+          expand = { "<CR>", "<2-LeftMouse>" },
+          open = "o",
+          remove = "d",
+          edit = "e",
+          repl = "r",
+          toggle = "t",
+        },
+        floating = {
+          border = "rounded",
+          mappings = {
+            ["close"] = { "q", "<Esc>" },
+          },
+        },
+        layouts = {
+          {
+            elements = {
+              "repl",
+            },
+            size = 40,
+            position = "bottom"
+          },
+          {
+            elements = {
+              "scopes"
+            },
+            size = 40,
+            position = "left"
+          }
+        }
+      }
+      vim.keymap.set("n", "<leader>oB", function ()
+        ui.float_element("breakpoints", { enter = true })
+      end)
+
       require("mason-nvim-dap").setup {
         ensure_installed = {
           "codelldb",
@@ -20,7 +58,6 @@ return {
         }
       }
 
-      ui.setup()
       require "dap-go".setup()
 
       ---@diagnostic disable-next-line: missing-fields
@@ -77,6 +114,7 @@ return {
       }
 
       vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "Toggle [B]reakpoint" })
+
       vim.keymap.set("n", "<leader>gb", dap.run_to_cursor, { desc = "Run to Cursor" })
 
       -- Evaluate the variable under the cursor

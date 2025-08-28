@@ -9,8 +9,8 @@ luasnip.add_snippets("scala", {
   s("for", fmt("foreach {{ {} =>\n\t{}\n}}", { i(1, "iterVar"), i(2, "body") })),
   s("map", fmt("map {{ {} =>\n\t{}\n}}", { i(1, "iterVar"), i(2, "body") })),
   s("main", fmt("def main(args: Array[String]): Unit = {{\n{}\n}}", { i(1) })),
-  s("cc", fmt("case class {}(\n\t{}\n)", { i(1, "MyCaseClass"), i(2) })),
+  s("cc", fmt("case class {}\n(\n\t{}\n)", { i(1, "MyCaseClass"), i(2) })),
   s("cls", fmt("class {}() {{\n{}\n}}", { i(1, "MyClass"), i(2) })),
   s("obj", fmt("object {} {{\n{}\n}}", { i(1, "MyObject"), i(2) })),
-  s("a", fmt("{}: {},", { i(1, "name"), i(2, "Type") })),
+  s("a", fmt("{}: {}", { i(1, "name"), i(2, "String") })),
 })

@@ -6,10 +6,7 @@ return {
   build = "make",
   event = "VeryLazy",
   version = false, -- Never set this value to "*"! Never!
-  enabled = function()
-    -- Only enable this plugin on work laptop
-    return vim.uv.os_uname().sysname == 'Darwin' and vim.uv.os_gethostname() == 'Jareds-Macbook-Pro.local'
-  end,
+  enabled = true,
   ---@module 'avante'
   ---@type avante.Config
   opts = {
@@ -31,7 +28,7 @@ return {
       -- },
       openai = {
         endpoint = "https://quiqgpt-api.quiq.sh/openai",
-        model = "litellm_manifold_pipeline.gpt-4o",
+        model = "litellm_manifold_pipeline.gpt-5",
         timeout = 60000,
         context_window = 64000,
         extra_request_body = {
@@ -50,7 +47,15 @@ return {
           temperature = 0.75,
           max_completion_tokens = 16384,
           reasoning_effort = "medium",
-          system = "This is the system message for prompts.", -- Added system message
+        },
+      },
+      ["litellm-gemini-flash-lite"] = {
+        __inherited_from = "openai",
+        model = "litellm_manifold_pipeline.gemini-2.5-flash-lite",
+        extra_request_body = {
+          temperature = 0.75,
+          max_completion_tokens = 2048,
+          reasoning_effort = "low",
         },
       },
       ["litellm-claude"] = {
@@ -63,16 +68,29 @@ return {
         },
       }
     },
+    file_selector = {
+      provider = "snacks",
+    },
+    auto_suggestions_provider = "litellm-gemini-flash-lite",
+    suggestion = {
+      debounce = 600,
+      throttle = 600
+    },
     selector = {
       provider = "snacks",
     },
+    selection = {
+      hint_desplay = "none"
+    },
     behaviour = {
+      auto_suggestions = false,
       use_cwd_as_project_root = true,
     },
     rules = {
     },
     repo_map = {
-    }
+    },
+    disabled_tools = { "bash" },
   },
   dependencies = {
     "nvim-lua/plenary.nvim",
@@ -82,23 +100,6 @@ return {
     "ibhagwan/fzf-lua",            -- for file_selector provider fzf
     "folke/snacks.nvim",           -- for input provider snacks
     "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-    {
-      -- support for image pasting
-      "HakonHarnes/img-clip.nvim",
-      event = "VeryLazy",
-      opts = {
-        -- recommended settings
-        default = {
-          embed_image_as_base64 = false,
-          prompt_for_file_name = false,
-          drag_and_drop = {
-            insert_mode = true,
-          },
-          -- required for Windows users
-          use_absolute_path = true,
-        },
-      },
-    },
     {
       -- Make sure to set this up properly if you have lazy=true
       'MeanderingProgrammer/render-markdown.nvim',

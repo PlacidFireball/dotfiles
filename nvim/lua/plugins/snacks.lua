@@ -123,6 +123,7 @@ return {
       { "<leader>sf",       function() Snacks.picker.files(default_picker_params) end,                       desc = "Find Files" },
       { "<leader>s.c",      function() Snacks.picker.files({ cwd = '/Users/jared.weiss/.centricient' }) end, desc = "Search .centricient" },
       { "<leader>sp",       function() Snacks.picker.files({ cwd = vim.fn.stdpath('data') }) end,            desc = "Packages" },
+      { "<leader>gp",       function() Snacks.picker.grep({ cwd = vim.fn.stdpath('data') }) end,             desc = "Grep Packages" },
       -- find
       { "<leader>en",       function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end,          desc = "Edit Neovim" },
       { "<leader>sG",       function() Snacks.picker.git_files() end,                                        desc = "Find Git Files" },
@@ -150,6 +151,8 @@ return {
       { "gI",               function() Snacks.picker.lsp_implementations() end,                              desc = "Goto Implementation" },
       { "gT",               function() Snacks.picker.lsp_type_definitions() end,                             desc = "Goto T[y]pe Definition" },
       { "<leader>st",       function() Snacks.picker.lsp_symbols() end,                                      desc = "LSP Symbols" },
+      -- Undo
+      { "<leader>u",        function() Snacks.picker.undo() end,                                              desc = ""},
     }
   },
 }

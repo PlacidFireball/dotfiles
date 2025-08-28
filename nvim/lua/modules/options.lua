@@ -30,6 +30,11 @@ M.setup = function()
   vim.opt.hlsearch = true
   vim.opt.termguicolors = true
   vim.opt.laststatus = 3
+  vim.opt.winborder = 'shadow'
+
+  vim.diagnostic.config {
+    virtual_text = true,
+  }
 end
 
 return M

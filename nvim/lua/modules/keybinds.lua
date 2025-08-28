@@ -52,6 +52,7 @@ M.setup = function(opts)
   end, { desc = '[O]pen [b]uild.gradle' })
 
   vim.keymap.set('n', '<leader>O', ':Oil<CR>')
+  vim.keymap.set('n', '<leader>A', ':AvanteToggle<CR>')
 end
 
 return M

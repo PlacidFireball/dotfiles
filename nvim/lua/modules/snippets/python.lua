@@ -28,5 +28,9 @@ if __name__ == '__main__':
 ]]
 
 luasnip.add_snippets("python", {
-  s("init", fmt(init_source, { i(1, "application"), i(2) }))
+  s("init", fmt(init_source, { i(1, "application"), i(2) })),
+  s("for", fmt([[
+for {} in {}:
+  {}
+]], { i(1, "thing"), i(2, "things"), i(3, "pass")}))
 })
