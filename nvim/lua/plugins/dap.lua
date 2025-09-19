@@ -30,22 +30,6 @@ return {
             ["close"] = { "q", "<Esc>" },
           },
         },
-        layouts = {
-          {
-            elements = {
-              "repl",
-            },
-            size = 40,
-            position = "bottom"
-          },
-          {
-            elements = {
-              "scopes"
-            },
-            size = 40,
-            position = "left"
-          }
-        }
       }
       vim.keymap.set("n", "<leader>oB", function ()
         ui.float_element("breakpoints", { enter = true })

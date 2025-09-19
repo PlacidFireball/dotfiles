@@ -25,8 +25,6 @@ return {
         automatic_installation = true,
       }
 
-      vim.lsp.inlay_hint.enable(true)
-
       local lspconfig = require "lspconfig"
       local capabilities = require "blink.cmp".get_lsp_capabilities()
 
@@ -172,6 +170,14 @@ return {
         showImplicitConversionsAndClasses = true,
         showInferredType = true,
         superMethodLensesEnabled = true,
+        inlayHints = {
+          namedParameters = {
+            enable = true
+          },
+          inferredTypes = {
+            enable = true
+          }
+        },
       }
 
       local function get_operating_system()
