@@ -150,6 +150,8 @@ return {
       { "gr",               function() Snacks.picker.lsp_references() end,                                   nowait = true,                     desc = "References" },
       { "gI",               function() Snacks.picker.lsp_implementations() end,                              desc = "Goto Implementation" },
       { "gT",               function() Snacks.picker.lsp_type_definitions() end,                             desc = "Goto T[y]pe Definition" },
+      { "gai",              function() Snacks.picker.lsp_incoming_calls() end,                               desc = "Goto T[y]pe Definition" },
+      { "gao",              function() Snacks.picker.lsp_outgoing_calls() end,                               desc = "Goto T[y]pe Definition" },
       { "<leader>st",       function() Snacks.picker.lsp_symbols() end,                                      desc = "LSP Symbols" },
       -- Undo
       { "<leader>u",        function() Snacks.picker.undo() end,                                              desc = ""},

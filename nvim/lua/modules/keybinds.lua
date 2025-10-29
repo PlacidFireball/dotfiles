@@ -41,6 +41,8 @@ M.setup = function(opts)
     end,
   })
 
+  vim.keymap.set('i', '<C-p>', '<Esc>pa')
+
   vim.keymap.set('n', '<leader>ob', function()
     local quiq_directory = require('modules.utils').get_quiq_directory()
 

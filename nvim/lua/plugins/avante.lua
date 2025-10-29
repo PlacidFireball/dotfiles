@@ -66,7 +66,16 @@ return {
           max_completion_tokens = 16384,
           reasoning_effort = "medium",
         },
-      }
+      },
+      ["litellm-claude-4.5"] = {
+        __inherited_from = "openai",
+        model = "litellm_manifold_pipeline.claude-4.5-sonnet",
+        extra_request_body = {
+          temperature = 0.75,
+          max_completion_tokens = 16384,
+          reasoning_effort = "medium",
+        }
+      },
     },
     file_selector = {
       provider = "snacks",

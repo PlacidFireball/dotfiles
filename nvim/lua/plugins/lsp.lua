@@ -1,6 +1,6 @@
 return {
   {
-    "neovim/nvim-lspconfig",
+    "mason-org/mason-lspconfig.nvim",
     dependencies = {
       {
         "folke/lazydev.nvim",
@@ -14,21 +14,23 @@ return {
           },
         },
       },
-      { "williamboman/mason.nvim" },
-      { "williamboman/mason-lspconfig.nvim" },
+      { "mason-org/mason.nvim", opts = {} },
+      { "neovim/nvim-lspconfig" },
       { "saghen/blink.cmp" },
     },
     config = function()
-      require("mason").setup()
       require("mason-lspconfig").setup {
-        ensure_installed = { "lua_ls", "rust_analyzer", "pyright", "gopls", "jsonls", "zls", "lexical", "clangd" },
+        ensure_installed = { "lua_ls", "rust_analyzer", "pyright", "gopls", "jsonls", "zls", "lexical", "clangd", "gradle_ls" },
         automatic_installation = true,
+        automatic_enable = true,
       }
 
-      local lspconfig = require "lspconfig"
       local capabilities = require "blink.cmp".get_lsp_capabilities()
 
-      lspconfig.lua_ls.setup {
+      vim.lsp.config("lua_ls", {
+        cmd = { 'lua-language-server' },
+        filetypes = {'lua'},
+        root_markers = { { '.luarc.json', '.luarc.jsonc' }, '.git' },
         capabilities = capabilities,
         settings = {
           Lua = {
@@ -45,32 +47,39 @@ return {
             }
           }
         }
-      }
-      lspconfig.rust_analyzer.setup { capabilities = capabilities }
-      lspconfig.pyright.setup {
-        root_dir = function(fname)
-          return vim.fn.getcwd()
-        end,
+      })
+      vim.lsp.config('rust_analyzer', { capabilities = capabilities })
+      vim.lsp.config('pyright', {
+        cmd = { 'pyright-langserver', '--stdio' },
+        -- root_dir = function(fname)
+        --   return vim.fn.getcwd()
+        -- end,
+        filetypes = {'python'},
+        root_markers =   { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", "pyrightconfig.json", ".git" },
         capabilities = capabilities,
         settings = {
           python = {
+            analysis = {
+              autoSearchPaths = true,
+              diagnosticMode = "openFilesOnly",
+              useLibraryCodeForTypes = true,
+            },
             pythonPath = '/Users/jared.weiss/miniconda3/bin/python'
           }
         }
-      }
-      lspconfig.gopls.setup { capabilities = capabilities }
-      lspconfig.ts_ls.setup { capabilities = capabilities }
-      lspconfig.jsonls.setup { capabilities = capabilities }
-      lspconfig.zls.setup { capabilities = capabilities }
-      lspconfig.lexical.setup {
-        cmd = { "/home/placidfireball/build/lexical/_build/dev/package/lexical/bin/start_lexical.sh" },
-        root_dir = function(fname)
-          return lspconfig.util.root_pattern("mix.exs", ".git")(fname) or vim.loop.cwd()
-        end,
-        filetypes = { "elixir", "eelixir", "heex" },
-        capabilities = capabilities,
-      }
-      lspconfig.clangd.setup { capabilities = capabilities }
+      })
+      vim.lsp.enable('pyright')
+      vim.lsp.config('gopls', { capabilities = capabilities })
+      vim.lsp.config('ts_ls', { capabilities = capabilities })
+      vim.lsp.config('jsonls', { capabilities = capabilities })
+      vim.lsp.config('zls', { capabilities = capabilities })
+      vim.lsp.config('clangd', { capabilities = capabilities })
+      vim.lsp.config("gradle_ls", {
+        settings = {
+          gradleWrapperEnabled = true,
+        },
+        capabilities = capabilities
+      })
 
       -- scala comes from nvim-metals
 
