@@ -1,5 +1,7 @@
 local M = {}
 
+local util = require('modules.utils')
+
 local function map(mode, keybind, action, desc)
   vim.keymap.set(mode, keybind, action, { desc = desc })
 end
@@ -52,6 +54,10 @@ M.setup = function(opts)
   vim.keymap.set('n', '<leader>ot', function()
     vim.cmd('e /Users/jared.weiss/.centricient/test/todo.md')
   end, { desc = '[O]pen [b]uild.gradle' })
+
+  vim.keymap.set('n', '<leader>og', function ()
+    vim.cmd'e ~/.config/ghostty/config'
+  end)
 
   vim.keymap.set('n', '<leader>O', ':Oil<CR>')
   vim.keymap.set('n', '<leader>A', ':AvanteToggle<CR>')

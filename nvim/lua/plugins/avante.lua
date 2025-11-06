@@ -1,11 +1,9 @@
 ---@diagnostic disable: missing-fields
 return {
   "yetone/avante.nvim",
-  -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-  -- ⚠️ must add this setting! ! !
   build = "make",
   event = "VeryLazy",
-  version = false, -- Never set this value to "*"! Never!
+  version = false,
   enabled = true,
   ---@module 'avante'
   ---@type avante.Config
@@ -95,22 +93,16 @@ return {
       auto_suggestions = false,
       use_cwd_as_project_root = true,
     },
-    rules = {
-    },
-    repo_map = {
-    },
     disabled_tools = { "bash" },
   },
   dependencies = {
     "nvim-lua/plenary.nvim",
     "MunifTanjim/nui.nvim",
     --- The below dependencies are optional,
-    "hrsh7th/nvim-cmp",            -- autocompletion for avante commands and mentions
-    "ibhagwan/fzf-lua",            -- for file_selector provider fzf
-    "folke/snacks.nvim",           -- for input provider snacks
-    "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+    "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+    "folke/snacks.nvim",
+    "nvim-tree/nvim-web-devicons",
     {
-      -- Make sure to set this up properly if you have lazy=true
       'MeanderingProgrammer/render-markdown.nvim',
       opts = {
         file_types = { "markdown", "Avante" },
