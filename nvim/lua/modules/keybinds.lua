@@ -59,6 +59,14 @@ M.setup = function(opts)
     vim.cmd'e ~/.config/ghostty/config'
   end)
 
+  vim.keymap.set('n', '<leader>og', function ()
+    vim.cmd'e ~/.config/ghostty/config'
+  end)
+
+  vim.keymap.set('n', '<leader>of', function ()
+    vim.cmd'e ~/.frpc/frpc-websockets.toml'
+  end)
+
   vim.keymap.set('n', '<leader>O', ':Oil<CR>')
   vim.keymap.set('n', '<leader>A', ':AvanteToggle<CR>')
 end
