@@ -35,7 +35,7 @@ function sync_config {
       mkdir -p "$dest"
       # Use rsync for better syncing if available, else cp
       if command -v rsync &> /dev/null; then
-        rsync -av --delete --exclude '.git' --exclude '.DS_Store' "$src/" "$dest/"
+        rsync -av --delete --exclude '.git' --exclude '.DS_Store' --exclude 'node_modules' --exclude '.bun' "$src/" "$dest/"
       else
         # Fallback to cp, removing destination first to ensure clean sync
         rm -rf "$dest"
@@ -78,5 +78,8 @@ sync_config "hyprpanel" "$HOME/.config/hyprpanel" "$REPO_DIR/hyprpanel"
 
 # Wofi (only if present)
 sync_config "wofi" "$HOME/.config/wofi" "$REPO_DIR/wofi"
+
+# Opencode (only if present)
+sync_config "opencode" "$HOME/.config/opencode" "$REPO_DIR/opencode"
 
 happy_log "Sync complete! Don't forget to check git status and commit your changes."

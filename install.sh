@@ -55,6 +55,7 @@ case $1 in
   --no-hypr) NO_HYPR="Y";;
   --no-waybar) NO_WAYBAR="Y";;
   --no-term) NO_TERM="Y";;
+  --no-opencode) NO_OPENCODE="Y";;
   *) error_log "Unknown argument passed: $1"
   exit 1;;
 esac
@@ -89,6 +90,16 @@ if [[ ! "$NO_HYPR" == "Y" ]]; then
   warn_log "No hypr config stuf to setup in this repo right now"
 else
   warn_log "Skipping hyprland config setup"
+fi
+
+if [[ ! "$NO_OPENCODE" == "Y" ]]; then
+  if [[ -d "$DOTFILES_BUILD_DIR/opencode" ]]; then
+    backup_and_copy "$DOTFILES_BUILD_DIR/opencode" "$HOME/.config/opencode"
+  else
+    warn_log "Opencode config not found in repo, skipping install."
+  fi
+else
+  warn_log "Skipping opencode config setup"
 fi
 
 happy_log "Finished install!"

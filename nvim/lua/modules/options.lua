@@ -31,7 +31,6 @@ M.setup = function()
   vim.opt.termguicolors = true
   vim.opt.laststatus = 3
   vim.opt.winborder = 'rounded'
-  vim.opt.autoread = true -- required for opencode hot reload
 
   vim.diagnostic.config {
     virtual_text = true,

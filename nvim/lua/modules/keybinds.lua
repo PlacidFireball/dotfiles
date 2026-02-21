@@ -10,30 +10,30 @@ M.setup = function(opts)
   map('n', '<M-n>', '<CMD>cnext<CR>', 'Quickfix Next')
   map('n', '<M-p>', '<CMD>cprev<CR>', 'Quickfix Previous')
 
-  map('n', '<Esc>', '<CMD>nohlsearch<CR>', 'Clear highlight search')
+  map('n', '<Esc>', '<CMD>nohlsearch<CR>', '')
 
-  vim.keymap.set('n', '<leader>x', ':.lua<CR>', { desc = 'Execute current line (lua)' })
-  vim.keymap.set('v', '<leader>x', ':.lua<CR>', { desc = 'Execute selected lines (lua)' })
-  vim.keymap.set('n', '<leader>X', ':source %<CR>', { noremap = true, silent = true, desc = 'Source current file' })
+  vim.keymap.set('n', '<leader>x', ':.lua<CR>')
+  vim.keymap.set('v', '<leader>x', ':.lua<CR>')
+  vim.keymap.set('n', '<leader>X', ':source %<CR>', { noremap = true, silent = true })
 
-  vim.keymap.set('n', '<M-v>', '<CMD>:vsplit<CR>', { desc = 'Vertical split' })
-  vim.keymap.set('n', '<M-o>', '<CMD>:split<CR>', { desc = 'Horizontal split' })
-  vim.keymap.set('n', '√', '<CMD>:split<CR>', { desc = 'Vertical split (Alt+v)' }) -- alt+v but macos is retarded
-  vim.keymap.set('n', 'ø', '<CMD>:split<CR>', { desc = 'Horizontal split (Alt+o)' }) -- alt+v but macos is retarded
+  vim.keymap.set('n', '<M-v>', '<CMD>:vsplit<CR>')
+  vim.keymap.set('n', '<M-o>', '<CMD>:split<CR>')
+  vim.keymap.set('n', '√', '<CMD>:split<CR>') -- alt+v but macos is retarded
+  vim.keymap.set('n', 'ø', '<CMD>:split<CR>') -- alt+v but macos is retarded
 
   -- Diagnostic keymaps
-  map('n', '[d', function() vim.diagnostic.jump({ count = -1, float = true }) end, 'Go to previous [D]iagnostic message')
-  map('n', ']d', function() vim.diagnostic.jump({ count = 1, float = true }) end, 'Go to next [D]iagnostic message')
+  map('n', '[d', vim.diagnostic.goto_prev, 'Go to previous [D]iagnostic message')
+  map('n', ']d', vim.diagnostic.goto_next, 'Go to next [D]iagnostic message')
   map('n', '<leader>e', vim.diagnostic.open_float, 'Show diagnostic [E]rror messages')
   map('n', '<leader>q', vim.diagnostic.setloclist, 'Open diagnostic [Q]uickfix list')
 
   -- Esc Esc to escape terminal mode
   vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
-  vim.keymap.set('n', '=', [[<cmd>vertical resize +5<cr>]], { desc = 'Increase window height' })   -- make the window biger vertically
-  vim.keymap.set('n', '-', [[<cmd>vertical resize -5<cr>]], { desc = 'Decrease window height' })   -- make the window smaller vertically
-  vim.keymap.set('n', '+', [[<cmd>horizontal resize +5<cr>]], { desc = 'Increase window width' }) -- make the window bigger horizontally by pressing shift and =
-  vim.keymap.set('n', '_', [[<cmd>horizontal resize -5<cr>]], { desc = 'Decrease window width' }) -- make the window smaller horizontally by pressing shift and -
+  vim.keymap.set('n', '=', [[<cmd>vertical resize +5<cr>]])   -- make the window biger vertically
+  vim.keymap.set('n', '-', [[<cmd>vertical resize -5<cr>]])   -- make the window smaller vertically
+  vim.keymap.set('n', '+', [[<cmd>horizontal resize +5<cr>]]) -- make the window bigger horizontally by pressing shift and =
+  vim.keymap.set('n', '_', [[<cmd>horizontal resize -5<cr>]]) -- make the window smaller horizontally by pressing shift and -
 
   vim.api.nvim_create_autocmd('TextYankPost', {
     desc = 'Highlight when yanking (copying) text',
@@ -43,7 +43,7 @@ M.setup = function(opts)
     end,
   })
 
-  vim.keymap.set('i', '<C-p>', '<Esc>pa', { desc = 'Paste in insert mode' })
+  vim.keymap.set('i', '<C-p>', '<Esc>pa')
 
   vim.keymap.set('n', '<leader>ob', function()
     local quiq_directory = require('modules.utils').get_quiq_directory()
@@ -53,18 +53,22 @@ M.setup = function(opts)
 
   vim.keymap.set('n', '<leader>ot', function()
     vim.cmd('e /Users/jared.weiss/.centricient/test/todo.md')
-  end, { desc = '[O]pen [t]odo' })
+  end, { desc = '[O]pen [b]uild.gradle' })
 
   vim.keymap.set('n', '<leader>og', function ()
     vim.cmd'e ~/.config/ghostty/config'
-  end, { desc = '[O]pen [g]hostty config' })
+  end)
+
+  vim.keymap.set('n', '<leader>og', function ()
+    vim.cmd'e ~/.config/ghostty/config'
+  end)
 
   vim.keymap.set('n', '<leader>of', function ()
     vim.cmd'e ~/.frpc/frpc-websockets.toml'
-  end, { desc = '[O]pen [f]rpc config' })
+  end)
 
-  vim.keymap.set('n', '<leader>O', ':Oil<CR>', { desc = 'Open parent directory (Oil)' })
-  vim.keymap.set('n', '<leader>A', ':AvanteToggle<CR>', { desc = 'Toggle Avante' })
+  vim.keymap.set('n', '<leader>O', ':Oil<CR>')
+  vim.keymap.set('n', '<leader>A', ':AvanteToggle<CR>')
 end
 
 return M
