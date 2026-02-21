@@ -32,10 +32,10 @@ require("lazy").setup({
           disable_when_zoomed = true,
         }
 
-        vim.keymap.set('n', "<C-h>", nav.NvimTmuxNavigateLeft)
-        vim.keymap.set('n', "<C-j>", nav.NvimTmuxNavigateDown)
-        vim.keymap.set('n', "<C-k>", nav.NvimTmuxNavigateUp)
-        vim.keymap.set('n', "<C-l>", nav.NvimTmuxNavigateRight)
+        vim.keymap.set({ 'n', 't' }, "<C-h>", nav.NvimTmuxNavigateLeft)
+        vim.keymap.set({ 'n', 't' }, "<C-j>", nav.NvimTmuxNavigateDown)
+        vim.keymap.set({ 'n', 't' }, "<C-k>", nav.NvimTmuxNavigateUp)
+        vim.keymap.set({ 'n', 't' }, "<C-l>", nav.NvimTmuxNavigateRight)
       end
     },
     { import = "plugins" },

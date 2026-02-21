@@ -34,6 +34,21 @@ function info_log {
   echo "$fg[blue]$1$reset_color"
 }
 
+function backup_and_copy {
+  local src="$1"
+  local dest="$2"
+
+  if [[ -e "$dest" ]]; then
+    local backup="${dest}.old"
+    rm -rf "$backup"
+    mv "$dest" "$backup"
+    warn_log "Backed up existing $(basename "$dest") to $backup"
+  fi
+
+  mkdir -p "$(dirname "$dest")"
+  cp -r "$src" "$dest"
+}
+
 while [[ "$#" -gt 0 ]] do 
 case $1 in
   --no-neovim) NO_NEOVIM="Y";;
@@ -48,29 +63,24 @@ done
 
 info_log "Syncing .config files!"
 
-rm -r "$HOME/.scripts"
-cp -r "$DOTFILES_BUILD_DIR/.scripts" "$HOME"
+backup_and_copy "$DOTFILES_BUILD_DIR/.scripts" "$HOME/.scripts"
 
 info_log "Synced .scripts folder to $HOME"
 
 # tmux, wezterm
 if [[ ! "$NO_TERM" == "Y" ]]; then
-  rm "$HOME/.tmux.conf"
-  cp "$DOTFILES_BUILD_DIR/.tmux.conf" "$HOME/.tmux.conf" || error_log "failure to copy new .tmux.conf"
+  backup_and_copy "$DOTFILES_BUILD_DIR/.tmux.conf" "$HOME/.tmux.conf" || error_log "failure to copy new .tmux.conf"
 
-  rm -rf "$HOME/.config/ghostty"
-  cp -r "$DOTFILES_BUILD_DIR/ghostty" "$HOME/.config"
+  backup_and_copy "$DOTFILES_BUILD_DIR/ghostty" "$HOME/.config/ghostty"
 
-  rm -rf "$HOME/.config/kitty"
-  cp -r "$DOTFILES_BUILD_DIR/kitty" "$HOME/.config"
+  backup_and_copy "$DOTFILES_BUILD_DIR/kitty" "$HOME/.config/kitty"
 else
   warn_log "Skipping terminal setup (tmux, wezterm, ghostty)"
 fi
 
 # .config'd stuff
 if [[ ! "$NO_NEOVIM" == "Y" ]]; then
-  rm -r ~/.config/nvim
-  cp -r "$DOTFILES_BUILD_DIR/nvim" ~/.config/
+  backup_and_copy "$DOTFILES_BUILD_DIR/nvim" "$HOME/.config/nvim"
 else
   warn_log "Skipping neovim config setup"
 fi
