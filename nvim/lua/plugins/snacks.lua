@@ -147,7 +147,7 @@ return {
       { "<leader>sr",       function() Snacks.picker.resume() end,                                           desc = "Resume" },
       -- LSP
       { "gd",               function() Snacks.picker.lsp_definitions() end,                                  desc = "Goto Definition" },
-      { "gr",               function() Snacks.picker.lsp_references() end,                                   nowait = true,                     desc = "References" },
+      { "gr",               function() Snacks.picker.lsp_references() end,                                   desc = "References" },
       { "gI",               function() Snacks.picker.lsp_implementations() end,                              desc = "Goto Implementation" },
       { "gT",               function() Snacks.picker.lsp_type_definitions() end,                             desc = "Goto T[y]pe Definition" },
       { "gai",              function() Snacks.picker.lsp_incoming_calls() end,                               desc = "Goto T[y]pe Definition" },

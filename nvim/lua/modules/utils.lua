@@ -60,7 +60,7 @@ local function get_floating_window(opts)
 
   -- Create buffer
   local buf = -1
-  if opts.buf ~= -1 and vim.api.nvim_buf_is_valid(opts.buf) then
+  if opts.buf and opts.buf ~= -1 and vim.api.nvim_buf_is_valid(opts.buf) then
     buf = opts.buf
   else
     buf = vim.api.nvim_create_buf(false, true)
@@ -158,6 +158,37 @@ vim.api.nvim_create_user_command("ToggleTerminal", function()
   end
 end, {})
 vim.keymap.set({ "n", "t" }, "<leader>tt", "<CMD>ToggleTerminal<CR>", { desc = "[T]oggle floating [T]erminal" })
+
+vim.api.nvim_create_user_command('VoiceToolkitFetchRegistration', function()
+  -- Prompt for cluster
+  vim.ui.input({ prompt = 'Enter cluster: ', default = M.state.cluster or '' }, function(cluster)
+    if not cluster or cluster == '' then
+      Snacks.notifier.notify("Cluster is required", vim.log.levels.WARN)
+      return
+    end
+
+    -- Prompt for tenant
+    vim.ui.input({ prompt = 'Enter tenant: ', default = M.state.tenant or '' }, function(tenant)
+      if not tenant or tenant == '' then
+        Snacks.notifier.notify("Tenant is required", vim.log.levels.WARN)
+        return
+      end
+
+      local cmd = string.format('voice-toolkit -c %s -t %s registrations fetch -f internal', cluster, tenant)
+
+      local output = vim.fn.system(cmd)
+
+      local lines = vim.split(output, '\n', {plain = true})
+
+      local float = get_floating_window({ content = lines })
+      vim.api.nvim_buf_set_var(float.buf, 'filetype', 'json')
+
+      vim.api.nvim_buf_set_keymap(float.buf, 'n', 'q', '<cmd>close<CR>', { noremap = true, silent = true })
+      vim.api.nvim_buf_set_keymap(float.buf, 'n', '<Esc>', '<cmd>close<CR>', { noremap = true, silent = true })
+    end)
+  end)
+end, {})
+vim.keymap.set("n", "<leader>vfr", "<CMD>VoiceToolkitFetchRegistration<CR>", { desc = "[V]oice Toolkit [F]etch [R]egistration"})
 
 vim.api.nvim_create_user_command("Test", function()
   send_shell_command_to_buf { buf = M.state.floating_terminal.buf, cmd = 'echo hello' }

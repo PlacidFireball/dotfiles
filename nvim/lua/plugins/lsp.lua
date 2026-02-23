@@ -207,12 +207,14 @@ return {
 
       if os == 'Darwin' or os == 'OSX' then
         metals_config.settings.gradleScript = '/opt/gradle/gradle-8.4/bin/gradle'
-        metals_config.settings.javaHome = '/Library/Java/JavaVirtualMachines/liberica-jdk-17.jdk/Contents/Home'
+        metals_config.settings.javaHome = '/Library/Java/JavaVirtualMachines/liberica-jdk-21.jdk/Contents/Home'
         metals_config.settings.scalafixConfigPath = '/Users/jared.weiss/build/dotfiles/.scalafix.conf'
       end
 
       metals_config.init_options.statusBarProvider = 'on'
       metals_config.capabilities = require('blink.cmp').get_lsp_capabilities()
+
+      vim.keymap.set('n', '<leader>mo', ':MetalsOrganizeImports<CR>')
 
       vim.api.nvim_create_autocmd('FileType', {
         pattern = { 'scala', 'sbt' },

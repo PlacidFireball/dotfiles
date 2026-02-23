@@ -24,6 +24,9 @@ macos-option-as-alt = left
 quick-terminal-position = center
 shell-integration = zsh
 confirm-close-surface = false
+scrollback-limit = 512000
+
+# -- Window Config --
 macos-titlebar-style = tabs
 gtk-titlebar = false
 
@@ -33,6 +36,35 @@ keybind = super+v=paste_from_clipboard
 keybind = super+a=select_all
 keybind = super+r=reload_config
 keybind = super+shift+t=toggle_quick_terminal
+keybind = super+g=open_config
 
 keybind = ctrl+space>w=close_surface
-keybind = super+q=close_surface
+keybind = ctrl+space>shift+5=new_split:right
+keybind = ctrl+space>shift+'=new_split:down
+keybind = ctrl+space>c=new_tab
+keybind = ctrl+space>q=close_surface
+
+# NOTE: the unconsumed modifier is necessary so that neovim will also get the ctrl+key unencoded by ghostty
+keybind = unconsumed:ctrl+l=goto_split:right
+keybind = unconsumed:ctrl+h=goto_split:left
+keybind = unconsumed:ctrl+k=goto_split:up
+keybind = unconsumed:ctrl+j=goto_split:down
+
+keybind = ctrl+space>1=goto_tab:1
+keybind = ctrl+space>2=goto_tab:2
+keybind = ctrl+space>3=goto_tab:3
+keybind = ctrl+space>4=goto_tab:4
+keybind = ctrl+space>5=goto_tab:5
+keybind = ctrl+space>6=goto_tab:6
+keybind = ctrl+space>7=goto_tab:7
+keybind = ctrl+space>8=goto_tab:8
+keybind = ctrl+space>9=goto_tab:9
+keybind = ctrl+space>0=goto_tab:10
+
+keybind = ctrl+space>l=move_tab:1
+keybind = ctrl+space>h=move_tab:-1
+
+keybind = performable:y=copy_to_clipboard
+keybind = ctrl+space>y=select_all
+
+

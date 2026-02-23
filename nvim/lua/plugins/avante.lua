@@ -38,33 +38,6 @@ return {
         extra_headers = {
         }
       },
-      ["litellm-gemini"] = {
-        __inherited_from = "openai",
-        model = "litellm_manifold_pipeline.gemini-2.5-flash",
-        extra_request_body = {
-          temperature = 0.75,
-          max_completion_tokens = 16384,
-          reasoning_effort = "medium",
-        },
-      },
-      ["litellm-gemini-flash-lite"] = {
-        __inherited_from = "openai",
-        model = "litellm_manifold_pipeline.gemini-2.5-flash-lite",
-        extra_request_body = {
-          temperature = 0.75,
-          max_completion_tokens = 2048,
-          reasoning_effort = "low",
-        },
-      },
-      ["litellm-claude"] = {
-        __inherited_from = "openai",
-        model = "litellm_manifold_pipeline.claude-4-sonnet",
-        extra_request_body = {
-          temperature = 0.75,
-          max_completion_tokens = 16384,
-          reasoning_effort = "medium",
-        },
-      },
       ["litellm-claude-4.5"] = {
         __inherited_from = "openai",
         model = "litellm_manifold_pipeline.claude-4.5-sonnet",
@@ -74,11 +47,29 @@ return {
           reasoning_effort = "medium",
         }
       },
+      ["litellm-gemini-3-flash"] = {
+        __inherited_from = "openai",
+        model = "litellm_manifold_pipeline.gemini-3-flash",
+        extra_request_body = {
+          temperature = 0.75,
+          max_completion_tokens = 16384,
+          reasoning_effort = "medium",
+        }
+      },
+      ["litellm-gemini-3-pro"] = {
+        __inherited_from = "openai",
+        model = "litellm_manifold_pipeline.gemini-3-pro",
+        extra_request_body = {
+          temperature = 0.75,
+          max_completion_tokens = 16384,
+          reasoning_effort = "medium",
+        }
+      }
     },
     file_selector = {
       provider = "snacks",
     },
-    auto_suggestions_provider = "litellm-gemini-flash-lite",
+    auto_suggestions_provider = nil,
     suggestion = {
       debounce = 600,
       throttle = 600
