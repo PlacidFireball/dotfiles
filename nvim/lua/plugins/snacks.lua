@@ -1,6 +1,6 @@
 local default_picker_params = {
   ignored = true,
-  exclude = { "*.class" }
+  exclude = { "*.class", "*.mdx" }
 }
 
 return {
