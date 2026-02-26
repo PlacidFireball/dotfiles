@@ -1,39 +1,24 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "share": "disabled",
-  "model": "quiqgpt/litellm_manifold_pipeline.gemini-3-pro",
-  "disabled_providers": ["opencode"],
+  "model": "litellm/gemini-3-flash",
+  "disabled_providers": [
+    "opencode"
+  ],
   "logLevel": "DEBUG",
   "provider": {
-    "quiqgpt": {
-      "name": "QuiqGPT",
+    "litellm": {
       "npm": "@ai-sdk/openai-compatible",
+      "name": "Quiq LiteLLM Proxy",
       "options": {
-        "baseURL": "https://quiqgpt-api.quiq.sh/openai",
-        "litellmProxy": true,
+        "baseURL": "https://quiqgpt-proxy-east.quiq.sh/v1",
       },
       "models": {
-        "litellm_manifold_pipeline.claude-4.6-sonnet": {
-          "id": "litellm_manifold_pipeline.claude-4.6-sonnet",
-          "name": "Claude 4.6 Sonnet",
-          "options": {
-            "litellmProxy": true,
-          },
-          "limit": {
-            "context": 400000,
-            "output": 64000
-          }
+        "gemini-3-flash": {
+          "name": "Gemini 3 Flash"
         },
-        "litellm_manifold_pipeline.gemini-3-pro": {
-          "id": "litellm_manifold_pipeline.gemini-3-pro",
-          "name": "Gemini 3 Pro",
-          "options": {
-            "litellmProxy": true,
-          },
-          "limit": {
-            "context": 400000,
-            "output": 64000
-          }
+        "claude-4.6-sonnet": {
+          "name": "Claude 4.6 Sonnet"
         }
       }
     }
@@ -41,7 +26,7 @@
   "permission": {
     "bash": {
       "*": "ask",
-      "rm *": "deny",
+      "rm *": "ask",
       "git *": "ask",
       "grep *": "allow",
     },
@@ -49,18 +34,19 @@
       "*": "ask",
     },
     "read": {
-      "*": "allow"
+      "*": "ask",
+      "*.env": "deny",
+      "*.env.*": "deny",
     },
     "list": {
       "*": "allow"
     },
-    "task": {
-      "*": "allow"
-    },
+    "task": "allow",
     "todoread": "allow",
     "todowrite": "allow",
-    "webfetch": "allow",
-    "websearch": "allow",
+    "webfetch": "ask",
+    "websearch": "ask",
+    "codesearch": "ask",
     "external_directory": "ask",
     "doom_loop": "deny"
   }

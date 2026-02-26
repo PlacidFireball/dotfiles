@@ -86,6 +86,7 @@ return {
       quickfile = { enabled = false },
       scroll = { enabled = true },
       statuscolumn = { enabled = false },
+      terminal = {},
       words = { enabled = true },
     },
     keys = {
@@ -155,6 +156,7 @@ return {
       { "<leader>st",       function() Snacks.picker.lsp_symbols() end,                                      desc = "LSP Symbols" },
       -- Undo
       { "<leader>u",        function() Snacks.picker.undo() end,                                              desc = ""},
+      { "<leader>oc",      function() vim.cmd("edit /Users/jared.weiss/Dev/quiq/opencode.json") end,          desc = "Open opencode.json" },
     }
   },
 }

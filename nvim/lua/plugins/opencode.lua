@@ -1,35 +1,49 @@
 return {
   "nickjvandyke/opencode.nvim",
   version = "*", -- Latest stable release
-  enabled = false,
-  dependencies = {
-    {
-      -- `snacks.nvim` integration is recommended, but optional
-      ---@module "snacks" <- Loads `snacks.nvim` types for configuration intellisense
-      "folke/snacks.nvim",
-      optional = true,
-      opts = {
-        input = {}, -- Enhances `ask()`
-        picker = {  -- Enhances `select()`
-          actions = {
-            opencode_send = function(...) return require("opencode").snacks_picker_send(...) end,
-          },
-          win = {
-            input = {
-              keys = {
-                ["<a-a>"] = { "opencode_send", mode = { "n", "i" } },
-              },
-            },
-          },
-        },
-        terminal = {}, -- Enables the `snacks` provider
-      },
-    },
-  },
+  enabled = true,
   config = function()
+    local opencode_cmd = 'opencode --port'
+    ---@type snacks.terminal.Opts
+    local snacks_terminal_opts = {
+      interactive = true,
+      win = {
+        position = 'right',
+        enter = true,
+        on_win = function(win)
+          -- Set up keymaps and cleanup for an arbitrary terminal
+          require('opencode.terminal').setup(win.win)
+        end,
+        width = 0.25,
+        height = 0,
+        resize = true,
+      },
+    }
+
+    ---@class OpenCodeContextWithLogs : opencode.Context
+    ---@field logs function
+    local opencode_context = require("opencode.context")
+    function opencode_context:logs()
+      return opencode_context.format({path = '/Users/jared.weiss/Dev/quiq/service.log'})
+    end
+
     ---@type opencode.Opts
     vim.g.opencode_opts = {
-      -- Your configuration, if any; goto definition on the type or field for details
+      server = {
+        start = function()
+          require('snacks.terminal').open(opencode_cmd, snacks_terminal_opts)
+        end,
+        stop = function()
+          require('snacks.terminal').get(opencode_cmd, snacks_terminal_opts):close()
+        end,
+        toggle = function()
+          require('snacks.terminal').toggle(opencode_cmd, snacks_terminal_opts)
+        end,
+      },
+      contexts = {
+        ---@diagnostic disable-next-line: undefined-field
+        ["@logs"] = function (context) return context:logs() end,
+      }
     }
 
     vim.o.autoread = true -- Required for `opts.events.reload`
