@@ -42,7 +42,7 @@ function backup_and_copy {
     local backup="${dest}.old"
     rm -rf "$backup"
     mv "$dest" "$backup"
-    warn_log "Backed up existing $(basename "$dest") to $backup"
+    info_log "Backed up existing $(basename "$dest") to $backup"
   fi
 
   mkdir -p "$(dirname "$dest")"
@@ -87,7 +87,7 @@ else
 fi
 
 if [[ ! "$NO_HYPR" == "Y" ]]; then
-  warn_log "No hypr config stuf to setup in this repo right now"
+  warn_log "No hypr config stuff to setup in this repo right now"
 else
   warn_log "Skipping hyprland config setup"
 fi
