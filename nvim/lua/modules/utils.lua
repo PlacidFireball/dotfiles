@@ -99,12 +99,25 @@ local function send_shell_command_to_buf(in_opts)
 end
 
 
+local function run_terminal_command(cmd)
+  Snacks.terminal.open(cmd, {
+    auto_close = true,
+    win = {
+      style = "float",
+      width = 0.8,
+      height = 0.8,
+      border = "rounded",
+    },
+  })
+end
+
+
 M.dump = dump
 M.table_to_set = table_to_set
 M.get_quiq_directory = get_quiq_directory
 M.get_floating_window = get_floating_window
 M.send_shell_command_to_buf = send_shell_command_to_buf
-
+M.run_terminal_command = run_terminal_command
 
 local clusters = table_to_set({ "dev", "qa", "mqa", "roman", "perf", "stage", "mstage", "demo", "age1", "mva1", "ava1",
   "ava3", "aor1", "aor3" })

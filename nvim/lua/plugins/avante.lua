@@ -13,17 +13,6 @@ return {
     debug = false,
     provider = "openai",
     providers = {
-      -- openai = {
-      --   endpoint = "https://api.openai.com/v1",
-      --   model = "gpt-4o",
-      --   timeout = 30000,         -- Timeout in milliseconds, increase this for reasoning models
-      --   context_window = 128000, -- Number of tokens to send to the model for context
-      --   extra_request_body = {
-      --     temperature = 0.75,
-      --     max_completion_tokens = 16384, -- Increase this to include reasoning tokens (for reasoning models)
-      --     reasoning_effort = "medium",   -- low|medium|high, only used for reasoning models
-      --   },
-      -- },
       openai = {
         endpoint = "https://quiqgpt-api.quiq.sh/openai",
         model = "litellm_manifold_pipeline.gpt-5",
@@ -85,6 +74,12 @@ return {
       use_cwd_as_project_root = true,
     },
     disabled_tools = { "bash" },
+    acp_providers = {
+      ["opencode"] = {
+        command = "opencode",
+        args = { "acp" },
+      },
+    },
   },
   dependencies = {
     "nvim-lua/plenary.nvim",

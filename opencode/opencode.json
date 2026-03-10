@@ -1,9 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "share": "disabled",
-  "model": "litellm/gemini-3-flash",
+  "model": "litellm/claude-4.6-sonnet",
   "disabled_providers": [
-    "opencode"
   ],
   "logLevel": "DEBUG",
   "provider": {
@@ -11,14 +10,23 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "Quiq LiteLLM Proxy",
       "options": {
-        "baseURL": "https://quiqgpt-proxy-east.quiq.sh/v1",
+        "baseURL": "https://quiqgpt-proxy-east.quiq.sh/v1"
       },
       "models": {
         "gemini-3-flash": {
           "name": "Gemini 3 Flash"
         },
+        "gemini-3-pro": {
+          "name": "Gemini 3 Pro"
+        },
+        "gemini-3.1-pro": {
+          "name": "Gemini 3.1 Pro"
+        },
         "claude-4.6-sonnet": {
           "name": "Claude 4.6 Sonnet"
+        },
+        "gpt-5.2": {
+          "name": "GPT 5.2"
         }
       }
     }
@@ -29,11 +37,15 @@
       "rm *": "ask",
       "git *": "ask",
       "grep *": "allow",
+      "rg *": "allow",
     },
     "edit": {
       "*": "ask",
     },
     "read": {
+      "*.scala": "allow",
+      "*.py": "allow",
+      "*.log": "allow",
       "*": "ask",
       "*.env": "deny",
       "*.env.*": "deny",

@@ -8,7 +8,7 @@ return {
 
     require("scrollbar.handlers.search").setup {}
     -- gitsigns is configured in another castle
-    require("scrollbar.handlers.gitsigns").setup {}
+    require("scrollbar.handlers.gitsigns").setup()
   end
 
 }

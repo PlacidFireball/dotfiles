@@ -30,12 +30,12 @@ return {
             { icon = " ", key = "q", desc = "Quit", action = ":qa" },
           },
           header = [[
-███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
-████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
-██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
-██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
-██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
-╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
+ ██████╗      ██╗    ███╗   ██╗██╗   ██╗██╗███╗   ███╗
+██╔═══██╗     ██║    ████╗  ██║██║   ██║██║████╗ ████║
+██║   ██║     ██║    ██╔██╗ ██║██║   ██║██║██╔████╔██║
+██║   ██║██   ██║    ██║╚██╗██║╚██╗ ██╔╝██║██║╚██╔╝██║
+╚██████╔╝╚█████╔╝██╗ ██║ ╚████║ ╚████╔╝ ██║██║ ╚═╝ ██║
+ ╚═════╝  ╚════╝ ╚═╝ ╚═╝  ╚═══╝  ╚═══╝  ╚═╝╚═╝     ╚═╝]],
         },
         -- item field formatters
         formats = {
@@ -68,7 +68,6 @@ return {
           { section = "startup" },
         }
       },
-      git = { enabled = true },
       gitbrowse = {
         enabled = true,
       },
@@ -125,13 +124,10 @@ return {
       { "<leader>s.c",      function() Snacks.picker.files({ cwd = '/Users/jared.weiss/.centricient' }) end, desc = "Search .centricient" },
       { "<leader>sp",       function() Snacks.picker.files({ cwd = vim.fn.stdpath('data') }) end,            desc = "Packages" },
       { "<leader>gp",       function() Snacks.picker.grep({ cwd = vim.fn.stdpath('data') }) end,             desc = "Grep Packages" },
+      { "<leader>gn",       function() Snacks.picker.grep({ cwd = vim.fn.stdpath('config') }) end,           desc = "Grep Neovim" },
       -- find
       { "<leader>en",       function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end,          desc = "Edit Neovim" },
-      { "<leader>sG",       function() Snacks.picker.git_files() end,                                        desc = "Find Git Files" },
       { "<leader>sR",       function() Snacks.picker.recent() end,                                           desc = "Recent" },
-      -- git
-      { "<leader>gL",       function() Snacks.picker.git_log() end,                                          desc = "Git Log" },
-      { "<leader>gs",       function() Snacks.picker.git_status() end,                                       desc = "Git Status" },
       -- Grep
       { "<leader>/",        function() Snacks.picker.lines() end,                                            desc = "Buffer Lines" },
       { "<leader>sb",       function() Snacks.picker.grep_buffers() end,                                     desc = "Grep Open Buffers" },
@@ -155,8 +151,8 @@ return {
       { "gao",              function() Snacks.picker.lsp_outgoing_calls() end,                               desc = "Goto T[y]pe Definition" },
       { "<leader>st",       function() Snacks.picker.lsp_symbols() end,                                      desc = "LSP Symbols" },
       -- Undo
-      { "<leader>u",        function() Snacks.picker.undo() end,                                              desc = ""},
-      { "<leader>oc",      function() vim.cmd("edit /Users/jared.weiss/Dev/quiq/opencode.json") end,          desc = "Open opencode.json" },
+      { "<leader>u",        function() Snacks.picker.undo() end,                                             desc = ""},
+      { "<leader>oc",       function() vim.cmd "e ~/.config/opencode/opencode.json" end,                     desc = "Open opencode.json" },
     }
   },
 }
