@@ -1,0 +1,208 @@
+// Zed keymap — ported from Neovim config
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  // ─── Global / Workspace ──────────────────────────────────────────────────
+  {
+    "context": "Workspace",
+    "bindings": {
+      // Splits  (nvim: <M-v> / <M-o>)
+      "ctrl-alt-v": "pane::SplitRight",
+      "ctrl-alt-o": "pane::SplitDown",
+
+      // Toggle terminal  (nvim: <leader>tt)
+      "space t t": "terminal_panel::ToggleFocus",
+
+      // Open project panel  (nvim: <leader>O / <M-t>)
+      "space shift-o": "project_panel::ToggleFocus",
+
+      // Fuzzy file finder  (nvim: <leader>sf)
+      "space s f": "file_finder::Toggle",
+
+      // Project-wide search/grep  (nvim: <leader>sg)
+      "space s g": "pane::DeploySearch",
+
+      // Buffer list / tab switcher  (nvim: <leader><leader>)
+      "space space": "tab_switcher::Toggle",
+
+      // Open git panel  (nvim: <leader>lg lazygit)
+      "space l g": "git_panel::ToggleFocus",
+
+      // Diagnostics panel  (nvim: <leader>xx / trouble)
+      "space x x": "diagnostics::Deploy",
+
+      // Pane navigation  (nvim: <C-h/j/k/l>)
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown",
+
+      // Close current tab  (nvim: <C-q>)
+      "ctrl-q": "pane::CloseActiveItem"
+    }
+  },
+
+  // ─── VimControl (normal + visual) ────────────────────────────────────────
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      // LSP navigation  (nvim: gd, gr, gI, gT)
+      "g d": "editor::GoToDefinition",
+      "g D": "editor::GoToDeclaration",
+      "g r": "editor::FindAllReferences",
+      "g I": "editor::GoToImplementation",
+      "g y": "editor::GoToTypeDefinition",
+      "g h": "editor::Hover",
+      "g .": "editor::ToggleCodeActions",
+
+      // Diagnostics  (nvim: [d / ]d / <leader>e)
+      "] d": "editor::GoToDiagnostic",
+      "[ d": "editor::GoToPreviousDiagnostic",
+
+      // Symbol search  (nvim: <leader>st)
+      "space s t": "outline::Toggle",
+      "g s": "outline::Toggle",
+      "g shift-s": "project_symbols::Toggle",
+
+      // Rename  (nvim: <leader>rn / Zed vim built-in: cd)
+      "space r n": "editor::Rename",
+
+      // Code action  (nvim: <leader>ca)
+      "space c a": "editor::ToggleCodeActions",
+
+      // Format  (nvim: <leader>F)
+      "space shift-f": "editor::Format",
+
+      // Treesitter text objects / motions already handled by Zed vim mode:
+      // ] m / [ m  → go to next/prev method  ✓
+      // ] ] / [ [  → go to next/prev section  ✓
+      // a f / i f  → function text objects    ✓
+      // a c / i c  → class text objects       ✓
+
+      // Hover docs  (nvim: K)
+      "shift-k": "editor::Hover",
+
+      // Search word under cursor  (nvim: <leader>sw)
+      "space s w": "pane::DeploySearch"
+    }
+  },
+
+  // ─── Normal mode only ─────────────────────────────────────────────────────
+  {
+    "context": "vim_mode == normal && !menu",
+    "bindings": {
+      // Clear search highlight  (nvim: <Esc>)
+      "escape": "editor::Cancel",
+
+      // Rename via leader  (nvim: <leader>rn)
+      "space r n": "editor::Rename",
+
+      // Undo tree  (nvim: <leader>u)
+      "space u": "editor::OpenExcerpts",
+
+      // Git inline blame toggle  (nvim: <leader>gl)
+      "space g l": "git::Blame",
+
+      // Git diff hunk navigation (nvim: ]c / [c already built-in to vim mode)
+
+      // Toggle relative line numbers  (nvim: handled via toggle_relative_line_numbers in settings)
+
+      // Signature help  (nvim: <leader>k)
+      "space k": "editor::ShowSignatureHelp"
+    }
+  },
+
+  // ─── Insert mode ──────────────────────────────────────────────────────────
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      // Open completion  (nvim: auto via blink.cmp)
+      "ctrl-x ctrl-o": "editor::ShowCompletions",
+
+      // Inline AI assistant  (nvim: Avante / opencode)
+      "ctrl-x ctrl-a": "assistant::InlineAssist",
+
+      // Accept completion  (nvim: blink.cmp <C-a>)
+      "ctrl-a": "editor::ConfirmCompletion"
+    }
+  },
+
+  // ─── Editor (any mode) ────────────────────────────────────────────────────
+  {
+    "context": "Editor",
+    "bindings": {
+      // Paste from clipboard in insert  (nvim: <C-p> in insert)
+      // Note: cmd-v already works; this mirrors the nvim binding
+      "ctrl-shift-p": "editor::Paste",
+
+      // Close current tab — override vim's ctrl-q (visual block mode toggle)
+      "ctrl-q": "pane::CloseActiveItem",
+
+      // Pane navigation — override vim's ctrl-h/j/k/l defaults
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown"
+    }
+  },
+
+  // ─── Buffer / Tab navigation  (nvim: barbar <A-j/k> <C-q>) ──────────────
+  {
+    "context": "Pane",
+    "bindings": {
+      // Next / previous tab  (nvim: <A-j> / <A-k>)
+      "alt-j": "pane::ActivatePreviousItem",
+      "alt-k": "pane::ActivateNextItem",
+
+      // Close buffer  (nvim: <C-q>)
+      "ctrl-q": "pane::CloseActiveItem",
+
+      // Move tab left/right  (nvim: <A-J> / <A-K>)
+      "alt-shift-j": "pane::SwapItemLeft",
+      "alt-shift-k": "pane::SwapItemRight"
+    }
+  },
+
+  // ─── Terminal ─────────────────────────────────────────────────────────────
+  {
+    "context": "Terminal",
+    "bindings": {
+      // Pane navigation from terminal  (nvim: <C-h/j/k/l> in terminal mode)
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown"
+    }
+  },
+
+  // ─── Project Panel  (nvim: oil.nvim style) ────────────────────────────────
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      // oil.nvim-style navigation is mostly covered by Zed's built-in netrw-style
+      // project panel vim bindings (h/j/k/l, o, t, etc.)
+      "ctrl-h": "workspace::ActivatePaneLeft"
+    }
+  },
+
+  // ─── Surrounds in visual (nvim: nvim-surround S) ─────────────────────────
+  {
+    "context": "vim_mode == visual",
+    "bindings": {
+      "shift-s": "vim::PushAddSurrounds"
+    }
+  },
+
+  // ─── Any-bracket text objects (nvim: nvim-surround / mini.ai) ────────────
+  {
+    "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
+    "bindings": {
+      "q": "vim::AnyQuotes",
+      "b": "vim::AnyBrackets"
+    }
+  }
+]

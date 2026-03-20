@@ -1,0 +1,122 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  // --- Vim ---
+  "agent_servers": {
+    "opencode": {
+      "type": "registry"
+    }
+  },
+  "vim_mode": true,
+  "vim": {
+    "use_system_clipboard": "always",
+    "use_smartcase_find": true,
+    "toggle_relative_line_numbers": true,
+    "highlight_on_yank_duration": 200
+  },
+
+  // --- Base keymap ---
+  "base_keymap": "JetBrains",
+
+  // --- Theme & UI ---
+  "icon_theme": "Catppuccin Mocha",
+  "ui_font_size": 16,
+  "buffer_font_size": 15,
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "Catppuccin Mocha"
+  },
+
+  // --- Editor behavior ---
+  "tab_size": 2,
+  "hard_tabs": false,
+  "relative_line_numbers": "enabled",
+  "cursor_blink": false,
+  "scroll_beyond_last_line": "one_page",
+  "vertical_scroll_margin": 5,
+  "show_wrap_guides": false,
+  "use_smartcase_search": true,
+
+  // --- Autosave ---
+  "autosave": {
+    "after_delay": {
+      "milliseconds": 250
+    }
+  },
+
+  // --- Git ---
+  "git": {
+    "git_gutter": "tracked_files",
+    "inline_blame": {
+      "enabled": true
+    }
+  },
+  "scrollbar": {
+    "show": "always",
+    "git_diff": true,
+    "search_results": true,
+    "diagnostics": "all"
+  },
+  "tabs": {
+    "git_status": true,
+    "file_icons": true
+  },
+
+  // --- Gutter ---
+  "gutter": {
+    "line_numbers": true,
+    "folds": true,
+    "runnables": true,
+    "breakpoints": true
+  },
+
+  // --- Auto pairs ---
+  "use_autoclose": true,
+
+  // --- Inline diagnostics ---
+  "diagnostics": {
+    "inline": {
+      "enabled": true,
+      "update_debounce_ms": 150
+    }
+  },
+
+  // --- Format on save ---
+  "languages": {
+    "Rust": {
+      "format_on_save": "on",
+      "formatter": "language_server"
+    },
+    "Python": {
+      "tab_size": 4
+    }
+  },
+
+  // --- LSP ---
+  "lsp": {
+    "rust-analyzer": {
+      "initialization_options": {
+        "check": {
+          "command": "check"
+        }
+      }
+    },
+    "pyright": {
+      "settings": {
+        "python": {
+          "pythonPath": "/Users/jared.weiss/miniconda3/bin/python"
+        },
+        "pyright": {
+          "openFilesOnly": true
+        }
+      }
+    }
+  }
+}

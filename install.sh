@@ -56,6 +56,7 @@ case $1 in
   --no-waybar) NO_WAYBAR="Y";;
   --no-term) NO_TERM="Y";;
   --no-opencode) NO_OPENCODE="Y";;
+  --no-zed) NO_ZED="Y";;
   *) error_log "Unknown argument passed: $1"
   exit 1;;
 esac
@@ -100,6 +101,17 @@ if [[ ! "$NO_OPENCODE" == "Y" ]]; then
   fi
 else
   warn_log "Skipping opencode config setup"
+fi
+
+if [[ ! "$NO_ZED" == "Y" ]]; then
+  if [[ -d "$DOTFILES_BUILD_DIR/zed" ]]; then
+    backup_and_copy "$DOTFILES_BUILD_DIR/zed/settings.json" "$HOME/.config/zed/settings.json"
+    backup_and_copy "$DOTFILES_BUILD_DIR/zed/keymap.json" "$HOME/.config/zed/keymap.json"
+  else
+    warn_log "Zed config not found in repo, skipping install."
+  fi
+else
+  warn_log "Skipping zed config setup"
 fi
 
 happy_log "Finished install!"
