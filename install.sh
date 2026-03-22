@@ -76,8 +76,10 @@ if [[ ! "$NO_TERM" == "Y" ]]; then
   backup_and_copy "$DOTFILES_BUILD_DIR/ghostty" "$HOME/.config/ghostty"
 
   backup_and_copy "$DOTFILES_BUILD_DIR/kitty" "$HOME/.config/kitty"
+
+  backup_and_copy "$DOTFILES_BUILD_DIR/starship.toml" "$HOME/.config/starship.toml"
 else
-  warn_log "Skipping terminal setup (tmux, wezterm, ghostty)"
+  warn_log "Skipping terminal setup (tmux, wezterm, ghostty, starship)"
 fi
 
 # .config'd stuff
