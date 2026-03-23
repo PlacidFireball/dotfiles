@@ -16,9 +16,6 @@
         "gemini-3-flash": {
           "name": "Gemini 3 Flash"
         },
-        "gemini-3-pro": {
-          "name": "Gemini 3 Pro"
-        },
         "gemini-3.1-pro": {
           "name": "Gemini 3.1 Pro"
         },
@@ -38,17 +35,39 @@
       "git *": "ask",
       "grep *": "allow",
       "rg *": "allow",
+      "ls *": "allow",
+      "head *": "allow",
+      "tail *": "allow",
     },
     "edit": {
       "*": "ask",
+      "*.scala": "allow",
+      "*.java": "allow",
+      "*.rs": "allow",
+      "*.js": "allow",
+      "*.jsx": "allow",
+      "*.ts": "allow",
+      "*.tsx": "allow",
+      "*.gradle": "allow",
+      "*.py": "allow",
+      "*.md": "allow",
     },
     "read": {
       "*.scala": "allow",
+      "*.java": "allow",
+      "*.rs": "allow",
+      "*.js": "allow",
+      "*.jsx": "allow",
+      "*.ts": "allow",
+      "*.tsx": "allow",
+      "*.gradle": "allow",
       "*.py": "allow",
       "*.log": "allow",
+      "*.md": "allow",
       "*": "ask",
       "*.env": "deny",
       "*.env.*": "deny",
+      "config-override.json": "deny",
     },
     "list": {
       "*": "allow"
@@ -60,6 +79,7 @@
     "websearch": "ask",
     "codesearch": "ask",
     "external_directory": "ask",
-    "doom_loop": "deny"
+    "doom_loop": "deny",
+    "skill": "allow",
   }
 }

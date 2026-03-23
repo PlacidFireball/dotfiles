@@ -22,7 +22,7 @@ window {
   margin: 5px;
   border: none;
   color: #FFFFFF;
-  background-color: #000710;
+  background-color: #000000;
 }
 
 #inner-box {
@@ -32,7 +32,7 @@ window {
 }
 
 #outer-box {
-  border: 2px solid #D8F3F9;
+  border: 2px solid #ff0000;
   border-radius: 15px;
   background-color: #000000;
 }
@@ -45,13 +45,13 @@ window {
 #text {
   margin: 5px;
   border: none;
-  color: #D6F1F8;
+  color: #c5c8c6;
 }
 
 #entry {
-  border: 1px solid #000710;
+  border: 1px solid #000000;
   margin: 1px;
-  background: #000710;
+  background: #383232;
 }
 
 #entry:focus {
@@ -59,7 +59,7 @@ window {
 }
 
 #entry:selected {
-  background-color: #21A8CA;
+  background-color: #a30808;
   border-radius: 5px;
   border: none;
 }
