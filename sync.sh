@@ -51,7 +51,7 @@ function sync_config {
   fi
 }
 
-REPO_DIR="$HOME/build/dotfiles"
+REPO_DIR=$(pwd)
 
 info_log "Starting configuration sync..."
 
@@ -81,5 +81,8 @@ sync_config "wofi" "$HOME/.config/wofi" "$REPO_DIR/wofi"
 
 # Opencode (only if present)
 sync_config "opencode" "$HOME/.config/opencode" "$REPO_DIR/opencode"
+
+# Zed (only if present)
+sync_config "zed" "$HOME/.config/zed" "$REPO_DIR/zed"
 
 happy_log "Sync complete! Don't forget to check git status and commit your changes."

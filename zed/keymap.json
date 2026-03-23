@@ -11,8 +11,8 @@
     "context": "Workspace",
     "bindings": {
       // Splits  (nvim: <M-v> / <M-o>)
-      "ctrl-alt-v": "pane::SplitRight",
-      "ctrl-alt-o": "pane::SplitDown",
+      "alt-v": "pane::SplitRight",
+      "alt-o": "pane::SplitDown",
 
       // Toggle terminal  (nvim: <leader>tt)
       "space t t": "terminal_panel::ToggleFocus",
@@ -95,6 +95,9 @@
   {
     "context": "vim_mode == normal && !menu",
     "bindings": {
+      // Toggle AI agent panel  (nvim: <leader>cc)
+      "space c c": "agent::ToggleFocus",
+
       // Clear search highlight  (nvim: <Esc>)
       "escape": "editor::Cancel",
 
