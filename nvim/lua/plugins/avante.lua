@@ -11,7 +11,7 @@ return {
     -- add any opts here
     -- for example
     debug = false,
-    provider = "openai",
+    provider = "opencode",
     providers = {
       openai = {
         endpoint = "https://quiqgpt-api.quiq.sh/openai",

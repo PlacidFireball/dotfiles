@@ -1,6 +1,6 @@
 local default_picker_params = {
   ignored = true,
-  exclude = { "*.class", "*.mdx" }
+  exclude = { "*.class", "*.mdx", "*.log" }
 }
 
 return {
@@ -81,6 +81,11 @@ return {
         timeout = 10000,
       },
       picker = {
+        on_show = function(picker)
+          vim.schedule(function()
+            vim.cmd("startinsert")
+          end)
+        end,
       },
       quickfile = { enabled = false },
       scroll = { enabled = true },

