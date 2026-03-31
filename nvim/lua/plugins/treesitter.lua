@@ -2,26 +2,28 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    priority = 2,
+    lazy = false,
     config = function()
-      require 'nvim-treesitter.configs'.setup {
-        ensure_installed = { "python", "rust", "c", "scala", "java", "lua", "go", "vim", "vimdoc", "markdown", "markdown_inline", "elixir" },
-        sync_install = false,
-        auto_install = false,
-        ignore_install = {},
-        modules = {},
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = false,
-          disable = function(lang, buf)
-            local max_filesize = 150 * 1024 -- 100 KB
-            local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+      local treesitter = require('nvim-treesitter')
+
+      local installed_parsers = { "python", "rust", "c", "scala", "java", "lua", "go", "vim", "vimdoc", "markdown", "markdown_inline", "elixir" }
+
+      treesitter.setup {}
+      treesitter.install(installed_parsers)
+
+      for _, ft in ipairs(installed_parsers) do
+        vim.api.nvim_create_autocmd('FileType', {
+          pattern = { ft },
+          callback = function(ev)
+            local max_filesize = 150 * 1024 -- 150 KB
+            local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(ev.buf))
             if ok and stats and stats.size > max_filesize then
-              return true
+              return
             end
+            vim.treesitter.start()
           end
-        },
-      }
+        })
+      end
     end
   },
   {
@@ -29,63 +31,61 @@ return {
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
     },
-    priority = 1,
+    branch = "main",
     config = function()
       ---@diagnostic disable-next-line: missing-fields
-      require("nvim-treesitter.configs").setup {
-        textobjects = {
-          move = {
-            enable = true,
-            set_jumps = true, -- whether to set jumps in the jumplist
-            goto_next_start = {
-              ["]m"] = "@function.outer",
-              ["gj"] = "@function.outer",
-              ["]]"] = "@class.outer",
-              ["]b"] = "@block.outer",
-              ["]a"] = "@parameter.inner",
-            },
-            goto_next_end = {
-              ["]M"] = "@function.outer",
-              ["gJ"] = "@function.outer",
-              ["]["] = "@class.outer",
-              ["]B"] = "@block.outer",
-              ["]A"] = "@parameter.inner",
-            },
-            goto_previous_start = {
-              ["[m"] = "@function.outer",
-              ["gk"] = "@function.outer",
-              ["[["] = "@class.outer",
-              ["[b"] = "@block.outer",
-              ["[a"] = "@parameter.inner",
-            },
-            goto_previous_end = {
-              ["[M"] = "@function.outer",
-              ["gK"] = "@function.outer",
-              ["[]"] = "@class.outer",
-              ["[B"] = "@block.outer",
-              ["[A"] = "@parameter.inner",
-            },
-          },
-          select = {
-            enable = true,
-            lookahead = true,
-            keymaps = {
-              ["af"] = "@function.outer",
-              ["if"] = "@function.inner",
-              ["ac"] = "@class.outer",
-              ["ic"] = "@class.inner",
-              ["ab"] = "@block.outer",
-              ["ib"] = "@block.inner",
-              ["al"] = "@loop.outer",
-              ["il"] = "@loop.inner",
-              ["a/"] = "@comment.outer",
-              ["i/"] = "@comment.outer",   -- no inner for comment
-              ["aa"] = "@parameter.outer", -- parameter -> argument
-              ["ia"] = "@parameter.inner",
-            },
-          },
+
+      require('nvim-treesitter-textobjects').setup {
+        select = {
+          lookahead = true,
         },
+        move = {
+          set_jumps = true,
+        }
       }
+
+      -- move keybinds --
+      -- goto next start --
+      local move = require('nvim-treesitter-textobjects.move')
+      local default_modes = {'n', 'x', 'o'}
+      vim.keymap.set(default_modes, "]m", function() move.goto_next_start("@function.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "]]", function() move.goto_next_start("@class.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "]b", function() move.goto_next_start("@block.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "]a", function() move.goto_next_start("@parameter.inner", "textobjects") end)
+
+      -- goto next end --
+      vim.keymap.set(default_modes, "]M", function() move.goto_next_end("@function.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "][", function() move.goto_next_end("@class.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "]B", function() move.goto_next_end("@block.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "]A", function() move.goto_next_end("@parameter.inner", "textobjects") end)
+
+      -- goto previous start --
+      vim.keymap.set(default_modes, "[m", function() move.goto_previous_start("@function.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "[[", function() move.goto_previous_start("@class.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "[b", function() move.goto_previous_start("@block.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "[a", function() move.goto_previous_start("@parameter.inner", "textobjects") end)
+
+      -- goto previous end --
+      vim.keymap.set(default_modes, "[M", function() move.goto_previous_end("@function.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "[]", function() move.goto_previous_end("@class.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "[B", function() move.goto_previous_end("@block.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "[A", function() move.goto_previous_end("@parameter.inner", "textobjects") end)
+
+      -- select keybinds --
+      default_modes = {'x', 'o'}
+      local select = require('nvim-treesitter-textobjects.select')
+      vim.keymap.set(default_modes, "am", function() select.select_textobject("@function.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "im", function() select.select_textobject("@function.inner", "textobjects") end)
+      vim.keymap.set(default_modes, "ac", function() select.select_textobject("@class.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "ic", function() select.select_textobject("@class.inner", "textobjects") end)
+      vim.keymap.set(default_modes, "ab", function() select.select_textobject("@block.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "ib", function() select.select_textobject("@block.inner", "textobjects") end)
+      vim.keymap.set(default_modes, "al", function() select.select_textobject("@loop.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "il", function() select.select_textobject("@loop.inner", "textobjects") end)
+      vim.keymap.set(default_modes, "a/", function() select.select_textobject("@comment.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "i/", function() select.select_textobject("@comment.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "aa", function() select.select_textobject("@parameter.outer", "textobjects") end)
+      vim.keymap.set(default_modes, "ia", function() select.select_textobject("@parameter.inner", "textobjects") end)
     end
   }
 }

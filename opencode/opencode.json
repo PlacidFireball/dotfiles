@@ -11,20 +11,53 @@
       "name": "Quiq LiteLLM Proxy",
       "options": {
         "baseURL": "https://quiqgpt-proxy.quiq.sh/v1",
-        "apiKey": "curl -fsSL https://static.quiq-cdn.com/provision/install.sh | bash"
+        "includeUsage": true
       },
       "models": {
         "gemini-3-flash": {
-          "name": "Gemini 3 Flash"
+          "name": "Gemini 3 Flash",
+          "limit": {
+            "input": 1048576,
+            "output": 65536,
+            "context": 1114112
+          },
+          "cost": {
+            "input": 0.5,
+            "output": 3,
+            "cache_read": 0.05,
+          }
         },
         "gemini-3.1-pro": {
-          "name": "Gemini 3.1 Pro"
+          "name": "Gemini 3.1 Pro",
+          "limit": {
+            "input": 1048576,
+            "output": 65536,
+            "context": 1114112
+          },
+          "cost": {
+            "input": 2,
+            "output": 12,
+            "cache_read": 0.2,
+            "context_over_200k": {
+              "input": 4,
+              "output": 18,
+              "cache_read": 0.4
+            }
+          }
         },
         "claude-4.6-sonnet": {
-          "name": "Claude 4.6 Sonnet"
-        },
-        "gpt-5.2": {
-          "name": "GPT 5.2"
+          "name": "Claude 4.6 Sonnet",
+          "limit": {
+            "input": 1000000,
+            "output": 64000,
+            "context": 1064000
+          },
+          "cost": {
+            "input": 3,
+            "output": 15,
+            "cache_read": 0.3,
+            "cache_write": 3.75
+          }
         }
       }
     }
