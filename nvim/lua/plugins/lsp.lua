@@ -211,6 +211,7 @@ return {
         metals_config.settings.scalafixConfigPath = '/Users/jared.weiss/build/dotfiles/.scalafix.conf'
       end
 
+      metals_config.init_options.globSyntax = 'vscode'
       metals_config.init_options.statusBarProvider = 'on'
       metals_config.capabilities = require('blink.cmp').get_lsp_capabilities()
 

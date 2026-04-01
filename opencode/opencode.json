@@ -72,6 +72,8 @@
       "ls *": "allow",
       "head *": "allow",
       "tail *": "allow",
+      "open https://gitlab.quiq.sh/*": "allow",
+      "/Users/jared.weiss/Dev/quiq/.scripts/*": "allow",
     },
     "edit": {
       "*": "ask",
@@ -87,6 +89,7 @@
       "*.md": "allow",
     },
     "read": {
+      "*": "ask",
       "*.scala": "allow",
       "*.java": "allow",
       "*.rs": "allow",
@@ -98,7 +101,6 @@
       "*.py": "allow",
       "*.log": "allow",
       "*.md": "allow",
-      "*": "ask",
       "*.env": "deny",
       "*.env.*": "deny",
       "config-override.json": "deny",
