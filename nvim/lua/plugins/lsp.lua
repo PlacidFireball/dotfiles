@@ -115,7 +115,7 @@ return {
             vim.lsp.buf.signature_help()
           end, { silent = true, noremap = true, desc = 'toggle signature' })
 
-          local formatting_enabled_filetypes = { "rust", "zig" }
+          local formatting_enabled_filetypes = {}
 
           local function has_value(table, value)
             for _, val in ipairs(table) do
