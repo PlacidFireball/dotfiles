@@ -26,7 +26,8 @@ M.setup = function()
   vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
   vim.opt.inccommand = 'split'
   vim.opt.scrolloff = 5
-  vim.opt.foldenable = false
+  vim.opt.foldenable = true
+  vim.opt.foldlevelstart = 99
   vim.opt.hlsearch = true
   vim.opt.termguicolors = true
   vim.opt.laststatus = 3

@@ -69,6 +69,8 @@ M.setup = function(opts)
 
   vim.keymap.set('n', '<leader>O', ':Oil<CR>')
   vim.keymap.set('n', '<leader>A', ':AvanteToggle<CR>')
+
+  vim.keymap.set('n', '<C-f>', 'za', {desc='Toggle the fold under the cursor'})
 end
 
 return M

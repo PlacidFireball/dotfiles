@@ -73,7 +73,8 @@
       "head *": "allow",
       "tail *": "allow",
       "open https://gitlab.quiq.sh/*": "allow",
-      "/Users/jared.weiss/Dev/quiq/.scripts/*": "allow",
+      "$QUIQ_SRC_ROOT/.scripts/*": "allow",
+      "git -C $QUIQ_SRC_ROOT/* remote get-url origin": "allow",
     },
     "edit": {
       "*": "ask",
@@ -87,6 +88,7 @@
       "*.gradle": "allow",
       "*.py": "allow",
       "*.md": "allow",
+      "*.lua": "allow"
     },
     "read": {
       "*": "ask",
@@ -101,6 +103,7 @@
       "*.py": "allow",
       "*.log": "allow",
       "*.md": "allow",
+      "*.lua": "allow",
       "*.env": "deny",
       "*.env.*": "deny",
       "config-override.json": "deny",

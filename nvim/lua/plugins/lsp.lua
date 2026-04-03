@@ -73,7 +73,23 @@ return {
       vim.lsp.config('ts_ls', { capabilities = capabilities })
       vim.lsp.config('jsonls', { capabilities = capabilities })
       vim.lsp.config('zls', { capabilities = capabilities })
-      vim.lsp.config('clangd', { capabilities = capabilities })
+      vim.lsp.config('clangd', {
+        capabilities = capabilities,
+        cmd = {
+          'clangd',
+          '--query-driver=/usr/bin/cc,/usr/bin/clang,/usr/bin/clang++,/opt/homebrew/bin/gcc*,/opt/homebrew/bin/g++*',
+          '--fallback-style=llvm',
+        },
+        init_options = {
+          fallbackFlags = {
+            '-I/opt/homebrew/include',
+            '-I/opt/homebrew/opt/libre/include/re',
+            '-I/opt/homebrew/opt/baresip/include',
+            '-I/opt/homebrew/opt/openssl@3/include',
+            '-I/opt/homebrew/opt/opus/include',
+          },
+        },
+      })
       vim.lsp.config("gradle_ls", {
         settings = {
           gradleWrapperEnabled = true,
