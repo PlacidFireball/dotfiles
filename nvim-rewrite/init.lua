@@ -51,6 +51,16 @@ vim.keymap.set('n', 'ø', '<CMD>:split<CR>') -- alt+v but macos is retarded
 
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
+-- Split navigation
+vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Move to left split' })
+vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Move to below split' })
+vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Move to above split' })
+vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Move to right split' })
+vim.keymap.set('t', '<C-h>', '<C-\\><C-n><C-w>h', { desc = 'Move to left split' })
+vim.keymap.set('t', '<C-j>', '<C-\\><C-n><C-w>j', { desc = 'Move to below split' })
+vim.keymap.set('t', '<C-k>', '<C-\\><C-n><C-w>k', { desc = 'Move to above split' })
+vim.keymap.set('t', '<C-l>', '<C-\\><C-n><C-w>l', { desc = 'Move to right split' })
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', function() vim.diagnostic.jump({ diagnostic = vim.diagnostic.get_prev() }) end,
   { desc = 'Go to previous [D]iagnostic message' })
@@ -66,6 +76,8 @@ vim.keymap.set('n', '-', [[<cmd>vertical resize -5<cr>]])   -- make the window s
 vim.keymap.set('n', '+', [[<cmd>horizontal resize +5<cr>]]) -- make the window bigger horizontally by pressing shift and =
 vim.keymap.set('n', '_', [[<cmd>horizontal resize -5<cr>]]) -- make the window smaller horizontally by pressing shift and -
 
+vim.keymap.set('i', '<C-p>', '<Esc>pa')
+
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
@@ -74,7 +86,24 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
-vim.keymap.set('i', '<C-p>', '<Esc>pa')
+vim.api.nvim_create_autocmd('PackChanged', {
+  callback = function (ev)
+    print(vim.inspect(ev))
+    local name, kind = ev.data.spec.name, ev.data.kind
+    print(name)
+    print(kind)
+
+    if name == 'blink.cmp' and (kind == 'install' or kind == 'update') then
+      vim.system({'cargo', 'build', '--release'}, { cwd = ev.data.path }, function (sys_completed)
+        if sys_completed.code == 0 then
+          print('successfully installed blink.cmp')
+        else
+          print('singal' .. sys_completed.signal .. 'stdout:' .. sys_completed.stdout)
+        end
+      end):wait(60 * 1000)
+    end
+  end
+})
 
 -- require all files in <neovim-config-dir>/lua/config
 for _, file in ipairs(vim.fn.glob(vim.fn.stdpath('config') .. '/lua/config/*.lua', true, true)) do
