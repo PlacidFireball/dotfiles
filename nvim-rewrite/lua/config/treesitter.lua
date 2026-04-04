@@ -3,7 +3,6 @@ local h = require('config.helpers')
 vim.pack.add(h.spec('nvim-treesitter/nvim-treesitter', 'nvim-treesitter', 'main'), h.po())
 vim.pack.add(h.spec('nvim-treesitter/nvim-treesitter-textobjects', 'nvim-treesitter-textobjects', 'main'), h.po())
 
-vim.cmd('TSUpdate')
 
 local treesitter = require('nvim-treesitter')
 
