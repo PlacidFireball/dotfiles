@@ -52,6 +52,7 @@ function backup_and_copy {
 while [[ "$#" -gt 0 ]] do 
 case $1 in
   --no-neovim) NO_NEOVIM="Y";;
+  --no-nvim-rewrite) NO_NVIM_REWRITE="Y";;
   --no-hypr) NO_HYPR="Y";;
   --no-waybar) NO_WAYBAR="Y";;
   --no-term) NO_TERM="Y";;
@@ -87,6 +88,16 @@ if [[ ! "$NO_NEOVIM" == "Y" ]]; then
   backup_and_copy "$DOTFILES_BUILD_DIR/nvim" "$HOME/.config/nvim"
 else
   warn_log "Skipping neovim config setup"
+fi
+
+if [[ ! "$NO_NVIM_REWRITE" == "Y" ]]; then
+  if [[ -d "$DOTFILES_BUILD_DIR/nvim-rewrite" ]]; then
+    backup_and_copy "$DOTFILES_BUILD_DIR/nvim-rewrite" "$HOME/.config/nvim-rewrite"
+  else
+    warn_log "nvim-rewrite config not found in repo, skipping install."
+  fi
+else
+  warn_log "Skipping nvim-rewrite config setup"
 fi
 
 if [[ ! "$NO_HYPR" == "Y" ]]; then
