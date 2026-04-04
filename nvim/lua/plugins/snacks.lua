@@ -10,9 +10,6 @@ return {
     lazy = false,
     dependencies = { 'folke/todo-comments.nvim' }, -- NOTE: not really a hard dependency but I need it for some of the keybinds below
     opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
       bigfile = { enabled = false },
       dashboard = {
         enabled = true,

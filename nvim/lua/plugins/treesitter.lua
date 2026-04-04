@@ -35,8 +35,6 @@ return {
     },
     branch = "main",
     config = function()
-      ---@diagnostic disable-next-line: missing-fields
-
       require('nvim-treesitter-textobjects').setup {
         select = {
           lookahead = true,
