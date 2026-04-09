@@ -3,6 +3,9 @@ local h = require('config.helpers')
 vim.pack.add(h.spec('folke/todo-comments.nvim', 'todo-comments'), h.po())
 vim.pack.add(h.spec('folke/snacks.nvim', 'snacks'), h.po())
 
+require('todo-comments').setup {
+}
+
 require('snacks').setup {
   -- your configuration comes here
   -- or leave it empty to use the default settings
@@ -175,3 +178,19 @@ vim.keymap.set("n", "<leader>st",       function() Snacks.picker.lsp_symbols() e
 -- Undo
 vim.keymap.set("n", "<leader>u",        function() Snacks.picker.undo() end, { desc = ""})
 vim.keymap.set("n", "<leader>oc",       function() vim.cmd "e ~/.config/opencode/opencode.json" end, { desc = "Open opencode.json" })
+
+vim.keymap.set('n', "<leader>tt", function ()
+  Snacks.terminal.toggle(nil, {
+    win = {
+      style = "terminal",
+      show = true,
+      width = 0.75,
+      height = 0.75,
+      position = "float",
+      border = "rounded"
+    },
+    start_insert = true,
+    auto_insert = false,
+    auto_close = false,
+  })
+end, { desc = '[T]oggle [T]erminal' })

@@ -99,16 +99,24 @@ local function send_shell_command_to_buf(in_opts)
 end
 
 
-local function run_terminal_command(cmd)
-  Snacks.terminal.open(cmd, {
+---run a terminal command
+---@param cmd string|string[]
+---@param opts 
+local function run_terminal_command(cmd, opts)
+
+  local default_win = {
+    style = "float",
+    width = 0.8,
+    height = 0.8,
+    border = "rounded",
+  }
+
+  local opts = opts or {
     auto_close = true,
-    win = {
-      style = "float",
-      width = 0.8,
-      height = 0.8,
-      border = "rounded",
-    },
-  })
+    win = default_win,
+  }
+
+  Snacks.terminal.open(cmd, opts)
 end
 
 

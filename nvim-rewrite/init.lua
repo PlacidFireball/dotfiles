@@ -44,7 +44,7 @@ vim.keymap.set('n', '<C-f>', 'za', { desc = 'Toggle fold' })
 vim.keymap.set('n', '<leader>x', ':.lua<CR>')
 vim.keymap.set('v', '<leader>x', ':.lua<CR>')
 vim.keymap.set('n', '<leader>X', ':source %<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<C-S-r>', '<CMD>source $MYVIMRC<CR>', { desc = 'Reload Neovim config' })
+vim.keymap.set('n', '<leader>R', '<CMD>source $MYVIMRC<CR>', { desc = 'Reload Neovim config' })
 
 vim.keymap.set('n', '<M-v>', '<CMD>:vsplit<CR>')
 vim.keymap.set('n', '<M-o>', '<CMD>:split<CR>')
@@ -79,6 +79,10 @@ vim.keymap.set('n', '+', [[<cmd>horizontal resize +5<cr>]]) -- make the window b
 vim.keymap.set('n', '_', [[<cmd>horizontal resize -5<cr>]]) -- make the window smaller horizontally by pressing shift and -
 
 vim.keymap.set('i', '<C-p>', '<Esc>pa')
+
+vim.api.nvim_create_user_command('Run', function (args)
+  require('config.helpers').run_terminal_command(args.args)
+end, {})
 
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',

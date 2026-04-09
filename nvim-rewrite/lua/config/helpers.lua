@@ -35,10 +35,37 @@ local function get_quiq_directory()
   return '/Users/jared.weiss/Dev/quiq/ring-master/'
 end
 
+local function table_to_set(table)
+  local set = {}
+  for _, l in ipairs(table) do set[l] = true end
+  return set
+end
+
+---run a terminal command
+---@param cmd string|string[]
+---@param opts_in snacks.terminal.Opts|nil
+local function run_terminal_command(cmd, opts_in)
+  local default_win = {
+    style = "float",
+    width = 0.8,
+    height = 0.8,
+    border = "rounded",
+  }
+
+  local opts = opts_in or {
+    interactive = false,
+    win = default_win,
+  }
+
+  Snacks.terminal.open(cmd, opts)
+end
+
 
 M.spec = get_spec
 M.gh = gh
 M.po = default_pack_opts
 M.get_quiq_directory = get_quiq_directory
+M.table_to_set = table_to_set
+M.run_terminal_command = run_terminal_command
 
 return M
