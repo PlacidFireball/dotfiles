@@ -71,6 +71,13 @@ M.setup = function(opts)
   vim.keymap.set('n', '<leader>A', ':AvanteToggle<CR>')
 
   vim.keymap.set('n', '<C-f>', 'za', {desc='Toggle the fold under the cursor'})
+
+  vim.keymap.set('n', '<leader>rrm', function ()
+    require('modules.utils').run_terminal_command('./bloopwrapper run ring-master -s="-tc -p 51261"')
+  end, { desc = '[R]un [R]ing [M]aster'})
+  vim.keymap.set('n', '<leader>rrb', function ()
+    require('modules.utils').run_terminal_command('./bloopwrapper run ring-bearer -s="-p 51262"')
+  end, { desc = '[R]un [R]ing [B]earer'})
 end
 
 return M

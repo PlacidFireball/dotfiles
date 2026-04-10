@@ -1,39 +1,33 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "share": "disabled",
-  "model": "litellm/claude-4.6-sonnet",
-  "disabled_providers": [
-  ],
+  "model": "litellm/gemini-3.1-pro",
+  "disabled_providers": [],
   "logLevel": "DEBUG",
   "provider": {
     "litellm": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "Quiq LiteLLM Proxy",
       "options": {
-        "baseURL": "https://quiqgpt-proxy.quiq.sh/v1",
-        "includeUsage": true
+        "baseURL": "https://quiqgpt-proxy-east.quiq.sh/v1",
+        "includeUsage": true,
       },
       "models": {
         "gemini-3-flash": {
           "name": "Gemini 3 Flash",
+          "cost": {
+            "input": 0.5,
+            "output": 3,
+            "cache_read": 0.05
+          },
           "limit": {
             "input": 1048576,
             "output": 65536,
             "context": 1114112
-          },
-          "cost": {
-            "input": 0.5,
-            "output": 3,
-            "cache_read": 0.05,
           }
         },
         "gemini-3.1-pro": {
           "name": "Gemini 3.1 Pro",
-          "limit": {
-            "input": 1048576,
-            "output": 65536,
-            "context": 1114112
-          },
           "cost": {
             "input": 2,
             "output": 12,
@@ -43,20 +37,25 @@
               "output": 18,
               "cache_read": 0.4
             }
+          },
+          "limit": {
+            "input": 1048576,
+            "output": 65536,
+            "context": 1114112
           }
         },
         "claude-4.6-sonnet": {
           "name": "Claude 4.6 Sonnet",
-          "limit": {
-            "input": 1000000,
-            "output": 64000,
-            "context": 1064000
-          },
           "cost": {
             "input": 3,
             "output": 15,
             "cache_read": 0.3,
             "cache_write": 3.75
+          },
+          "limit": {
+            "input": 1000000,
+            "output": 64000,
+            "context": 1064000
           }
         }
       }
@@ -64,7 +63,6 @@
   },
   "permission": {
     "bash": {
-      "*": "ask",
       "rm *": "ask",
       "git *": "ask",
       "grep *": "allow",
@@ -75,6 +73,10 @@
       "open https://gitlab.quiq.sh/*": "allow",
       "$QUIQ_SRC_ROOT/.scripts/*": "allow",
       "git -C $QUIQ_SRC_ROOT/* remote get-url origin": "allow",
+      "git diff*": "allow",
+      "echo *": "allow",
+      "qdev *": "allow",
+      "qdev *--yes*": "ask"
     },
     "edit": {
       "*": "ask",
@@ -104,9 +106,11 @@
       "*.log": "allow",
       "*.md": "allow",
       "*.lua": "allow",
+      "*.toml": "allow",
       "*.env": "deny",
       "*.env.*": "deny",
       "config-override.json": "deny",
+      "/Users/jared.weiss/Dev/quiq/.claude/skills-library/review-backend.md": "allow"
     },
     "list": {
       "*": "allow"
@@ -117,8 +121,11 @@
     "webfetch": "ask",
     "websearch": "ask",
     "codesearch": "ask",
-    "external_directory": "ask",
+    "external_directory": {
+      "*": "ask",
+      "~/Dev/quiq*": "allow"
+    },
     "doom_loop": "deny",
-    "skill": "allow",
+    "skill": "allow"
   }
 }

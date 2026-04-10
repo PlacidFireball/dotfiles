@@ -99,24 +99,15 @@ local function send_shell_command_to_buf(in_opts)
 end
 
 
----run a terminal command
----@param cmd string|string[]
----@param opts 
 local function run_terminal_command(cmd, opts)
-
-  local default_win = {
-    style = "float",
-    width = 0.8,
-    height = 0.8,
-    border = "rounded",
+  local defaults = {
+    auto_close = false,
+    win = {
+      position = "bottom",
+      height = 0.5,
+    },
   }
-
-  local opts = opts or {
-    auto_close = true,
-    win = default_win,
-  }
-
-  Snacks.terminal.open(cmd, opts)
+  Snacks.terminal.open(cmd, vim.tbl_deep_extend("force", defaults, opts or {}))
 end
 
 

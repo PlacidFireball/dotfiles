@@ -71,7 +71,13 @@ return {
       vim.lsp.enable('pyright')
       vim.lsp.config('gopls', { capabilities = capabilities })
       vim.lsp.config('ts_ls', { capabilities = capabilities })
-      vim.lsp.config('jsonls', { capabilities = capabilities })
+      vim.lsp.config('jsonls', {
+        capabilities = capabilities,
+        settings = {
+          json = { format = { enable = true } },
+          validate = { enable = true },
+        },
+      })
       vim.lsp.config('zls', { capabilities = capabilities })
       vim.lsp.config('clangd', {
         capabilities = capabilities,
