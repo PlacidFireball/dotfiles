@@ -7,8 +7,8 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.mouse = 'a'
 vim.opt.showmode = false
-vim.opt.clipboard = 'unnamedplus'
 vim.opt.breakindent = true
+vim.opt.clipboard = 'unnamedplus'
 vim.opt.undofile = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
@@ -44,7 +44,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
-
 local function map(mode, keybind, action, desc)
   vim.keymap.set(mode, keybind, action, { desc = desc })
 end
@@ -64,8 +63,8 @@ vim.keymap.set('n', '√', '<CMD>:split<CR>') -- alt+v but macos is retarded
 vim.keymap.set('n', 'ø', '<CMD>:split<CR>') -- alt+v but macos is retarded
 
 -- Diagnostic keymaps
-map('n', '[d', vim.diagnostic.goto_prev, 'Go to previous [D]iagnostic message')
-map('n', ']d', vim.diagnostic.goto_next, 'Go to next [D]iagnostic message')
+map('n', '[d', function() vim.diagnostic.jump { diagnostic = vim.diagnostic.get_next() } end, 'Go to previous [D]iagnostic message')
+map('n', ']d', function() vim.diagnostic.jump { diagnostic = vim.diagnostic.get_prev() } end, 'Go to next [D]iagnostic message')
 map('n', '<leader>e', vim.diagnostic.open_float, 'Show diagnostic [E]rror messages')
 map('n', '<leader>q', vim.diagnostic.setloclist, 'Open diagnostic [Q]uickfix list')
 
@@ -90,23 +89,22 @@ vim.keymap.set('n', '<leader>O', ':Oil<CR>')
 
 vim.keymap.set('n', '<C-f>', 'za', {desc='Toggle the fold under the cursor'})
 
-vim.api.nvim_create_user_command("ToggleTerminal", function()
-  if not vim.api.nvim_win_is_valid(M.state.floating_terminal.win) then
-    M.state.floating_terminal = get_floating_window({
-      buf = M.state.floating_terminal.buf,
-    })
-    if vim.bo[M.state.floating_terminal.buf].buftype ~= "terminal" then
-      vim.cmd.terminal()
-    end
-  else
-    vim.api.nvim_win_hide(M.state.floating_terminal.win)
-  end
-end, {})
-vim.keymap.set({ "n", "t" }, "<leader>tt", "<CMD>ToggleTerminal<CR>", { desc = "[T]oggle floating [T]erminal" })
+vim.keymap.set('n', '<M-m>', ':m .+1<CR>==', { desc = 'Move line down' })
+vim.keymap.set('n', '<M-M>', ':m .-2<CR>==', { desc = 'Move line up' })
+vim.keymap.set('v', '<M-m>', ":m '>+1<CR>gv=gv", { desc = 'Move selection down' })
+vim.keymap.set('v', '<M-M>', ":m '<-2<CR>gv=gv", { desc = 'Move selection up' })
 
-vim.keymap.set({'n', 't'}, '<C-h>', '<C-w>h', { desc = 'Go to pane left'})
-vim.keymap.set({'n', 't'}, '<C-l>', '<C-w>l', { desc = 'Go to pane right'})
-vim.keymap.set({'n', 't'}, '<C-j>', '<C-w>j', { desc = 'Go to pane down'})
-vim.keymap.set({'n', 't'}, '<C-k>', '<C-w>k', { desc = 'Go to pane up'})
+vim.keymap.set({ "n", "t" }, "<leader>tt", function ()
+  Snacks.terminal.toggle(nil, {
+    auto_close = false,
+    auto_insert = true,
+    start_insert = true,
+  })
+end, { desc = "[T]oggle floating [T]erminal" })
+
+vim.keymap.set({'n', 't'}, '<C-h>', '<cmd>wincmd h<CR>', { desc = 'Go to pane left'})
+vim.keymap.set({'n', 't'}, '<C-l>', '<cmd>wincmd l<CR>', { desc = 'Go to pane right'})
+vim.keymap.set({'n', 't'}, '<C-j>', '<cmd>wincmd j<CR>', { desc = 'Go to pane down'})
+vim.keymap.set({'n', 't'}, '<C-k>', '<cmd>wincmd k<CR>', { desc = 'Go to pane up'})
 
 require('config.lazy')

@@ -14,7 +14,7 @@ return {
       },
       "Kaiser-Yang/blink-cmp-avante"
     },
-    version = 'v0.*',
+    version = '1.*',
     -- allows extending the providers array elsewhere in your config
     -- without having to redefine it
     opts_extend = { "sources.default" },
@@ -38,22 +38,34 @@ return {
           use_nvim_cmp_as_default = true,
           nerd_font_variant = 'mono'
         },
-
+        completion = {
+          accept = {
+            auto_brackets = {
+              enabled = true,
+              kind_resolution = {
+                enabled = true,
+                blocked_filetypes = { 'typescript', 'javascriptreact', 'vue', 'scala' }
+              }
+            }
+          },
+          documentation = {
+            auto_show = true,
+            auto_show_delay_ms = 500,
+          },
+          ghost_text = { enabled = true },
+          menu = {
+            draw = {
+              treesitter = { 'lsp' }
+            }
+          },
+        },
+        sources = {
+          default = { 'snippets', 'lsp', 'path', 'buffer' },
+        },
         snippets = {
           preset = 'luasnip'
         },
-
-        sources = {
-          default = { 'snippets', 'lsp', 'avante', 'path' },
-          providers = {
-            avante = {
-              module = 'blink-cmp-avante',
-              name = 'Avante',
-              opts = {}
-            }
-          }
-        },
-
+        fuzzy = { implementation = 'prefer_rust_with_warning' },
         -- experimental signature help support
         signature = { enabled = true }
       }
