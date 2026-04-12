@@ -1,5 +1,9 @@
 return {
-  { 'folke/todo-comments.nvim' },
+  {
+    'folke/todo-comments.nvim',
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {}
+  },
   {
     "folke/snacks.nvim",
     priority = 1000,

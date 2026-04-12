@@ -104,4 +104,9 @@ vim.api.nvim_create_user_command("ToggleTerminal", function()
 end, {})
 vim.keymap.set({ "n", "t" }, "<leader>tt", "<CMD>ToggleTerminal<CR>", { desc = "[T]oggle floating [T]erminal" })
 
+vim.keymap.set({'n', 't'}, '<C-h>', '<C-w>h', { desc = 'Go to pane left'})
+vim.keymap.set({'n', 't'}, '<C-l>', '<C-w>l', { desc = 'Go to pane right'})
+vim.keymap.set({'n', 't'}, '<C-j>', '<C-w>j', { desc = 'Go to pane down'})
+vim.keymap.set({'n', 't'}, '<C-k>', '<C-w>k', { desc = 'Go to pane up'})
+
 require('config.lazy')

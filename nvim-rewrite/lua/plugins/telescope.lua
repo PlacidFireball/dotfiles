@@ -51,13 +51,6 @@ return {
         builtin.find_files(opts)
       end, { desc = '[E]dit [N]eovim' })
 
-      vim.keymap.set('n', '<leader>gn', function()
-        local opts = require 'telescope.themes'.get_ivy({
-          cwd = vim.fn.stdpath('config')
-        })
-        builtin.live_grep(opts)
-      end, { desc = '[G]rep [N]eovim' })
-
       vim.keymap.set('n', '<leader>sp', function()
         builtin.find_files {
           cwd = vim.fs.joinpath(vim.fn.stdpath('data'), "lazy")
@@ -71,6 +64,9 @@ return {
 
       -- <leader>sg [S]earch with [G]rep
       require('modules.telescope.multigrep').setup()
+
+      -- <leader>sq [S]earch [Q]dev commands
+      require('modules.telescope.qdev').setup()
     end
   }
 }
