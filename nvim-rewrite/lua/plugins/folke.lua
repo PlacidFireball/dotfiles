@@ -22,7 +22,8 @@ return {
             { icon = " ", key = "f", desc = "Search Files", action = "<leader>sf" },
             { icon = " ", key = "g", desc = "Grep Text", action = "<leader>sg" },
             { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
-            { icon = "🛠", key = "M", desc = "Mason", action = ":Mason", enabled = package.loaded.lazy ~= nil },
+            { icon = "🛠", key = "M", desc = "Mason", action = ":Mason" },
+            { icon = "🛠", key = "O", desc = "Oil", action = ":Oil" },
             { icon = " ", key = "q", desc = "Quit", action = ":qa" },
           },
           header = [[
