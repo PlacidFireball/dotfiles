@@ -83,6 +83,28 @@ return {
       statuscolumn = { enabled = true },
       terminal = {},
       words = { enabled = true },
+      image = {
+        enabled = true,
+        resolve = function(file, src)
+          -- For quiq-wiki files, resolve asset paths relative to the wiki root
+          -- since images use paths like "assets/images/foo.png" from the repo root,
+          -- not relative to the individual markdown file's directory.
+          local wiki_root = vim.fn.expand("~/Dev/quiq/quiq-wiki")
+          if file:find(wiki_root, 1, true) and not src:find("^%w%w+://") then
+            local candidate = wiki_root .. "/" .. src
+            if vim.fn.filereadable(candidate) == 1 then
+              return candidate
+            end
+          end
+        end,
+        doc = {
+          enabled = true,
+          inline = true,
+          float = false,
+          max_width = 80,
+          max_height = 40,
+        },
+      },
     },
     keys = {
       {
@@ -129,11 +151,6 @@ return {
         "<leader>xX",
         "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
         desc = "Buffer Diagnostics (Trouble)",
-      },
-      {
-        "<leader>cs",
-        "<cmd>Trouble symbols toggle focus=false<cr>",
-        desc = "Symbols (Trouble)",
       },
       {
         "<leader>cl",

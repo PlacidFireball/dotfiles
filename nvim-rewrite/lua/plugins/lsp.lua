@@ -48,7 +48,9 @@ return {
           }
         }
       })
+
       vim.lsp.config('rust_analyzer', { capabilities = capabilities })
+
       vim.lsp.config('pyright', {
         cmd = { 'pyright-langserver', '--stdio' },
         -- root_dir = function(fname)
@@ -68,11 +70,7 @@ return {
           }
         }
       })
-      vim.lsp.enable('pyright')
-      vim.lsp.config('gopls', { capabilities = capabilities })
-      vim.lsp.config('ts_ls', { capabilities = capabilities })
-      vim.lsp.config('jsonls', { capabilities = capabilities })
-      vim.lsp.config('zls', { capabilities = capabilities })
+
       vim.lsp.config('clangd', {
         capabilities = capabilities,
         cmd = {
@@ -90,12 +88,23 @@ return {
           },
         },
       })
+
       vim.lsp.config("gradle_ls", {
         settings = {
           gradleWrapperEnabled = true,
         },
         capabilities = capabilities
       })
+
+      vim.lsp.config('gopls', { capabilities = capabilities })
+
+      vim.lsp.config('ts_ls', { capabilities = capabilities })
+
+      vim.lsp.config('jsonls', { capabilities = capabilities })
+
+      vim.lsp.config('zls', { capabilities = capabilities })
+
+      vim.lsp.enable({ 'lua_ls', 'rust_analyzer', 'pyright', 'clangd', 'gradle_ls', 'gopls', 'ts_ls', 'jsonls', 'zls' })
 
       -- scala comes from nvim-metals
 
@@ -142,7 +151,7 @@ return {
             return false
           end
 
-          if has_value(formatting_enabled_filetypes, vim.bo.filetype) and client.supports_method('textDocument/formatting') then
+          if has_value(formatting_enabled_filetypes, vim.bo.filetype) and client:supports_method('textDocument/formatting') then
             vim.api.nvim_create_autocmd('BufWritePre', {
               buffer = event.buf,
               callback = function()
@@ -210,7 +219,7 @@ return {
           return jit.os
         end
 
-        local fh, err = assert(io.popen('uname -o 2>/dev/null', 'r'))
+        local fh, _ = assert(io.popen('uname -o 2>/dev/null', 'r'))
 
         if fh then
           return fh:read()

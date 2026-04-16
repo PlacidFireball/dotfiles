@@ -87,6 +87,49 @@ vim.keymap.set('n', '<leader>og', function() vim.cmd'e ~/.config/ghostty/config'
 vim.keymap.set('n', '<leader>oc', function() vim.cmd "e ~/.config/opencode/opencode.json" end, { desc = 'Open [o]pen[c]ode.json'})
 vim.keymap.set('n', '<leader>O', ':Oil<CR>')
 
+vim.keymap.set('n', '<leader>tc', function()
+  local filepath = vim.fn.expand('~/.centricient/config-override.json')
+  local f = io.open(filepath, 'r')
+  if not f then
+    vim.notify('Could not open ' .. filepath, vim.log.levels.ERROR)
+    return
+  end
+  local content = f:read('*all')
+  f:close()
+
+  local turned_on = nil
+  if content:find('"#cluster/ring%-socket%-server"') then
+    content = content:gsub('"#cluster/ring%-socket%-server"', '"cluster/ring-socket-server"')
+    turned_on = true
+  elseif content:find('"cluster/ring%-socket%-server"') then
+    content = content:gsub('"cluster/ring%-socket%-server"', '"#cluster/ring-socket-server"')
+    turned_on = false
+  end
+
+  if content:find('"#cluster/ring%-http%-server"') then
+    content = content:gsub('"#cluster/ring%-http%-server"', '"cluster/ring-http-server"')
+    turned_on = true
+  elseif content:find('"cluster/ring%-http%-server"') then
+    content = content:gsub('"cluster/ring%-http%-server"', '"#cluster/ring-http-server"')
+    turned_on = false
+  end
+
+  if turned_on ~= nil then
+    local fw = io.open(filepath, 'w')
+    if fw then
+      fw:write(content)
+      fw:close()
+      local state_str = turned_on and "ON" or "OFF"
+      vim.notify('Canary config overrides turned ' .. state_str, vim.log.levels.INFO)
+      vim.cmd('checktime') -- Refresh buffer if it's already open in nvim
+    else
+      vim.notify('Could not write to ' .. filepath, vim.log.levels.ERROR)
+    end
+  else
+    vim.notify('Keys not found in config-override.json', vim.log.levels.WARN)
+  end
+end, { desc = '[T]oggle [c]anary config overrides' })
+
 vim.keymap.set('n', '<C-f>', 'za', {desc='Toggle the fold under the cursor'})
 
 vim.keymap.set('n', '<M-m>', ':m .+1<CR>==', { desc = 'Move line down' })
