@@ -6,16 +6,7 @@ return {
     config = function()
       local treesitter = require('nvim-treesitter')
 
-      local installed_parsers = {
-        "python", "rust", "c",
-        "scala", "java", "lua",
-        "go", "vim", "vimdoc",
-        "markdown", "markdown_inline",
-        "css", "html", "javascript",
-        "latex", "scss",
-        "tsx", "typst", "vue",
-        "svelte", "elixir",
-      }
+      local installed_parsers = { "python", "rust", "c", "scala", "java", "lua", "go", "vim", "vimdoc", "markdown", "markdown_inline", "elixir" }
 
       treesitter.setup {}
       treesitter.install(installed_parsers)

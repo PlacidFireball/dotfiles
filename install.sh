@@ -90,16 +90,6 @@ else
   warn_log "Skipping neovim config setup"
 fi
 
-if [[ ! "$NO_NVIM_REWRITE" == "Y" ]]; then
-  if [[ -d "$DOTFILES_BUILD_DIR/nvim-rewrite" ]]; then
-    backup_and_copy "$DOTFILES_BUILD_DIR/nvim-rewrite" "$HOME/.config/nvim-rewrite"
-  else
-    warn_log "nvim-rewrite config not found in repo, skipping install."
-  fi
-else
-  warn_log "Skipping nvim-rewrite config setup"
-fi
-
 if [[ ! "$NO_HYPR" == "Y" ]]; then
   warn_log "No hypr config stuff to setup in this repo right now"
 else

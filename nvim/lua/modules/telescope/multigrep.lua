@@ -4,6 +4,8 @@ local make_entry = require('telescope.make_entry')
 local conf = require('telescope.config').values
 local M = {}
 
+
+---@param opts? { cwd?: string, extra_rg_opts: string[] }
 local live_multigrep = function(opts)
   opts = opts or {}
   opts.cwd = opts.cwd or vim.uv.cwd()
@@ -14,7 +16,7 @@ local live_multigrep = function(opts)
         return nil
       end
 
-      local pieces = vim.split(prompt, "  ")
+      local pieces = vim.split(prompt, "|")
       local args = { "rg" }
 
       if pieces[1] then
@@ -27,10 +29,10 @@ local live_multigrep = function(opts)
         table.insert(args, pieces[2])
       end
 
-      return vim.tbl_flatten {
-        args,
-        { '--color=never', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case' }
-      }
+      vim.list_extend(args, { '--color=never', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case' })
+      vim.list_extend(args, opts.extra_rg_opts or {})
+
+      return args
     end,
     entry_maker = make_entry.gen_from_vimgrep(opts),
     cwd = opts.cwd,
@@ -47,6 +49,9 @@ end
 
 M.setup = function(opts)
   vim.keymap.set("n", "<leader>sg", function() live_multigrep(opts) end, { desc = '[S]earch with [G]rep' })
+  vim.keymap.set('n', '<leader>gn', function() live_multigrep({ cwd = vim.fn.stdpath('config') }) end, { desc = '[G]rep neovim'})
+  vim.keymap.set('n', '<leader>gp', function() live_multigrep({ cwd = vim.fs.joinpath(vim.fn.stdpath('data'), 'lazy') }) end, { desc = '[G]rep neovim'})
+  vim.keymap.set('n', '<leader>g.c', function() live_multigrep({ cwd = '/Users/jared.weiss/.centricient/' }) end, { desc = '[G]rep .centricient'})
 end
 
 return M

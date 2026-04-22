@@ -58,9 +58,6 @@ info_log "Starting configuration sync..."
 # Neovim
 sync_config "neovim" "$HOME/.config/nvim" "$REPO_DIR/nvim"
 
-# Neovim rewrite
-sync_config "nvim-rewrite" "$HOME/.config/nvim-rewrite" "$REPO_DIR/nvim-rewrite"
-
 # Ghostty
 sync_config "ghostty" "$HOME/.config/ghostty" "$REPO_DIR/ghostty"
 

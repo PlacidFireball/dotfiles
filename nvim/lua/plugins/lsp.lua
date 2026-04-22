@@ -48,7 +48,9 @@ return {
           }
         }
       })
+
       vim.lsp.config('rust_analyzer', { capabilities = capabilities })
+
       vim.lsp.config('pyright', {
         cmd = { 'pyright-langserver', '--stdio' },
         -- root_dir = function(fname)
@@ -68,17 +70,7 @@ return {
           }
         }
       })
-      vim.lsp.enable('pyright')
-      vim.lsp.config('gopls', { capabilities = capabilities })
-      vim.lsp.config('ts_ls', { capabilities = capabilities })
-      vim.lsp.config('jsonls', {
-        capabilities = capabilities,
-        settings = {
-          json = { format = { enable = true } },
-          validate = { enable = true },
-        },
-      })
-      vim.lsp.config('zls', { capabilities = capabilities })
+
       vim.lsp.config('clangd', {
         capabilities = capabilities,
         cmd = {
@@ -96,12 +88,23 @@ return {
           },
         },
       })
+
       vim.lsp.config("gradle_ls", {
         settings = {
           gradleWrapperEnabled = true,
         },
         capabilities = capabilities
       })
+
+      vim.lsp.config('gopls', { capabilities = capabilities })
+
+      vim.lsp.config('ts_ls', { capabilities = capabilities })
+
+      vim.lsp.config('jsonls', { capabilities = capabilities })
+
+      vim.lsp.config('zls', { capabilities = capabilities })
+
+      vim.lsp.enable({ 'lua_ls', 'rust_analyzer', 'pyright', 'clangd', 'gradle_ls', 'gopls', 'ts_ls', 'jsonls', 'zls' })
 
       -- scala comes from nvim-metals
 
@@ -117,21 +120,21 @@ return {
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
+          local builtin = require('telescope.builtin')
+
+          map('gr', builtin.lsp_references, 'Go References')
+          map('gd', builtin.lsp_definitions, 'Go Definitions')
+          map('gI', builtin.lsp_implementations, 'Go Implementations')
+          map('gT', builtin.lsp_type_definitions, 'Go Type Definitions')
+          map('gs', builtin.lsp_document_symbols, 'Document Symbols')
+
           map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
           map('K', vim.lsp.buf.hover, 'Hover Documentation')
           map('gD', vim.lsp.buf.definition, '[G]oto [D]efinition')
-          map('gic', vim.lsp.buf.incoming_calls, 'Show incoming calls')
+          map('gai', builtin.lsp_incoming_calls, 'Show incoming calls')
+          map('gao', builtin.lsp_outgoing_calls, 'Show incoming calls')
           map('<leader>F', vim.lsp.buf.format, '[F]ormat current buffer')
-
-          -- require('lsp_signature').on_attach({
-          --   bind = true,
-          --   handler_opts = {},
-          -- }, bufnr)
-          --
-          -- vim.keymap.set({ 'n' }, '<C-s>', function()
-          --   require('lsp_signature').toggle_float_win()
-          -- end, { silent = true, noremap = true, desc = 'Toggle Signature' })
 
           vim.keymap.set({ 'n' }, '<leader>k', function()
             vim.lsp.buf.signature_help()
@@ -148,7 +151,7 @@ return {
             return false
           end
 
-          if has_value(formatting_enabled_filetypes, vim.bo.filetype) and client.supports_method('textDocument/formatting') then
+          if has_value(formatting_enabled_filetypes, vim.bo.filetype) and client:supports_method('textDocument/formatting') then
             vim.api.nvim_create_autocmd('BufWritePre', {
               buffer = event.buf,
               callback = function()
@@ -216,7 +219,7 @@ return {
           return jit.os
         end
 
-        local fh, err = assert(io.popen('uname -o 2>/dev/null', 'r'))
+        local fh, _ = assert(io.popen('uname -o 2>/dev/null', 'r'))
 
         if fh then
           return fh:read()

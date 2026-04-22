@@ -20,7 +20,6 @@ local function dump(o)
   end
 end
 
-
 local function get_quiq_directory()
   local s = vim.fn.expand("%:p")
 
@@ -32,178 +31,27 @@ local function get_quiq_directory()
   return '/Users/jared.weiss/Dev/quiq/ring-master/'
 end
 
-
-local function get_floating_window(opts)
-  -- Default values
-  opts = opts or {}
-  local width_percent = opts.width or 80
-  local height_percent = opts.height or 80
-
-  -- Get editor width and height
-  local width = math.floor(vim.api.nvim_get_option_value("columns", {}) * width_percent / 100)
-  local height = math.floor(vim.api.nvim_get_option_value("lines", {}) * height_percent / 100)
-
-  -- Calculate starting position
-  local row = math.floor((vim.api.nvim_get_option_value("lines", {}) - height) / 2)
-  local col = math.floor((vim.api.nvim_get_option_value("columns", {}) - width) / 2)
-
-  -- Window configuration
-  local win_opts = {
-    relative = "editor",
-    row = row,
-    col = col,
-    width = width,
-    height = height,
-    style = "minimal",
-    border = "rounded"
-  }
-
-  -- Create buffer
-  local buf = -1
-  if opts.buf and opts.buf ~= -1 and vim.api.nvim_buf_is_valid(opts.buf) then
-    buf = opts.buf
-  else
-    buf = vim.api.nvim_create_buf(false, true)
-  end
-
-  -- Add content if provided
-  if opts.content then -- a table of strings
-    vim.api.nvim_buf_set_lines(buf, 0, -1, false, opts.content)
-  end
-
-  -- Create window
-  local win = vim.api.nvim_open_win(buf, true, win_opts)
-
-  return { buf = buf, win = win }
-end
-
-
-local function send_shell_command_to_buf(in_opts)
-  local opts = in_opts or {}
-
-  print(dump(opts))
-
-  if not opts.buf or not vim.api.nvim_buf_is_valid(opts.buf) then
-    Snacks.notifier.notify(
-      "Need to provide { buf = ... } (and that buffer must be valid) to send_shell_command_to_buf - doing nothing.")
-    return
-  end
-
-  if not opts.cmd then
-    Snacks.notifier.notify("Need to provide { cmd = ... } to send_shell_command_to_buf - doing nothing.")
-    return
-  end
-
-  local channel_id = vim.api.nvim_buf_get_var(opts.buf, 'terminal_job_id')
-  vim.api.nvim_chan_send(channel_id, opts.cmd .. '\n')
-end
-
-
 local function run_terminal_command(cmd, opts)
-  local defaults = {
-    auto_close = false,
-    win = {
-      position = "bottom",
-      height = 0.5,
-    },
+
+  local default_win = {
+    style = "float",
+    width = 0.8,
+    height = 0.8,
+    border = "rounded",
   }
-  Snacks.terminal.open(cmd, vim.tbl_deep_extend("force", defaults, opts or {}))
+
+  local opts = opts or {
+    auto_close = true,
+    win = default_win,
+  }
+
+  Snacks.terminal.open(cmd, opts)
 end
 
 
 M.dump = dump
 M.table_to_set = table_to_set
 M.get_quiq_directory = get_quiq_directory
-M.get_floating_window = get_floating_window
-M.send_shell_command_to_buf = send_shell_command_to_buf
 M.run_terminal_command = run_terminal_command
-
-local clusters = table_to_set({ "dev", "qa", "mqa", "roman", "perf", "stage", "mstage", "demo", "age1", "mva1", "ava1",
-  "ava3", "aor1", "aor3" })
-
-M.state = { cluster = nil, tenant = nil, floating_terminal = { buf = -1, win = -1 } }
-local function set_cluster(cluster)
-  if not clusters[cluster] then
-    Snacks.notifier.notify((cluster or "NONE") .. " is not a valid cluster", vim.log.levels.WARN)
-    return
-  end
-
-  M.state.cluster = cluster
-end
-
-
-local function set_tenant(tenant)
-  if not tenant then
-    Snacks.notifier.notify("Tenant may not be empty/nil", vim.log.levels.WARN)
-    return
-  end
-  M.state.tenant = tenant
-end
-
-
-vim.api.nvim_create_user_command("SetCluster", function(args)
-  local args_list = args.fargs
-  local cluster = args_list[1]
-
-  set_cluster(cluster)
-end, { nargs = 1 })
-
-
-vim.api.nvim_create_user_command("SetTenant", function(args)
-  local args_list = args.fargs
-  local tenant = args_list[1]
-
-  set_tenant(tenant)
-end, { nargs = 1 })
-
-
-vim.api.nvim_create_user_command("ToggleTerminal", function()
-  if not vim.api.nvim_win_is_valid(M.state.floating_terminal.win) then
-    M.state.floating_terminal = get_floating_window({
-      buf = M.state.floating_terminal.buf,
-    })
-    if vim.bo[M.state.floating_terminal.buf].buftype ~= "terminal" then
-      vim.cmd.terminal()
-    end
-  else
-    vim.api.nvim_win_hide(M.state.floating_terminal.win)
-  end
-end, {})
-vim.keymap.set({ "n", "t" }, "<leader>tt", "<CMD>ToggleTerminal<CR>", { desc = "[T]oggle floating [T]erminal" })
-
-vim.api.nvim_create_user_command('VoiceToolkitFetchRegistration', function()
-  -- Prompt for cluster
-  vim.ui.input({ prompt = 'Enter cluster: ', default = M.state.cluster or '' }, function(cluster)
-    if not cluster or cluster == '' then
-      Snacks.notifier.notify("Cluster is required", vim.log.levels.WARN)
-      return
-    end
-
-    -- Prompt for tenant
-    vim.ui.input({ prompt = 'Enter tenant: ', default = M.state.tenant or '' }, function(tenant)
-      if not tenant or tenant == '' then
-        Snacks.notifier.notify("Tenant is required", vim.log.levels.WARN)
-        return
-      end
-
-      local cmd = string.format('voice-toolkit -c %s -t %s registrations fetch -f internal', cluster, tenant)
-
-      local output = vim.fn.system(cmd)
-
-      local lines = vim.split(output, '\n', {plain = true})
-
-      local float = get_floating_window({ content = lines })
-      vim.api.nvim_buf_set_var(float.buf, 'filetype', 'json')
-
-      vim.api.nvim_buf_set_keymap(float.buf, 'n', 'q', '<cmd>close<CR>', { noremap = true, silent = true })
-      vim.api.nvim_buf_set_keymap(float.buf, 'n', '<Esc>', '<cmd>close<CR>', { noremap = true, silent = true })
-    end)
-  end)
-end, {})
-vim.keymap.set("n", "<leader>vfr", "<CMD>VoiceToolkitFetchRegistration<CR>", { desc = "[V]oice Toolkit [F]etch [R]egistration"})
-
-vim.api.nvim_create_user_command("Test", function()
-  send_shell_command_to_buf { buf = M.state.floating_terminal.buf, cmd = 'echo hello' }
-end, {})
 
 return M
