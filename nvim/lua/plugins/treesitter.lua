@@ -14,7 +14,7 @@ return {
         "css", "html", "javascript",
         "latex", "scss",
         "tsx", "typst", "vue",
-        "svelte", "elixir",
+        "svelte", "elixir", "json",
       }
 
       treesitter.setup {}
