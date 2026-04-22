@@ -23,45 +23,11 @@ return {
         },
       }
 
-      local map = vim.keymap.set
-
-      map('n', '<C-q>', function()
-        require('bufdelete').bufdelete(0, true)
-      end) -- shift+Quit to close current tab
-      map('n', 'g1', function()
-        require('bufferline').go_to(1, true)
-      end)
-      map('n', 'g2', function()
-        require('bufferline').go_to(2, true)
-      end)
-      map('n', 'g3', function()
-        require('bufferline').go_to(3, true)
-      end)
-      map('n', 'g4', function()
-        require('bufferline').go_to(4, true)
-      end)
-      map('n', 'g5', function()
-        require('bufferline').go_to(5, true)
-      end)
-      map('n', 'g6', function()
-        require('bufferline').go_to(6, true)
-      end)
-      map('n', 'g7', function()
-        require('bufferline').go_to(7, true)
-      end)
-      map('n', 'g8', function()
-        require('bufferline').go_to(8, true)
-      end)
-      map('n', 'g9', function()
-        require('bufferline').go_to(9, true)
-      end)
-      map('n', 'g0', function()
-        require('bufferline').go_to(10, true)
-      end)
-      map('n', '<M-j>', '<cmd>BufferLineCyclePrev<CR>') -- Alt+j to move to left
-      map('n', '<M-k>', '<cmd>BufferLineCycleNext<CR>') -- Alt+k to move to right
-      map('n', '<M-J>', '<cmd>BufferLineMovePrev<CR>')  -- Alt+Shift+j grab to with you to left
-      map('n', '<M-K>', '<cmd>BufferLineMoveNext<CR>')  -- Alt+Shift+k grab to with you to right
+      vim.keymap.set('n', '<C-q>', function() require('bufdelete').bufdelete(0, true) end)
+      vim.keymap.set('n', '<M-j>', '<cmd>BufferLineCyclePrev<CR>') -- Alt+j to move to left
+      vim.keymap.set('n', '<M-k>', '<cmd>BufferLineCycleNext<CR>') -- Alt+k to move to right
+      vim.keymap.set('n', '<M-J>', '<cmd>BufferLineMovePrev<CR>')  -- Alt+Shift+j grab to with you to left
+      vim.keymap.set('n', '<M-K>', '<cmd>BufferLineMoveNext<CR>')  -- Alt+Shift+k grab to with you to right
     end,
   }
 }

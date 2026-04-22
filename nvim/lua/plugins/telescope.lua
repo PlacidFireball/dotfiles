@@ -67,6 +67,9 @@ return {
 
       -- <leader>sq [S]earch [Q]dev commands
       require('modules.telescope.qdev').setup()
+
+      -- <leader>tv/tc/to/tt [T]reesitter [V]ariables, [C]lasses, [O]bjects, [T]raits
+      require('modules.telescope.tree-sitter-picker').setup()
     end
   }
 }

@@ -81,7 +81,11 @@ return {
       quickfile = { enabled = true },
       scroll = { enabled = true },
       statuscolumn = { enabled = true },
-      terminal = {},
+      terminal = {
+        keys = {
+          term_normal = false,
+        },
+      },
       words = { enabled = true },
       image = {
         enabled = true,
@@ -124,17 +128,6 @@ return {
       },
       { "<leader>gl", function() Snacks.git.blame_line() end, desc = "[G]it [B]lame line" },
       { "<leader>gb", function() Snacks.gitbrowse() end,      desc = 'Git Browse' },
-      {
-        "<leader>ts",
-        function()
-          if Snacks.scroll.enabled then
-            Snacks.scroll.disable()
-          else
-            Snacks.scroll.enable()
-          end
-        end,
-        desc = "[T]oggle [S]croll"
-      },
     }
   },
   {

@@ -95,6 +95,11 @@ return {
       vim.keymap.set(default_modes, "i/", function() select.select_textobject("@comment.outer", "textobjects") end)
       vim.keymap.set(default_modes, "aa", function() select.select_textobject("@parameter.outer", "textobjects") end)
       vim.keymap.set(default_modes, "ia", function() select.select_textobject("@parameter.inner", "textobjects") end)
+
+      local swap = require('nvim-treesitter-textobjects.swap')
+      default_modes = {'n', 'x', 'o'}
+      vim.keymap.set(default_modes, ']p', function () swap.swap_next('@parameter.inner') end)
+      vim.keymap.set(default_modes, '[p', function () swap.swap_previous('@parameter.inner') end)
     end
   }
 }
