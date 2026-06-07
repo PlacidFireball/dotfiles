@@ -3,6 +3,7 @@ local util = require('modules.utils')
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 vim.g.have_nerd_font = true
+vim.g.autosave_delay_ms = 250
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.mouse = 'a'
@@ -151,7 +152,7 @@ vim.keymap.set({'n', 't'}, '<C-j>', '<cmd>wincmd j<CR>', { desc = 'Go to pane do
 vim.keymap.set({'n', 't'}, '<C-k>', '<cmd>wincmd k<CR>', { desc = 'Go to pane up'})
 
 local auto_save_timer = nil
-vim.api.nvim_create_autocmd({ 'TextChanged', 'TextChangedI', 'InsertLeave' }, {
+vim.api.nvim_create_autocmd({ 'TextChanged', 'InsertLeave' }, {
   desc = 'Auto save on buffer changes',
   group = vim.api.nvim_create_augroup('auto-save', { clear = true }),
   callback = function()
@@ -161,13 +162,13 @@ vim.api.nvim_create_autocmd({ 'TextChanged', 'TextChangedI', 'InsertLeave' }, {
     end
     auto_save_timer = (vim.uv or vim.loop).new_timer()
     if not auto_save_timer then return end
-    auto_save_timer:start(250, 0, vim.schedule_wrap(function()
+    auto_save_timer:start(vim.g.autosave_delay_ms, 0, vim.schedule_wrap(function()
       auto_save_timer:stop()
       auto_save_timer:close()
       auto_save_timer = nil
       local filepath = vim.fn.expand('%:p')
       local config_dir = vim.fn.stdpath('config')
-      if vim.bo.modified and vim.bo.modifiable and vim.bo.buftype == "" and filepath ~= ""
+      if vim.api.nvim_get_mode().mode ~= 'i' and vim.bo.modified and vim.bo.modifiable and vim.bo.buftype == "" and filepath ~= ""
         and filepath:sub(1, #config_dir) ~= config_dir then
         vim.cmd('silent! write')
       end

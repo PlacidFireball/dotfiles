@@ -28,7 +28,7 @@ return {
       checkbox = {
         enabled = true,
         create_new = true,
-        order = { ' ', 'x' },
+        order = { ' ', '-', 'x' },
       },
       note_id_func = function (title, _)
         -- TODO: this likely won't work if I wanna stick the note in a specific folder... maybe ustilize path?
@@ -36,7 +36,7 @@ return {
       end,
       statusline = { enabled = false },
       frontmatter = {
-        enabled = false,
+        enabled = true,
         func = function (note)
           if vim.fn.mode():sub(1, 1) == 'i' then return {} end -- Don't format this shit in insert mode
           return require('obsidian.builtin').frontmatter(note)

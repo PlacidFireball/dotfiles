@@ -114,7 +114,7 @@ return {
       {
         "<leader>lg",
         function()
-          if vim.fn.expand("%:p"):match("Dev/quiq/") then
+          if vim.fn.expand("%:p"):match("src/quiq/backend") then
             local current_dir = vim.fn.getcwd()
             local quiq_dir = require("modules.utils").get_quiq_directory()
             vim.cmd('cd ' .. quiq_dir)

@@ -20,7 +20,7 @@ return {
     },
     config = function()
       require("mason-lspconfig").setup {
-        ensure_installed = { "lua_ls", "rust_analyzer", "pyright", "gopls", "jsonls", "zls", "lexical", "clangd", "gradle_ls" },
+        ensure_installed = { "lua_ls", "rust_analyzer", "pyright", "gopls", "jsonls", "zls", "lexical", "clangd" },
         automatic_installation = true,
         automatic_enable = true,
       }
@@ -120,6 +120,12 @@ return {
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
+          -- vim.lsp.inlay_hint.enable(true, {bufnr=event.buf})
+          map('<leader>th', function ()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({bufnr = event.buf}), {bufnr=event.buf})
+          end, '[T]oggle Inlay [H]ints')
+
+
           local builtin = require('telescope.builtin')
 
           map('gr', builtin.lsp_references, 'Go References')
@@ -205,12 +211,14 @@ return {
         showInferredType = true,
         superMethodLensesEnabled = true,
         inlayHints = {
-          namedParameters = {
-            enable = true
-          },
-          inferredTypes = {
-            enable = true
-          }
+          namedParameters = { enable = true },
+          byNameParameters = { enable = true },
+          inferredTypes = { enable = true },
+          implicitArguments =  { enable = true },
+          implicitConversions = { enable = true },
+          hintsInPatternMatch = { enable = true },
+          hintsXRayMode = { enable = true },
+          closingLabels = { enable = true },
         },
       }
 
@@ -231,7 +239,7 @@ return {
       local os = get_operating_system()
 
       if os == 'Darwin' or os == 'OSX' then
-        metals_config.settings.gradleScript = '/opt/gradle/gradle-8.4/bin/gradle'
+        metals_config.settings.gradleScript = '/opt/gradle/gradle-8.10.2/bin/gradle'
         metals_config.settings.javaHome = '/Library/Java/JavaVirtualMachines/liberica-jdk-21.jdk/Contents/Home'
         metals_config.settings.scalafixConfigPath = '/Users/jared.weiss/build/dotfiles/.scalafix.conf'
       end
@@ -239,12 +247,30 @@ return {
       metals_config.init_options.globSyntax = 'vscode'
       metals_config.init_options.statusBarProvider = 'on'
       metals_config.capabilities = require('blink.cmp').get_lsp_capabilities()
+      metals_config.flags = { debounce_text_changes = 1000 }
 
       vim.keymap.set('n', '<leader>mo', ':MetalsOrganizeImports<CR>')
 
       vim.api.nvim_create_autocmd('FileType', {
         pattern = { 'scala', 'sbt' },
         callback = function()
+          -- Walk to the OUTERMOST ancestor with a real Bloop install (a .bloop
+          -- dir containing build target JSONs). Innermost-match would pick
+          -- subproject build.gradle (e.g. ring-master/) or scala-cli-polluted
+          -- .metals dirs that the previous broken state created next to source
+          -- files — both cause Metals to fall back to per-file scala-cli BSP,
+          -- which litters .scala-build/ and .bsp/ and wrecks diagnostics.
+          local file = vim.api.nvim_buf_get_name(0)
+          local outermost = nil
+          for dir in vim.fs.parents(file) do
+            local bloop = dir .. '/.bloop'
+            if vim.fn.isdirectory(bloop) == 1 and #vim.fn.glob(bloop .. '/*.json', false, true) > 0 then
+              outermost = dir
+            end
+          end
+          if outermost then
+            metals_config.root_dir = outermost
+          end
           require('metals').initialize_or_attach(metals_config)
         end,
         group = vim.api.nvim_create_augroup('nvim-metals', { clear = true }),

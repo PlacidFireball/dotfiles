@@ -1,0 +1,177 @@
+#! /Users/jared.weiss/miniconda3/bin/python3
+import argparse
+import os
+import subprocess
+import sys
+from argparse import Namespace
+import json
+
+MIXED_COMPILE_ORDER_SERVICES = [
+    'jvm-core',
+    'jvm-core-test',
+    'service-core',
+    'service-core-test',
+    'sql-core',
+    'sql-core-test',
+    'conversation-manager',
+    'conversation-manager-test',
+]
+
+def kebab_to_pascal(input: str, suffix: str = "") -> str:
+    return ''.join([w.capitalize() for w in input.split('-')]) + suffix
+
+
+def ensure_mixed_compile_order(bloop_config_dir: str) -> None:
+    for config_name in MIXED_COMPILE_ORDER_SERVICES:
+        config_file = f'{bloop_config_dir}/{config_name}.json'
+        if not os.path.exists(config_file):
+            continue
+        with open(config_file, 'r') as f:
+            config = json.load(f)
+        setup = config.get('project', {}).get('scala', {}).get('setup', {})
+        if setup.get('order') != 'mixed':
+            setup['order'] = 'mixed'
+            print(f'updated {config_name} compile order to mixed')
+            with open(config_file, 'w') as f:
+                json.dump(config, f, indent=2)
+
+
+def handle_build(args: Namespace) -> None:
+    bloop_config_dir = str(os.path.expanduser(args.quiq_super_repo + '.bloop'))
+    ensure_mixed_compile_order(bloop_config_dir)
+
+    if args.clean:
+        command = f'bloop clean {args.service}'
+        if args.propagate:
+            command += " --propagate"
+        if args.cascade:
+            command += " --cascade"
+        run_command(command)
+
+    command = f'bloop compile {args.service} --config-dir {bloop_config_dir}'
+    run_command(command, should_exit=True)
+
+
+def handle_run(args: Namespace) -> None:
+    bloop_config_dir = str(os.path.expanduser(args.quiq_super_repo + '.bloop'))
+    ensure_mixed_compile_order(bloop_config_dir)
+
+    pascal_main_app = kebab_to_pascal(args.service, suffix="Application")
+    main_with_package = f'com.centricient.service.{pascal_main_app}'
+    working_directory = os.path.expanduser(args.quiq_super_repo + args.service)
+
+    bloop_config_file = f'{bloop_config_dir}/{args.service}.json'
+
+    with open(bloop_config_file, 'r') as f:
+      config = json.load(f)
+
+    if config['project']['workspaceDir'] != working_directory:
+      config['project']['workspaceDir'] = working_directory
+      print(f'updated project.workspaceDir to {working_directory}')
+      with open(bloop_config_file, 'w') as f:
+        json.dump(config, f, indent=2)
+
+    command = f'bloop run {args.service} -m {main_with_package} --args="-Duser.home={working_directory}" --config-dir {bloop_config_dir}'
+
+    if args.debug:
+        command += ' --optimize debug'
+    else:
+        command += ' --optimize release'
+
+    command += f' -- {args.service_args}'
+
+    run_command(command, should_exit=True)
+
+
+def handle_test(args: Namespace) -> None:
+    bloop_config_dir = str(os.path.expanduser(args.quiq_super_repo + '.bloop'))
+    ensure_mixed_compile_order(bloop_config_dir)
+
+    command = f'bloop test {args.service} --config-dir {bloop_config_dir}'
+    if args.propagate:
+        command += " --propagate"
+    if args.cascade:
+        command += " --cascade"
+    if args.parallel:
+        command += " --parallel"
+    if args.only:
+        command += f' --only {" ".join(args.only)}'
+
+    run_command(command, should_exit=True)
+
+
+def handle_clean(args: Namespace) -> None:
+    command = f'bloop clean {args.service}'
+    if args.propagate:
+        command += " --propagate"
+    if args.cascade:
+        command += " --cascade"
+    run_command(command)
+
+
+def main(args: Namespace) -> None:
+    match args.command:
+        case "build": handle_build(args)
+        case "run": handle_run(args)
+        case "test": handle_test(args)
+        case "clean": handle_clean(args)
+
+
+def run_command(command: str, should_exit: bool = False) -> None:
+    print(command)
+
+    pipe = subprocess.Popen(
+        args=command,
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        universal_newlines=True,
+        bufsize=1
+    )
+
+    try:
+        if pipe.stdout:
+            for line in iter(pipe.stdout.readline, ''):
+                print(line, end='')
+                sys.stdout.flush()
+    except KeyboardInterrupt:
+        pipe.terminate()
+        pipe.wait()
+        sys.exit(0)
+
+    return_code = pipe.wait()
+    if should_exit:
+        sys.exit(return_code)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser("bloopwrapper", description="A wrapper for the bloop binary, encapsulates some common uses")
+    parser.add_argument('--quiq-super-repo', '-q', type=str, help='The location of the quiq super repo', default='~/src/quiq/backend/')
+
+    sub_parsers = parser.add_subparsers(dest='command')
+
+    run_parser = sub_parsers.add_parser('run', help='Run a project')
+    run_parser.add_argument('service', type=str, help='The service to run')
+    run_parser.add_argument('--service-args', '-s', type=str, help='The args to pass to the application (typically -tc -p <port>)')
+    run_parser.add_argument('--debug', '-d', action='store_true', help='Run in debug mode')
+
+    build_parser = sub_parsers.add_parser('build', help='Build a project')
+    build_parser.add_argument('service', type=str, help='The service to build')
+    build_parser.add_argument('--clean', '-C', action='store_true', help='Clean build')
+    build_parser.add_argument('--propagate', '-P', action='store_true', help='Clean all downstream projects')
+    build_parser.add_argument('--cascade', '-c', action='store_true', help='Clean all upstream projects')
+
+    clean_parser = sub_parsers.add_parser('clean', help='Clean a project')
+    clean_parser.add_argument('service', type=str, help='The service to clean')
+    clean_parser.add_argument('--propagate', '-P', action='store_true', help='Clean all downstream projects')
+    clean_parser.add_argument('--cascade', '-c', action='store_true', help='Clean all upstream projects')
+
+    test_parser = sub_parsers.add_parser('test', help='Test a project')
+    test_parser.add_argument('service', type=str, help='The service to build')
+    test_parser.add_argument('--propagate', '-P', action='store_true', help='Test all downstream projects')
+    test_parser.add_argument('--cascade', '-c', action='store_true', help='Test all upstream projects')
+    test_parser.add_argument('--parallel', '-p', action='store_true', help='Run tests in parallel')
+    test_parser.add_argument('--only', '-o', type=str, nargs='*', help='The set of spec tests to run (if left empty then run all)')
+
+    args = parser.parse_args()
+    main(args)

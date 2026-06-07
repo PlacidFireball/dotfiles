@@ -23,7 +23,7 @@ end
 local function get_quiq_directory()
   local s = vim.fn.expand("%:p")
 
-  for m in string.gmatch(s, '/Users/jared.weiss/Dev/quiq/[a-z%-]+/') do
+  for m in string.gmatch(s, '/Users/jared.weiss/src/quiq/backend/[a-z%-]+/') do
     return m
   end
 

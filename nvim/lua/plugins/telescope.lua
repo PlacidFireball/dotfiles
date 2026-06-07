@@ -13,6 +13,9 @@ return {
     config = function()
       require('telescope').setup {
         pickers = {
+          find_files = {
+            find_command = { 'fd', '--type', 'f', '--hidden', '--no-ignore-vcs' },
+          },
           extensions = {
             fzf = {}
           }
@@ -29,7 +32,6 @@ return {
       map('n', '<leader>sf', builtin.find_files, '[S]earch [F]iles')
       map('n', '<leader>sh', builtin.help_tags, '[S]earch [H]elp')
       map('n', '<leader>so', builtin.oldfiles, '[S]earch [O]ldfiles')
-      map('n', '<leader>sc', builtin.command_history, '[S]earch [C]ommand History')
       map('n', '<leader>sr', builtin.resume, '[S]earch [R]esume')
       map('n', '<leader>sk', builtin.keymaps, '[S]earch [K]eymaps')
       map('n', '<leader>sb', builtin.builtin, '[S]earch [B]uiltin Pickers')
@@ -61,6 +63,12 @@ return {
       vim.keymap.set('n', '<leader>s.c', function()
         builtin.find_files { cwd = '/Users/jared.weiss/.centricient/' }
       end, { desc = 'search .centricient' })
+
+      vim.keymap.set('n', '<leader>sc', function ()
+        require('telescope.themes').get_ivy {
+          cwd = vim.fs.normalize('~/.config/')
+        }
+      end, { desc = '[S]earch .[C]onfig'})
 
       -- <leader>sg [S]earch with [G]rep
       require('modules.telescope.multigrep').setup()

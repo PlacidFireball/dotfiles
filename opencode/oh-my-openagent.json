@@ -1,0 +1,74 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+  "agents": {
+    "sisyphus": {
+      "model": "litellm/claude-4.8-opus"
+    },
+    "hephaestus": {
+      "model": "litellm/claude-4.6-sonnet"
+    },
+    "oracle": {
+      "model": "litellm/claude-4.6-sonnet"
+    },
+    "librarian": {
+      "model": "litellm/claude-4.8-opus"
+    },
+    "explore": {
+      "model": "litellm/claude-4.8-opus"
+    },
+    "multimodal-looker": {
+      "model": "litellm/claude-4.6-sonnet"
+    },
+    "prometheus": {
+      "model": "litellm/claude-4.8-opus"
+    },
+    "metis": {
+      "model": "litellm/claude-4.8-opus"
+    },
+    "momus": {
+      "model": "litellm/claude-4.6-sonnet"
+    },
+    "atlas": {
+      "model": "litellm/claude-4.8-opus"
+    },
+    "sisyphus-junior": {
+      "model": "litellm/claude-4.6-sonnet"
+    }
+  },
+  "categories": {
+    "visual-engineering": {
+      "model": "litellm/claude-4.8-opus"
+    },
+    "ultrabrain": {
+      "model": "litellm/claude-4.6-sonnet"
+    },
+    "deep": {
+      "model": "litellm/claude-4.6-sonnet"
+    },
+    "artistry": {
+      "model": "litellm/claude-4.8-opus"
+    },
+    "quick": {
+      "model": "litellm/claude-4.8-opus"
+    },
+    "unspecified-low": {
+      "model": "litellm/claude-4.8-opus"
+    },
+    "unspecified-high": {
+      "model": "litellm/claude-4.6-sonnet"
+    },
+    "writing": {
+      "model": "litellm/claude-4.6-sonnet"
+    }
+  },
+  "git_master": {
+    "commit_footer": true,
+    "include_co_authored_by": true,
+    "git_env_prefix": "GIT_MASTER=1"
+  },
+  "team_mode": {
+    "enabled": true,
+    "max_parallel_members": 4,
+    "tmux_visualization": true
+  }
+}

@@ -1,16 +1,18 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "share": "disabled",
-  "model": "litellm/gemini-3.1-pro",
-  "disabled_providers": [],
+  "share": "manual",
+  "model": "litellm/claude-4.7-opus",
+  "disabled_providers": [
+    "opencode"
+  ],
   "logLevel": "DEBUG",
   "provider": {
     "litellm": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "Quiq LiteLLM Proxy",
       "options": {
-        "baseURL": "https://quiqgpt-proxy-east.quiq.sh/v1",
-        "includeUsage": true,
+        "baseURL": "https://quiqgpt-proxy.quiq.sh/v1",
+        "includeUsage": true
       },
       "models": {
         "gemini-3-flash": {
@@ -19,6 +21,36 @@
             "input": 0.5,
             "output": 3,
             "cache_read": 0.05
+          },
+          "limit": {
+            "input": 1048576,
+            "output": 65536,
+            "context": 1114112
+          }
+        },
+        "gemini-3.5-flash": {
+          "name": "Gemini 3.5 Flash",
+          "cost": {
+            "input": 1.5,
+            "output": 9,
+          },
+          "limit": {
+            "input": 1048576,
+            "output": 65536,
+            "context": 1114112
+          }
+        },
+        "claude-gemini-3.1-pro-customtools": {
+          "name": "Gemini 3.1 Pro (Tools [Claude])",
+          "cost": {
+            "input": 2,
+            "output": 12,
+            "cache_read": 0.2,
+            "context_over_200k": {
+              "input": 4,
+              "output": 18,
+              "cache_read": 0.4
+            }
           },
           "limit": {
             "input": 1048576,
@@ -57,8 +89,167 @@
             "output": 64000,
             "context": 1064000
           }
+        },
+        "claude-haiku-4-5": {
+          "name": "Claude Haiku 4.5",
+          "cost": {
+            "input": 1,
+            "output": 5,
+            "cache_read": 0.1,
+            "cache_write": 1.25
+          },
+          "limit": {
+            "input": 136000,
+            "output": 64000,
+            "context": 200000
+          }
+        },
+        "claude-4.7-opus": {
+          "name": "Claude 4.7 Opus",
+          "cost": {
+            "input": 5,
+            "output": 25,
+            "cache_read": 10,
+            "cache_write": 0.5
+          },
+          "limit": {
+            "input": 1000000,
+            "output": 64000,
+            "context": 1064000
+          }
+        },
+        "claude-4.8-opus": {
+          "name": "Claude 4.8 Opus",
+          "cost": {
+            "input": 5,
+            "output": 25,
+            "cache_read": 10,
+            "cache_write": 0.5
+          },
+          "limit": {
+            "input": 1000000,
+            "output": 64000,
+            "context": 1064000
+          }
+        },
+        "gemini-3.1-flash-lite": {
+          "name": "Gemini 3.1 Flash Lite",
+          "cost": {
+            "input": 0.25,
+            "output": 1.5
+          },
+          "limit": {
+            "input": 1048576,
+            "output": 65536,
+            "context": 1114112
+          }
+        },
+        "qwen3-next-80b-instruct": {
+          "name": "Qwen3 Next 80b Instruct",
+          "cost": {
+            "input": 0.15,
+            "output": 1.2
+          },
+          "limit": {
+            "input": 229376,
+            "output": 32768,
+            "context": 262144
+          }
+        },
+        "qwen3-next-80b-thinking": {
+          "name": "Qwen3 Next 80b Thinking",
+          "cost": {
+            "input": 0.15,
+            "output": 1.2
+          },
+          "limit": {
+            "input": 229376,
+            "output": 32768,
+            "context": 262144
+          }
+        },
+        "gpt-5-mini": {
+          "name": "Gpt 5 Mini",
+          "cost": {
+            "input": 0.25,
+            "output": 2,
+            "cache_read": 0.025
+          },
+          "limit": {
+            "input": 272000,
+            "output": 128000,
+            "context": 400000
+          }
+        },
+        "gpt-5-nano": {
+          "name": "Gpt 5 Nano",
+          "cost": {
+            "input": 0.05,
+            "output": 0.4,
+            "cache_read": 0.005
+          },
+          "limit": {
+            "input": 272000,
+            "output": 128000,
+            "context": 400000
+          }
+        },
+        "gpt-5.2": {
+          "name": "Gpt 5.2",
+          "cost": {
+            "input": 1.75,
+            "output": 14,
+            "cache_read": 0.175
+          },
+          "limit": {
+            "input": 272000,
+            "output": 128000,
+            "context": 400000
+          }
+        },
+        "llama-4-maverick": {
+          "name": "Llama 4 Maverick",
+          "cost": {
+            "input": 0.35,
+            "output": 1.15
+          },
+          "limit": {
+            "input": 934464,
+            "output": 65536,
+            "context": 1000000
+          }
+        },
+        "llama-4-scout": {
+          "name": "Llama 4 Scout",
+          "cost": {
+            "input": 0.25,
+            "output": 0.7
+          },
+          "limit": {
+            "input": 934464,
+            "output": 65536,
+            "context": 1000000
+          }
         }
       }
+    }
+  },
+  "mcp": {
+    "context7": {
+      "enabled": false
+    },
+    "grep_app": {
+      "enabled": false
+    }
+  },
+  "agent": {
+    "build": {
+      "mode": "primary",
+      "model": "litellm/claude-4.8-opus"
+    },
+    "plan": {
+      "mode": "primary",
+      "model": "litellm/claude-4.8-opus"
     }
   },
   "permission": {
@@ -71,8 +262,6 @@
       "head *": "allow",
       "tail *": "allow",
       "open https://gitlab.quiq.sh/*": "allow",
-      "$QUIQ_SRC_ROOT/.scripts/*": "allow",
-      "git -C $QUIQ_SRC_ROOT/* remote get-url origin": "allow",
       "git diff*": "allow",
       "echo *": "allow",
       "qdev *": "allow",
@@ -110,7 +299,6 @@
       "*.env": "deny",
       "*.env.*": "deny",
       "config-override.json": "deny",
-      "/Users/jared.weiss/Dev/quiq/.claude/skills-library/review-backend.md": "allow"
     },
     "list": {
       "*": "allow"
@@ -127,5 +315,13 @@
     },
     "doom_loop": "deny",
     "skill": "allow"
-  }
+  },
+  "plugin": [
+    "/Users/jared.weiss/.config/opencode/plugins/bash-restrictor",
+    "oh-my-openagent",
+    "opencode-agent-memory@0.2.0",
+    ["@plannotator/opencode@0.19.16", {
+      "workflow": "all-agents",
+    }]
+  ]
 }

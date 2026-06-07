@@ -67,4 +67,8 @@ keybind = ctrl+space>h=move_tab:-1
 keybind = performable:y=copy_to_clipboard
 keybind = ctrl+space>y=select_all
 
-
+# Resize splits
+keybind = ctrl+shift+minus=resize_split:up,40
+keybind = ctrl+shift+equal=resize_split:down,40
+keybind = ctrl+minus=resize_split:left,40
+keybind = ctrl+equal=resize_split:right,40

@@ -92,7 +92,6 @@ end
 
 M.setup = function()
   vim.keymap.set("n", "<leader>tv", function() M.pick({ capture = "variable", title = "Variables" }) end,  { desc = "[T]reesitter [V]ariables" })
-  vim.keymap.set("n", "<leader>tc", function() M.pick({ capture = "type",     title = "Types" }) end,      { desc = "[T]reesitter [T]ypes" })
   vim.keymap.set("n", "<leader>tf", function() M.pick({ capture = "function", title = "Functions" }) end,  { desc = "[T]reesitter [F]unctions" })
   vim.keymap.set("n", "<leader>ts", function() M.pick({ title = "Symbols" }) end,                          { desc = "[T]reesitter [S]earch" })
 end
