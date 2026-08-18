@@ -20,7 +20,7 @@ return {
     },
     config = function()
       require("mason-lspconfig").setup {
-        ensure_installed = { "lua_ls", "rust_analyzer", "pyright", "gopls", "jsonls", "zls", "lexical", "clangd" },
+        ensure_installed = { "lua_ls", "rust_analyzer", "pyright", "gopls", "jsonls", "zls", "lexical", "clangd", "ts_ls" },
         automatic_installation = true,
         automatic_enable = true,
       }
@@ -104,6 +104,86 @@ return {
 
       vim.lsp.config('zls', { capabilities = capabilities })
 
+
+      -- ponytail: deps that are copied into node_modules rather than symlinked
+      -- (git deps, packed file: deps) make LSP jumps land on a read-only
+      -- duplicate. Resolve the owning checkout by walking up from node_modules
+      -- and confirming package.json name, then rewrite the location.
+      -- Ceiling: matches by package name, not version. If the checkout has
+      -- drifted off the installed version you land on the newer file.
+      local redirect_clients = { ts_ls = true, vtsls = true, eslint = true }
+
+      local redirect_methods = {
+        ['textDocument/definition'] = true,
+        ['textDocument/typeDefinition'] = true,
+        ['textDocument/implementation'] = true,
+        ['textDocument/declaration'] = true,
+        ['textDocument/references'] = true,
+      }
+
+      local pkg_dir_cache = {}
+
+      local function name_matches(dir, pkg)
+        local f = io.open(dir .. '/package.json')
+        if not f then return false end
+        local text = f:read(4096) or ''
+        f:close()
+        return text:match('"name"%s*:%s*"([^"]+)"') == pkg
+      end
+
+      -- Walk up from the node_modules dir looking for the real checkout, both as
+      -- a direct child (sibling repos) and one level down (packages/, apps/).
+      local function find_pkg_dir(nm_dir, pkg)
+        local key = nm_dir .. '\0' .. pkg
+        local cached = pkg_dir_cache[key]
+        if cached ~= nil then return cached or nil end
+
+        local found = false
+        local dir = nm_dir
+        for _ = 1, 5 do
+          dir = vim.fs.dirname(dir)
+          if not dir or dir == '/' or dir == '' then break end
+          local cands = { dir .. '/' .. pkg }
+          vim.list_extend(cands, vim.fn.glob(dir .. '/*/' .. pkg, true, true))
+          for _, c in ipairs(cands) do
+            if not c:find('/node_modules/', 1, true) and name_matches(c, pkg) then
+              found = c
+              break
+            end
+          end
+          if found then break end
+        end
+
+        pkg_dir_cache[key] = found
+        return found or nil
+      end
+
+      local function sibling_uri(uri)
+        local path = vim.uri_to_fname(uri)
+        -- Already a symlinked workspace package? Nothing to fix.
+        local realpath = vim.uv.fs_realpath(path)
+        if realpath and not realpath:find('/node_modules/', 1, true) then return nil end
+
+        local nm, pkg, rest = path:match('^(.*/node_modules)/(@[^/]+/[^/]+)/(.+)$')
+        if not pkg then nm, pkg, rest = path:match('^(.*/node_modules)/([^/]+)/(.+)$') end
+        if not pkg then return nil end
+
+        local dir = find_pkg_dir(nm, pkg)
+        if not dir then return nil end
+        local real = dir .. '/' .. rest
+        if vim.uv.fs_stat(real) then return vim.uri_from_fname(real) end
+      end
+
+      local function rewrite_locations(node)
+        if type(node) ~= 'table' then return end
+        for _, key in ipairs({ 'uri', 'targetUri' }) do
+          if type(node[key]) == 'string' then
+            node[key] = sibling_uri(node[key]) or node[key]
+          end
+        end
+        for _, v in pairs(node) do rewrite_locations(v) end
+      end
+
       vim.lsp.enable({ 'lua_ls', 'rust_analyzer', 'pyright', 'clangd', 'gradle_ls', 'gopls', 'ts_ls', 'jsonls', 'zls' })
 
       -- scala comes from nvim-metals
@@ -114,6 +194,21 @@ return {
           local client = vim.lsp.get_client_by_id(event.data.client_id)
 
           if not client then return end
+
+          if redirect_clients[client.name] and not client.__sibling_redirect then
+            client.__sibling_redirect = true
+            local orig_request = client.request
+            client.request = function(self, method, params, handler, bufnr)
+              if redirect_methods[method] and handler then
+                local inner = handler
+                handler = function(err, result, ctx, cfg)
+                  rewrite_locations(result)
+                  return inner(err, result, ctx, cfg)
+                end
+              end
+              return orig_request(self, method, params, handler, bufnr)
+            end
+          end
 
           local map = function(keys, func, desc)
             ---@diagnostic disable-next-line: missing-fields
@@ -210,6 +305,7 @@ return {
         showImplicitConversionsAndClasses = true,
         showInferredType = true,
         superMethodLensesEnabled = true,
+        bloopVersion = '2.1.0',
         inlayHints = {
           namedParameters = { enable = true },
           byNameParameters = { enable = true },
@@ -239,8 +335,8 @@ return {
       local os = get_operating_system()
 
       if os == 'Darwin' or os == 'OSX' then
-        metals_config.settings.gradleScript = '/opt/gradle/gradle-8.10.2/bin/gradle'
-        metals_config.settings.javaHome = '/Library/Java/JavaVirtualMachines/liberica-jdk-21.jdk/Contents/Home'
+        metals_config.settings.gradleScript = '/opt/gradle/gradle-9.6.0/bin/gradle'
+        metals_config.settings.javaHome = '/Library/Java/JavaVirtualMachines/liberica-jdk-25.jdk/Contents/Home'
         metals_config.settings.scalafixConfigPath = '/Users/jared.weiss/build/dotfiles/.scalafix.conf'
       end
 

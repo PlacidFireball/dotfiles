@@ -80,7 +80,18 @@ return {
       picker = { enabled = false, },
       quickfile = { enabled = true },
       scroll = { enabled = true },
-      statuscolumn = { enabled = true },
+      statuscolumn = {
+        left = { "mark", "sign" },
+        right = { "fold", "git" },
+        folds = {
+          open = true,
+          git_hl = true,
+        },
+        git = {
+          patterns = { "GitSign", "MiniDiffSign" },
+        },
+        refresh = 50,
+      },
       terminal = {
         keys = {
           term_normal = false,
@@ -93,7 +104,7 @@ return {
           -- For quiq-wiki files, resolve asset paths relative to the wiki root
           -- since images use paths like "assets/images/foo.png" from the repo root,
           -- not relative to the individual markdown file's directory.
-          local wiki_root = vim.fn.expand("~/Dev/quiq/quiq-wiki")
+          local wiki_root = vim.fn.expand("~/src/quiq/wiki")
           if file:find(wiki_root, 1, true) and not src:find("^%w%w+://") then
             local candidate = wiki_root .. "/" .. src
             if vim.fn.filereadable(candidate) == 1 then
@@ -103,7 +114,7 @@ return {
         end,
         doc = {
           enabled = true,
-          inline = true,
+          inline = false,
           float = false,
           max_width = 80,
           max_height = 40,
@@ -128,6 +139,7 @@ return {
       },
       { "<leader>gl", function() Snacks.git.blame_line() end, desc = "[G]it [B]lame line" },
       { "<leader>gb", function() Snacks.gitbrowse() end,      desc = 'Git Browse' },
+      { "<leader>ih", function() Snacks.image.hover() end,      desc = '[I]mage [H]over' },
     }
   },
   {

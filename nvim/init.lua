@@ -146,10 +146,12 @@ vim.keymap.set({ "n", "t" }, "<leader>tt", function ()
   })
 end, { desc = "[T]oggle floating [T]erminal" })
 
-vim.keymap.set({'n', 't'}, '<C-h>', '<cmd>wincmd h<CR>', { desc = 'Go to pane left'})
-vim.keymap.set({'n', 't'}, '<C-l>', '<cmd>wincmd l<CR>', { desc = 'Go to pane right'})
-vim.keymap.set({'n', 't'}, '<C-j>', '<cmd>wincmd j<CR>', { desc = 'Go to pane down'})
-vim.keymap.set({'n', 't'}, '<C-k>', '<cmd>wincmd k<CR>', { desc = 'Go to pane up'})
+if vim.env.HERDR_ENV == '1' then
+  vim.keymap.set({'n', 't'}, '<C-h>', '<cmd>wincmd h<CR>', { desc = 'Go to pane left'})
+  vim.keymap.set({'n', 't'}, '<C-l>', '<cmd>wincmd l<CR>', { desc = 'Go to pane right'})
+  vim.keymap.set({'n', 't'}, '<C-j>', '<cmd>wincmd j<CR>', { desc = 'Go to pane down'})
+  vim.keymap.set({'n', 't'}, '<C-k>', '<cmd>wincmd k<CR>', { desc = 'Go to pane up'})
+end
 
 local auto_save_timer = nil
 vim.api.nvim_create_autocmd({ 'TextChanged', 'InsertLeave' }, {

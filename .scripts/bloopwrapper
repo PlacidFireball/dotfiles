@@ -101,7 +101,9 @@ def handle_test(args: Namespace) -> None:
 
 
 def handle_clean(args: Namespace) -> None:
-    command = f'bloop clean {args.service}'
+    bloop_config_dir = str(os.path.expanduser(args.quiq_super_repo + '.bloop'))
+    ensure_mixed_compile_order(bloop_config_dir)
+    command = f'bloop clean {args.service} --config-dir {bloop_config_dir}'
     if args.propagate:
         command += " --propagate"
     if args.cascade:

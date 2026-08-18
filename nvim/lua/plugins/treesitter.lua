@@ -23,7 +23,7 @@ return {
       vim.api.nvim_create_autocmd('FileType', {
         pattern = installed_parsers,
         callback = function(ev)
-          local max_filesize = 150 * 1024 -- 150 KB
+          local max_filesize = 500 * 1024 -- 150 KB
           local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(ev.buf))
           if ok and stats and stats.size > max_filesize then
             return

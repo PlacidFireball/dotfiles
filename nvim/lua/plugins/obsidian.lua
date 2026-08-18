@@ -16,7 +16,7 @@ return {
         },
         {
           name = 'quiq-wiki',
-          path = '~/Dev/quiq/quiq-wiki/'
+          path = '~/src/quiq/wiki/'
         }
       },
       notes_subdir = 'notes',
