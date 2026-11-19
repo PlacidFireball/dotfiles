@@ -58,6 +58,7 @@ case $1 in
   --no-term) NO_TERM="Y";;
   --no-opencode) NO_OPENCODE="Y";;
   --no-zed) NO_ZED="Y";;
+  --no-rex) NO_REX="Y";;
   *) error_log "Unknown argument passed: $1"
   exit 1;;
 esac
@@ -115,6 +116,16 @@ if [[ ! "$NO_ZED" == "Y" ]]; then
   fi
 else
   warn_log "Skipping zed config setup"
+fi
+
+if [[ ! "$NO_REX" == "Y" ]]; then
+  if [[ -d "$DOTFILES_BUILD_DIR/rex" ]]; then
+    backup_and_copy "$DOTFILES_BUILD_DIR/rex" "$HOME/.config/rex"
+  else
+    warn_log "Rex config not found in repo, skipping install."
+  fi
+else
+  warn_log "Skipping rex config setup"
 fi
 
 happy_log "Finished install!"

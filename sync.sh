@@ -85,4 +85,7 @@ sync_config "opencode" "$HOME/.config/opencode" "$REPO_DIR/opencode"
 # Zed (only if present)
 sync_config "zed" "$HOME/.config/zed" "$REPO_DIR/zed"
 
+# Rex (only if present)
+sync_config "rex" "$HOME/.config/rex" "$REPO_DIR/rex"
+
 happy_log "Sync complete! Don't forget to check git status and commit your changes."
