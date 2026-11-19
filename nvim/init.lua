@@ -153,6 +153,24 @@ if vim.env.HERDR_ENV == '1' then
   vim.keymap.set({'n', 't'}, '<C-k>', '<cmd>wincmd k<CR>', { desc = 'Go to pane up'})
 end
 
+if vim.env.REX_SESSION then
+  -- Move between nvim windows; at the edge, hand focus to the Rex pane beyond it.
+  local function rex_nav(wincmd, direction)
+    return function()
+      local win = vim.api.nvim_get_current_win()
+      vim.cmd('wincmd ' .. wincmd)
+      if vim.api.nvim_get_current_win() == win then
+        vim.fn.jobstart({ 'rex', 'api', 'call', '-s', vim.env.REX_SESSION,
+          'session.focus_direction', '{"direction":"' .. direction .. '"}' })
+      end
+    end
+  end
+  vim.keymap.set({'n', 't'}, '<C-h>', rex_nav('h', 'left'),  { desc = 'Go to pane left'})
+  vim.keymap.set({'n', 't'}, '<C-j>', rex_nav('j', 'down'),  { desc = 'Go to pane down'})
+  vim.keymap.set({'n', 't'}, '<C-k>', rex_nav('k', 'up'),    { desc = 'Go to pane up'})
+  vim.keymap.set({'n', 't'}, '<C-l>', rex_nav('l', 'right'), { desc = 'Go to pane right'})
+end
+
 local auto_save_timer = nil
 vim.api.nvim_create_autocmd({ 'TextChanged', 'InsertLeave' }, {
   desc = 'Auto save on buffer changes',
