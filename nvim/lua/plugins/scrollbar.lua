@@ -4,6 +4,7 @@ return {
     "lewis6991/gitsigns.nvim"
   },
   config = function()
+    vim.g.scrollbar_v2_notice = false
     require("scrollbar").setup {}
 
     require("scrollbar.handlers.search").setup {}

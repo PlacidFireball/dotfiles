@@ -12,9 +12,11 @@ return {
         -- install jsregexp (optional!).
         build = "make install_jsregexp"
       },
-      "Kaiser-Yang/blink-cmp-avante"
+      "saghen/blink.lib",
     },
-    version = '1.*',
+    build = function()
+      require('blink.cmp').build():wait(60000)
+    end,
     -- allows extending the providers array elsewhere in your config
     -- without having to redefine it
     opts_extend = { "sources.default" },
@@ -32,10 +34,6 @@ return {
           ['<C-k>'] = { 'snippet_backward', 'fallback' },
         },
         appearance = {
-          -- Sets the fallback highlight groups to nvim-cmp's highlight groups
-          -- Useful for when your theme doesn't support blink.cmp
-          -- will be removed in a future release
-          use_nvim_cmp_as_default = true,
           nerd_font_variant = 'mono'
         },
         completion = {
@@ -62,10 +60,10 @@ return {
         sources = {
           default = { 'snippets', 'lsp', 'path', 'buffer' },
         },
-        snippets = {
-          preset = 'luasnip'
-        },
-        fuzzy = { implementation = 'prefer_rust_with_warning' },
+        -- snippets = {
+        --   preset = 'luasnip'
+        -- },
+        fuzzy = { implementation = 'rust' },
         -- experimental signature help support
         signature = { enabled = true }
       }

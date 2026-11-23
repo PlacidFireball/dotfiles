@@ -37,6 +37,8 @@ vim.diagnostic.config {
   virtual_text = true,
 }
 
+vim.lsp.log.set_level('debug')
+
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
@@ -194,6 +196,29 @@ vim.api.nvim_create_autocmd({ 'TextChanged', 'InsertLeave' }, {
       end
     end))
   end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufWinEnter', 'LspAttach', 'LspDetach' }, {
+  group = vim.api.nvim_create_augroup('prefer-lsp-folds', { clear = true }),
+  callback = function (ev)
+    vim.schedule(function ()
+      if not vim.api.nvim_buf_is_valid(ev.buf) then
+        return
+      end
+
+      local clients = vim.lsp.get_clients({
+        bufnr = ev.buf,
+        method = 'textDocument/foldingRange',
+      })
+
+      local expr = (#clients > 0 and 'v:lua.vim.lsp.foldexpr()') or 'v:lua.vim.treesitter.foldexpr()'
+
+      for _, win in ipairs(vim.fn.win_findbuf(ev.buf)) do
+        vim.wo[win].foldmethod = 'expr'
+        vim.wo[win].foldexpr = expr
+      end
+    end)
+  end
 })
 
 require('config.lazy')

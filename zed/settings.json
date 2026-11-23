@@ -9,9 +9,11 @@
 {
   // --- Vim ---
   "project_panel": {
+    "dock": "left",
     "hide_gitignore": false,
   },
   "agent": {
+    "dock": "right",
     "default_model": {
       "provider": "Quiq GPT",
       "model": "claude-4.6-sonnet",
@@ -57,6 +59,9 @@
     },
   },
   "agent_servers": {
+    "pi-acp": {
+      "type": "registry"
+    },
     "claude-acp": {
       "type": "registry",
     },
@@ -104,6 +109,13 @@
 
   // --- File scan inclusions (include gitignored files matching these globs) ---
   "file_scan_inclusions": [
+    "backend/**",
+    "frontend/**",
+    "ops/**",
+    "tools/**",
+    "wiki/**",
+    "projects/**",
+    "lambdas/**",
     ".env*",
     "**/*.scala",
     "**/*.java",
@@ -144,7 +156,7 @@
   },
 
   // --- Auto pairs ---
-  "use_autoclose": true,
+  "use_autoclose": false,
 
   // --- Inline diagnostics ---
   "diagnostics": {

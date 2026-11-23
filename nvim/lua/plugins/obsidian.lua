@@ -20,11 +20,6 @@ return {
         }
       },
       notes_subdir = 'notes',
-      completion = {
-        blink = true,
-        min_chars = 2,
-        create_new = false,
-      },
       checkbox = {
         enabled = true,
         create_new = true,
